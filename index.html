@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ludora • Authentic Mobile Board Gaming & Cultural Odyssey</title>
+  <meta name="description" content="Where every roll matters. Ludora brings offline-first board gaming with real 3D isometric tumbling dice, animated undulating serpents, Kathmandu cultural mandala art, and zero mid-game ads.">
+  <meta name="keywords" content="Ludora, Offline Ludo, 3D Snake and Ladder, Kathmandu Board Game, Ad-Free Board Games, Remix Ludo, Mobile Board Games">
+  <link rel="canonical" href="https://ludora.game">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ludora.game">
+  <meta property="og:title" content="Ludora: Where Every Roll Matters">
+  <meta property="og:description" content="Authentic offline-first mobile board gaming with realistic 3D dice physics, animated vipers, and Kathmandu cultural worlds with zero mid-game interruptions.">
+  <meta property="og:image" content="https://ludora.game/logo.png">
+
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Ludora: Where Every Roll Matters">
+  <meta property="twitter:description" content="Offline-first 3D mobile board gaming. Real tumbling dice, animated vipers, and Kathmandu cultural boards with zero mid-game video ads.">
+  <meta property="twitter:image" content="https://ludora.game/logo.png">
+
+  <!-- Google Fonts: Cinzel & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Ludora",
+      "alternateName": "Ludora: Board Games & Remix",
+      "url": "https://ludora.game",
+      "description": "Offline-first mobile board game platform featuring 3D isometric tumbling dice, animated vipers, and cultural Kathmandu board themes.",
+      "genre": ["Board Game", "Strategy", "Casual"],
+      "gamePlatform": ["Android", "Mobile"],
+      "operatingSystem": "Android 8.0 and higher",
+      "applicationCategory": "GameApplication",
+      "datePublished": "2026-10-01",
+      "dateModified": "2026-10-01",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Ludora Studios",
+        "url": "https://github.com/susantedit/ludo-game",
+        "founder": {
+          "@type": "Person",
+          "name": "Susant Acharya",
+          "url": "https://github.com/susantedit"
+        },
+        "sameAs": [
+          "https://github.com/susantedit/ludo-game"
+        ]
+      },
+      "featureList": [
+        "100% Complete Offline Gameplay",
+        "Zero Mid-Game Video Ads",
+        "Real 3D Isometric Tumbling Dice with Physics",
+        "Bézier Animated Undulating Snakes",
+        "Kathmandu Cultural Mandala Board Theme",
+        "Remix Mode with 5 Tactical Power Cards",
+        "Private Rooms with 6-Character Codes"
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Ludora?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ludora is an offline-first mobile board game platform that modernizes traditional parlor games including Ludo and Snake & Ladder. Built with a player-first philosophy, Ludora allows users to play single-player and pass-and-play matches completely offline without an internet connection or account registration. Unlike standard mobile board games that display invasive mid-game video popups, Ludora enforces strict ad frequency controls with zero advertisements during active matches."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Ludora protect player privacy and offline data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ludora stores all offline gameplay data, statistics, progression, and unlocked cosmetics locally on your device in an encrypted SQLite database managed by Android Jetpack Room. We do not require registration, phone numbers, or social logins, and we strictly comply with COPPA and Google Play Families policies."
+          }
+        }
+      ]
+    }
+  ]
+  </script>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       TOP NAVIGATION BAR
+       ========================================================================== -->
+  <nav class="site-nav" id="mainNavigation">
+    <div class="nav-inner">
+      <a href="#hero" class="brand-wrapper" id="brandHomeLink">
+        <img src="logo.png" alt="Ludora Game Logo" class="brand-logo-img">
+        <div class="brand-text-block">
+          <span class="brand-name">LUDORA</span>
+          <span class="brand-tag">Where Every Roll Matters</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#studio" id="navLinkStudio">3D Visuals</a></li>
+        <li><a href="#modes" id="navLinkModes">Game Modes</a></li>
+        <li><a href="#manifesto" id="navLinkManifesto">Fair Play</a></li>
+        <li><a href="#legal" id="navLinkLegal">Terms & Privacy</a></li>
+        <li><a href="#security" id="navLinkSecurity">Security Audit</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button id="navAudioBtn" class="btn btn-audio" title="Play Himalayan Singing Bowl Overtone">
+          <span>🔔</span> <span id="navAudioLabel">Himalayan Chime (432Hz)</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="site-wrapper">
+
+    <!-- ==========================================================================
+         HERO SECTION
+         ========================================================================== -->
+    <header class="hero-section" id="hero">
+      <div class="hero-pill">✨ PRODUCTION RELEASE • VERSION 1.0.0 • 100% OFFLINE CAPABLE</div>
+      <h1 class="hero-title">Where Every Roll Matters</h1>
+      <p class="hero-desc">Ludora is an offline-first mobile board game platform combining classic Ludo, 100-tile Snake &amp; Ladder, and hybrid Remix rules with real-time 3D isometric dice physics, animated serpents, and zero mid-game advertisements.</p>
+
+      <div class="hero-cta-group">
+        <a href="#studio" class="btn btn-primary" id="exploreVisualsBtn">Experience 3D Visuals</a>
+        <a href="#legal" class="btn btn-secondary" id="viewTermsBtn">Read All Terms & Conditions</a>
+      </div>
+
+      <div class="hero-pillars">
+        <div class="pillar-item">
+          <span class="pillar-icon">⚡</span>
+          <h2 class="pillar-title">100% Offline Autonomy</h2>
+          <p class="pillar-desc">Deterministic Kotlin engine with local encrypted SQLite storage. Complete pass-and-play freedom without Wi-Fi.</p>
+        </div>
+        <div class="pillar-item">
+          <span class="pillar-icon">🛡️</span>
+          <h2 class="pillar-title">Zero Mid-Game Ads</h2>
+          <p class="pillar-desc">Active matches are never interrupted by popups. Optional rewarded cosmetics and a permanent one-time ad removal pass.</p>
+        </div>
+        <div class="pillar-item">
+          <span class="pillar-icon">🎲</span>
+          <h2 class="pillar-title">Real 3D Isometric Physics</h2>
+          <p class="pillar-desc">True cubic tumbling dice with Phong specular highlights, physical bounce restitution, and concave gold metallic pips.</p>
+        </div>
+        <div class="pillar-item">
+          <span class="pillar-icon">🛕</span>
+          <h2 class="pillar-title">Kathmandu Cultural Odyssey</h2>
+          <p class="pillar-desc">Handcrafted dark walnut board with Newari brass inlays, prayer flags, and the sacred Swayambhunath Wisdom Eyes.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==========================================================================
+         INTERACTIVE 3D VISUAL LABORATORY
+         ========================================================================== -->
+    <section class="section-container" id="studio">
+      <div class="section-header">
+        <span class="badge">TACTILE CRAFTSMANSHIP</span>
+        <h2 class="section-title">Interactive 3D Visual Studio</h2>
+        <p class="section-desc">Test the live procedural canvas renderers operating directly in your browser. Engineered to match the native Android Compose Canvas implementations.</p>
+      </div>
+
+      <div class="studio-grid">
+        <!-- 3D Dice Studio -->
+        <article class="card" id="diceStudioCard">
+          <div class="card-header">
+            <h3 class="card-title">Isometric Tumbling Dice</h3>
+            <span class="badge">QUATERNION PHYSICS</span>
+          </div>
+          <div class="canvas-box">
+            <canvas id="diceCanvas" width="440" height="340"></canvas>
+            <div id="diceValuePill" class="value-pill">Resting Face: 6</div>
+          </div>
+          <div class="card-controls">
+            <button id="rollDiceBtn" class="btn btn-primary">Roll 3D Dice (Or Press Space)</button>
+            <div class="spec-row">
+              <span>Material: Heavy Ivory Resin</span>
+              <span>Lighting: Specular Phong Model</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3D Animated Viper Studio -->
+        <article class="card" id="snakeStudioCard">
+          <div class="card-header">
+            <h3 class="card-title">3D Animated Bézier Viper</h3>
+            <span class="badge badge-emerald">SINUSOIDAL UNDULATION</span>
+          </div>
+          <div class="canvas-box">
+            <canvas id="snakeCanvas" width="440" height="340"></canvas>
+            <div class="value-pill">Slithering • Iridescent Emerald</div>
+          </div>
+          <div class="card-controls">
+            <button id="swallowTokenBtn" class="btn btn-secondary">Simulate Token Swallow</button>
+            <div class="spec-row">
+              <span>Spine: Cubic Bézier Curve</span>
+              <span>Bulge: Peristaltic Sine Envelope</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Kathmandu Mandala Board -->
+        <article class="card span-full" id="boardStudioCard">
+          <div class="card-header">
+            <h3 class="card-title">Kathmandu Cultural Mandala Board Layout</h3>
+            <span class="badge">CULTURAL THEME</span>
+          </div>
+          <div class="canvas-box tall">
+            <canvas id="boardCanvas" width="860" height="480"></canvas>
+          </div>
+          <div class="spec-row">
+            <span>Center: Swayambhunath Wisdom Eyes &amp; Unity Curl</span>
+            <span>Border: Hand-Carved Dark Walnut with Brass Inlays</span>
+            <span>Corners: Sacred Five-Color Prayer Flags</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         GAME MODES SHOWCASE
+         ========================================================================== -->
+    <section class="section-container" id="modes">
+      <div class="section-header">
+        <span class="badge badge-blue">THREE MODES IN ONE</span>
+        <h2 class="section-title">Strategic Game Modes</h2>
+        <p class="section-desc">From traditional tournament rules to strategic combat variants, Ludora accommodates every play style offline and online.</p>
+      </div>
+
+      <div class="modes-grid">
+        <!-- Classic Ludo -->
+        <div class="mode-card">
+          <div class="mode-icon-header">
+            <span class="mode-icon">🎲</span>
+            <span class="badge">TOURNAMENT STANDARD</span>
+          </div>
+          <h3 class="mode-title">Classic Ludo</h3>
+          <p class="mode-desc">The authentic 52-step perimeter track with 4 colored home columns. Roll a 6 to release tokens from home yard, capture opponent tokens to send them back, and build defensive two-token blockades.</p>
+          <div class="rule-tags">
+            <span class="rule-tag">Exact Roll Finishing</span>
+            <span class="rule-tag">Two-Token Blockades</span>
+            <span class="rule-tag">Three 6s Forfeits Turn</span>
+            <span class="rule-tag">Safe Star Tiles</span>
+          </div>
+        </div>
+
+        <!-- Snake & Ladder -->
+        <div class="mode-card">
+          <div class="mode-icon-header">
+            <span class="mode-icon">🐍</span>
+            <span class="badge badge-emerald">100-TILE BOUSTROPHEDON</span>
+          </div>
+          <h3 class="mode-title">Snake &amp; Ladder</h3>
+          <p class="mode-desc">The historic race from tile 1 to tile 100. Ascend wooden ladders to skip ahead and beware animated vipers that drag tokens back toward earlier rows. Exact roll required to claim tile 100.</p>
+          <div class="rule-tags">
+            <span class="rule-tag">Exact 100 Win Condition</span>
+            <span class="rule-tag">Bouncing Overshoot Rule</span>
+            <span class="rule-tag">Animated Swallowing</span>
+            <span class="rule-tag">2 to 4 Players</span>
+          </div>
+        </div>
+
+        <!-- Ludora Remix -->
+        <div class="mode-card">
+          <div class="mode-icon-header">
+            <span class="mode-icon">⚡</span>
+            <span class="badge badge-crimson">TACTICAL HYBRID</span>
+          </div>
+          <h3 class="mode-title">Ludora Remix</h3>
+          <p class="mode-desc">A fast-paced tactical hybrid merging Ludo track movement with dynamic hazard tiles (snakes, ladders, portals) and 5 collectible power cards. Shift momentum every three turns with rotating match modifiers.</p>
+          <div class="rule-tags">
+            <span class="rule-tag">Shield Card (Blocks Trap)</span>
+            <span class="rule-tag">Speed Boost (+3 Steps)</span>
+            <span class="rule-tag">Reroll Card (Instant Roll)</span>
+            <span class="rule-tag">Position Swap Card</span>
+            <span class="rule-tag">Hazard Bomb (Radius Clear)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         FAIR PLAY & MONETIZATION CHARTER
+         ========================================================================== -->
+    <section class="section-container" id="manifesto">
+      <div class="section-header">
+        <span class="badge badge-emerald">PLAYER-FIRST MANIFESTO</span>
+        <h2 class="section-title">Fair Play &amp; Monetization Guarantee</h2>
+        <p class="section-desc">We respect your time, battery, and focus. Here is our binding pledge to every Ludora player.</p>
+      </div>
+
+      <div class="card">
+        <div class="legal-article">
+          <h3>1. Zero Mid-Game Advertisements</h3>
+          <p>We guarantee that no banner, interstitial video, or popup ad will ever appear during an active gameplay turn. Your decisions, rolls, and board concentration are never broken by forced commercials.</p>
+        </div>
+
+        <div class="legal-article">
+          <h3>2. Complete Offline Ownership</h3>
+          <p>Ludora does not force internet connectivity or account creation. All game modes (Single Player vs AI and Pass-and-Play Local Multiplayer) function 100% offline. When offline, all advertising SDKs are suppressed to prevent blank layout containers and battery drain.</p>
+        </div>
+
+        <div class="legal-article">
+          <h3>3. Transparent, Permanent In-App Purchases</h3>
+          <p>We offer a single, optional "Remove Ads" pass that permanently disables menu banners and post-match interstitials across all your linked Google Play devices. Rewarded video bonuses for cosmetic coins remain completely voluntary.</p>
+        </div>
+
+        <div class="legal-article">
+          <h3>4. Cryptographic Randomness (Zero Weighted Dice)</h3>
+          <p>Every dice roll is generated using cryptographically secure pseudorandom number generators (CWE-330 compliant). We never weight rolls to artificially manipulate match outcomes or drive frustration.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         COMPREHENSIVE TERMS OF SERVICE & PRIVACY POLICY HUB
+         ========================================================================== -->
+    <section class="section-container" id="legal">
+      <div class="section-header">
+        <span class="badge">LEGAL COMPLIANCE &amp; DISCLOSURES</span>
+        <h2 class="section-title">Terms of Service &amp; Privacy Policy</h2>
+        <p class="section-desc">Unabridged, binding agreements governing your use of Ludora, virtual items, local data storage, and online multiplayer services.</p>
+      </div>
+
+      <div class="legal-hub-card">
+        <!-- Tab Navigation -->
+        <div class="legal-tab-nav" role="tablist">
+          <button class="tab-btn active" data-tab="pane-terms" id="tabTerms" role="tab">All Terms of Service</button>
+          <button class="tab-btn" data-tab="pane-privacy" id="tabPrivacy" role="tab">All Privacy Policy</button>
+          <button class="tab-btn" data-tab="pane-coppa" id="tabCoppa" role="tab">Children's Privacy &amp; COPPA</button>
+          <button class="tab-btn" data-tab="pane-monetization" id="tabMonetization" role="tab">In-App Purchases &amp; Refunds</button>
+        </div>
+
+        <!-- Meta Bar with Search Filter -->
+        <div class="legal-meta-bar">
+          <div>
+            <span><strong>Effective Date:</strong> October 1, 2026</span> • 
+            <span><strong>Version:</strong> 1.0.0</span> • 
+            <span><strong>Governing Law:</strong> Applicable Mobile Software Regulations</span>
+          </div>
+          <div>
+            <input type="text" id="legalSearchInput" placeholder="Filter clauses (e.g., refund, offline)..." style="background:#07090E; border:1px solid #1C2333; color:#F1F5F9; padding:0.35rem 0.75rem; border-radius:6px; font-size:0.8rem;">
+          </div>
+        </div>
+
+        <!-- PANE 1: ALL TERMS OF SERVICE -->
+        <div class="legal-content-pane active" id="pane-terms" role="tabpanel">
+          <article class="legal-article">
+            <h3>1. Acceptance of Terms</h3>
+            <p>By downloading, installing, accessing, or playing Ludora ("the Application" or "the Service"), provided by Ludora Studios ("we", "us", or "our"), you ("the User" or "Player") agree to be bound by all provisions of these Terms of Service. If you do not agree to these terms in their entirety, you must immediately uninstall and cease all use of the Application.</p>
+          </article>
+
+          <article class="legal-article">
+            <h3>2. Grant of Limited License</h3>
+            <p>We grant you a personal, non-exclusive, non-transferable, revocable, and non-sublicensable license to install and use Ludora on compatible Android mobile devices solely for your personal, non-commercial entertainment. You may not reverse-engineer, decompile, disassemble, attempt to derive the source code of, modify, or create derivative works of the Application, except to the extent permitted by applicable open-source licenses governing third-party libraries.</p>
+          </article>
+
+          <article class="legal-article">
+            <h3>3. Fair Play and Code of Conduct</h3>
+            <p>To preserve tournament integrity and an enjoyable experience for all players, you agree to adhere strictly to the following conduct rules in both local and online multiplayer sessions:</p>
+            <ul>
+              <li><strong>No Client Tampering:</strong> You shall not use modified APKs, memory editors, packet interceptors, or cheat engines to manipulate dice rolls, token positions, or turn sequences.</li>
+              <li><strong>No Automated Play:</strong> You shall not employ bots, macros, auto-clickers, or external scripts to simulate user input.</li>
+              <li><strong>No Server Attacks:</strong> You shall not interfere with, flood, desynchronize, or launch denial-of-service attacks against our WebSocket servers or matchmaking queues.</li>
+              <li><strong>Respectful Display Names:</strong> In online rooms, you shall not adopt display names containing hate speech, obscenity, defamation, or harassing language.</li>
+            </ul>
+            <div class="legal-callout warning">
+              <strong>Enforcement:</strong> Violations of the Fair Play Code of Conduct result in immediate termination of online multiplayer access and room hosting privileges.
+            </div>
+          </article>
+
+          <article class="legal-article">
+            <h3>4. Virtual Currencies, Cosmetics &amp; Local Storage</h3>
+            <p>Ludora features virtual currency (Coins) and cosmetic items (dice skins, board themes, token avatars). You acknowledge and agree that:</p>
+            <ul>
+              <li>Virtual items have <strong>zero real-world monetary value</strong> and do not constitute personal property.</li>
+              <li>Virtual items cannot be redeemed for fiat currency, legal tender, or real goods from Ludora Studios or any third party.</li>
+              <li>Virtual items cannot be transferred, gifted, or sold between players outside the Application.</li>
+              <li>For offline players, virtual items and achievements are saved locally on your device in an encrypted SQLite database. We are not liable for loss of virtual items resulting from manual device wipes, application data clearing, or operating system resets without a device backup.</li>
+            </ul>
+          </article>
+
+          <article class="legal-article">
+            <h3>5. In-App Purchases, Billing &amp; Refunds</h3>
+            <p>All financial transactions within the Application, including the purchase of the permanent "Remove Ads" pass, are billed and processed exclusively through Google Play In-App Billing. We do not collect or store credit card details or payment credentials.</p>
+            <ul>
+              <li><strong>Non-Consumable License:</strong> The "Remove Ads" pass is a permanent non-consumable entitlement. It can be restored at any time on any Android device authenticated with your purchasing Google Play account.</li>
+              <li><strong>Refund Requests:</strong> Refund eligibility is governed by Google Play standard consumer policies. To request a refund, submit a claim directly through the Google Play Order History portal.</li>
+            </ul>
+          </article>
+
+          <article class="legal-article">
+            <h3>6. Intellectual Property &amp; Open Source</h3>
+            <p>All software architecture, graphics, audio compositions, 3D models, procedural shaders, and brand identifiers associated with Ludora are the proprietary intellectual property of Ludora Studios and its licensors. Open-source components utilized within the project are governed by their respective licenses (e.g., Apache 2.0, MIT) as disclosed in the repository documentation.</p>
+          </article>
+
+          <article class="legal-article">
+            <h3>7. Warranty Disclaimer &amp; Limitation of Liability</h3>
+            <p>LUDORA IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR UNINTERRUPTED AVAILABILITY. TO THE FULLEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW, LUDORA STUDIOS AND ITS CONTRIBUTORS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, PUNITIVE, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING FROM YOUR USE OF OR INABILITY TO USE THE APPLICATION.</p>
+          </article>
+
+          <article class="legal-article">
+            <h3>8. Governing Law &amp; Dispute Resolution</h3>
+            <p>These Terms shall be governed by and interpreted in accordance with applicable governing laws. In the event of a controversy or claim arising out of or relating to these Terms, the parties shall first attempt to resolve the matter amicably through good-faith technical negotiation.</p>
+          </article>
+
+          <article class="legal-article">
+            <h3>9. Term Updates &amp; Contact</h3>
+            <p>We reserve the right to revise these Terms of Service. Notice of substantive amendments will be provided via the official GitHub repository changelog. For legal inquiries, contact: <strong>legal@ludora.game</strong> or open an issue on <a href="https://github.com/susantedit/ludo-game" style="color:var(--accent-gold);">GitHub</a>.</p>
+          </article>
+        </div>
+
+        <!-- PANE 2: ALL PRIVACY POLICY -->
+        <div class="legal-content-pane" id="pane-privacy" role="tabpanel">
+          <article class="legal-article">
+            <h3>1. Privacy Commitment &amp; Data Minimization</h3>
+            <p>Ludora adheres to strict data minimization principles. We do not require registration, email addresses, phone numbers, or social media logins to access full single-player, pass-and-play, or custom rule features.</p>
+          </article>
+
+          <article class="legal-article">
+            <h3>2. Information Processed Locally on Device</h3>
+            <p>The vast majority of gameplay data never leaves your hardware:</p>
+            <ul>
+              <li><strong>Local Game Database:</strong> Match logs, player statistics, quest progress, AI difficulty settings, and custom rule configurations are written to a sandboxed SQLite database using Android Jetpack Room with SQLite encryption.</li>
+              <li><strong>Cosmetic Inventory:</strong> Unlocked dice finishes, snake colorings, and board backgrounds reside exclusively on the device storage volume.</li>
+            </ul>
+          </article>
+
+          <article class="legal-article">
+            <h3>3. Online Multiplayer Session Data</h3>
+            <p>When participating in online multiplayer matches:</p>
+            <ul>
+              <li><strong>Ephemeral Session UUID:</strong> A cryptographically pseudorandom UUID string is generated in device memory to manage room routing. This identifier is discarded when the room closes.</li>
+              <li><strong>State Packets:</strong> Dice rolls, token selections, and card triggers are transmitted over secure WebSockets (WSS) and are not retained permanently in persistent server databases.</li>
+            </ul>
+          </article>
+
+          <article class="legal-article">
+            <h3>4. Advertising &amp; Third-Party Services</h3>
+            <p>Ludora does not show advertising during active matches. Outside of active turns, non-personalized contextual ads or voluntary rewarded videos may be requested through certified advertising networks (Google Mobile Ads). If you purchase the "Remove Ads" pass, ad SDK initialization and tracking requests are completely suppressed.</p>
+          </article>
+
+          <article class="legal-article">
+            <h3>5. Data Retention, Portability &amp; Deletion Rights</h3>
+            <p>Because your primary data is stored locally, you retain unilateral control over its lifecycle:</p>
+            <ul>
+              <li><strong>Instant Data Erasure:</strong> Navigate to Settings &gt; Profile &gt; Reset Data within the Application to clear all local statistics, or clear app storage via Android System Settings.</li>
+              <li><strong>No Residual Server Shadows:</strong> Because we do not store personal account dossiers on remote clouds, deleting local data erases your records completely.</li>
+            </ul>
+          </article>
+
+          <article class="legal-article">
+            <h3>6. Privacy Contact</h3>
+            <p>For inquiries regarding data protection, write to: <strong>privacy@ludora.game</strong>.</p>
+          </article>
+        </div>
+
+        <!-- PANE 3: CHILDREN'S PRIVACY & COPPA -->
+        <div class="legal-content-pane" id="pane-coppa" role="tabpanel">
+          <article class="legal-article">
+            <h3>Children's Online Privacy Protection Act (COPPA) Compliance</h3>
+            <p>Ludora is designed as a family-friendly board game platform suitable for players of all ages. We take children's privacy seriously and fully comply with COPPA and Google Play Families Policies:</p>
+            <ul>
+              <li><strong>Zero Personal Data Collection:</strong> We do not knowingly solicit, collect, or store personal identifiable information (PII) from children under the age of 13.</li>
+              <li><strong>No Behavioral Advertising:</strong> When an age under 13 is indicated or child-directed mode is activated, behavioral ad tracking and personalized profiling are strictly suppressed.</li>
+              <li><strong>Families Self-Certified SDKs:</strong> Only advertising SDKs certified under Google Play's Families Policy are initialized in child-accessible modes.</li>
+              <li><strong>No Open Social Chat:</strong> In-game communication is restricted to pre-set family emojis and quick emotes to prevent the transmission of personal information between minors and strangers.</li>
+            </ul>
+            <div class="legal-callout success">
+              <strong>Parental Inquiries:</strong> Parents or guardians may review questions regarding child safety by emailing <strong>safety@ludora.game</strong>.
+            </div>
+          </article>
+        </div>
+
+        <!-- PANE 4: IN-APP PURCHASES & MONETIZATION -->
+        <div class="legal-content-pane" id="pane-monetization" role="tabpanel">
+          <article class="legal-article">
+            <h3>In-App Purchases, Billing Terms &amp; Refund Policy</h3>
+            <p>Ludora maintains transparent, player-first monetization policies:</p>
+            <ul>
+              <li><strong>Single Ad-Removal Purchase:</strong> A one-time purchase removes all menu banners and post-match interstitials permanently. No recurring subscription fees are charged.</li>
+              <li><strong>Restore Purchases:</strong> Reinstalling Ludora or switching to a new Android device allows instant restoration of your purchase by tapping "Restore Purchases" in the Game Settings menu.</li>
+              <li><strong>Voluntary Rewarded Videos:</strong> Rewarded videos provide optional cosmetic coins. Watching them is strictly voluntary and never required to unlock gameplay modes or progress.</li>
+              <li><strong>Refund Procedures:</strong> Google Play manages all billing and transaction processing. If you believe a purchase was made accidentally, visit the <a href="https://support.google.com/googleplay/workflow/9813244" target="_blank" rel="noopener" style="color:var(--accent-gold);">Google Play Refund Workflow</a> within 48 hours of transaction.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECURITY AUDIT & VERIFICATION
+         ========================================================================== -->
+    <section class="section-container" id="security">
+      <div class="section-header">
+        <span class="badge badge-emerald">AUTOMATED SECURITY AUDIT</span>
+        <h2 class="section-title">Security &amp; Vulnerability Protections</h2>
+        <p class="section-desc">Our codebase underwent an automated static analysis audit to protect users from common mobile software vulnerabilities.</p>
+      </div>
+
+      <div class="card">
+        <div class="legal-article">
+          <h3>Common Weakness Enumeration (CWE) Mitigations</h3>
+          <ul>
+            <li><strong>CWE-89 (SQL Injection Protection):</strong> All database interactions utilize parameterized Room DAO queries. Zero dynamic raw SQL concatenation exists across the codebase.</li>
+            <li><strong>CWE-926 (Exported Android Components):</strong> All activities, receivers, and services in AndroidManifest.xml enforce <code>android:exported="false"</code> with the exception of the standard launch intent filter.</li>
+            <li><strong>CWE-330 (Cryptographic Randomness):</strong> Dice tumbling and room token generation utilize <code>java.security.SecureRandom</code> to prevent predictability attacks.</li>
+            <li><strong>CWE-312 (Cleartext Data Exposure):</strong> In-memory and local SQLite database files are sandboxed within private application storage volumes.</li>
+            <li><strong>CWE-400 (Resource Exhaustion):</strong> WebSocket message payload sizes are capped at 4KB with strict per-second turn throttling.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ==========================================================================
+       SITE FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand-col">
+          <div class="brand-wrapper">
+            <img src="logo.png" alt="Ludora Game Logo" class="brand-logo-img">
+            <span class="brand-name">LUDORA</span>
+          </div>
+          <p>Where every roll matters. Offline-first 3D mobile board gaming engineered for 10M+ global players with zero mid-game interruptions.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Game Modes</h4>
+          <ul class="footer-col-links">
+            <li><a href="#modes">Classic Ludo</a></li>
+            <li><a href="#modes">Snake &amp; Ladder</a></li>
+            <li><a href="#modes">Ludora Remix</a></li>
+            <li><a href="#studio">Kathmandu Board</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Legal &amp; Policy</h4>
+          <ul class="footer-col-links">
+            <li><a href="#legal">Terms of Service</a></li>
+            <li><a href="#legal">Privacy Policy</a></li>
+            <li><a href="#legal">COPPA Disclosure</a></li>
+            <li><a href="#manifesto">Fair Play Charter</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Engineering</h4>
+          <ul class="footer-col-links">
+            <li><a href="https://github.com/susantedit/ludo-game" target="_blank" rel="noopener">GitHub Repository</a></li>
+            <li><a href="llms.txt">llms.txt Specification</a></li>
+            <li><a href="robots.txt">robots.txt Directives</a></li>
+            <li><a href="#security">Security Audit Report</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Ludora Studios • Founded by Susant Acharya. All Rights Reserved.</span>
+        <span>Built with Compose Canvas, Kotlin 2.1, and Vanilla Web Standards.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
