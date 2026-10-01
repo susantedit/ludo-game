@@ -145,11 +145,11 @@ A procedural snake model for Snake & Ladder mode.
 ## Monetization & AdMob Integration
 
 Ludora balances developer sustainability with a non-intrusive player experience:
-* **Google Mobile Ads App ID:** `ca-app-pub-9145129314168118~7063463688` (declared in [`AndroidManifest.xml`](file:///d:/ludo/app/src/main/AndroidManifest.xml))
-* **Ad Units (Release Builds):**
-  * **Banner (`Ludo_Banner`):** `ca-app-pub-9145129314168118/3938692611`
-  * **Interstitial (`Ludo_Match_Over`):** `ca-app-pub-9145129314168118/7682410787`
-  * **Rewarded (`Ludo_Extra_Roll`):** `ca-app-pub-9145129314168118/9454657458`
+* **Google Mobile Ads Integration:** Declared in [`AndroidManifest.xml`](file:///d:/ludo/app/src/main/AndroidManifest.xml) and injected securely via Gradle build properties.
+* **Ad Formats Supported:**
+  * **Banner (`Ludo_Banner`):** Displayed at the bottom of the home dashboard and menus.
+  * **Interstitial (`Ludo_Match_Over`):** Displayed strictly between matches after game completion.
+  * **Rewarded (`Ludo_Extra_Roll`):** Optional opt-in video granting bonus coins, quest rerolls, or cosmetic spins.
 * **Development Safety:** Debug builds automatically route through Google's official test ad unit IDs in [`app/build.gradle.kts`](file:///d:/ludo/app/build.gradle.kts) to protect against policy strikes or account suspensions during testing.
 * **Architecture:**
   * [`AdMobProvider.kt`](file:///d:/ludo/app/src/main/kotlin/game/ludora/ads/AdMobProvider.kt): Production provider handling background preloading and full-screen callbacks.
