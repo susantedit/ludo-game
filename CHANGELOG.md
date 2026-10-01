@@ -22,3 +22,10 @@
 - Phase 3 Ludo Engine: `LudoMoveValidator` evaluating legal moves, friendly non-safe collisions, and opponent captures
 - Phase 3 Ludo Engine: `LudoStateReducer` pure state reducer with bonus rolls, 3-consecutive-sixes penalty, and 200-round cutoff
 - Phase 3 Ludo Engine: `LudoGameEngine` conforming to `GameEngine<LudoGameState, EngineAction>` with unit and 100-match headless simulation tests
+- Phase 2 Design System: Android Compose library module `:core:designsystem`
+- Phase 2 Design System: Deep Obsidian Dark Mode tokens (`LudoraColors`, `LudoraTypography`, `LudoraShapes`, `LudoraTheme`)
+- Phase 2 Design System: WCAG AA contrast ratio compliance tests
+- Phase 2 Design System: Core UI components (`LudoraButton`, `LudoraCard`, `PlayerAvatarBadge`, `TurnStatusPill`)
+- Phase 2 Design System: Color-blind accessible geometric shape symbols (Circle, Triangle, Diamond, Square)
+- Phase 2 Design System: Canvas mathematical mappers (`LudoGridCoordinateMapper`, `SnakeGridCoordinateMapper`)
+- Phase 2 Design System: 2.5D tactile `TokenRenderer` and cubic `DiceRenderer` with recessed pip dots

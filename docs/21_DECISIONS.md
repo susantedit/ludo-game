@@ -112,6 +112,15 @@ Alternatives:
 - State coupled to Android ViewModels: Breaks offline/online engine code sharing and slows down headless test suites.
 Status: Accepted
 
+## Decision: Phase 2 Compose Design System & Canvas Architecture
+
+Date: 2026-10-01
+Decision: Isolate design tokens (`LudoraColors`, `LudoraTypography`, `LudoraShapes`) in `:core:designsystem` using `CompositionLocalProvider`, and decouple board drawing using pure mathematical grid coordinate mappers (`LudoGridCoordinateMapper`, `SnakeGridCoordinateMapper`) directly onto Canvas. Enforce color-blind accessibility by pairing each player color with an intrinsic geometric shape symbol.
+Reason: Decouples rendering math from Activity and ViewModel state, ensures WCAG AA contrast compliance, and provides 60fps hardware-accelerated Canvas graphics with zero UI frame drops.
+Alternatives:
+- Rendering tokens with individual Android Views: High layout overhead and sluggish frame rates on budget mobile hardware.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:
