@@ -1,0 +1,394 @@
+[
+  {
+    "id": "bear",
+    "name": "Bear",
+    "category": "Animals",
+    "directionsAsset": "mascots/bear-directions.webp",
+    "reactionsAsset": "mascots/bear-reactions.webp"
+  },
+  {
+    "id": "bunny",
+    "name": "Bunny",
+    "category": "Animals",
+    "directionsAsset": "mascots/bunny-directions.webp",
+    "reactionsAsset": "mascots/bunny-reactions.webp"
+  },
+  {
+    "id": "cat",
+    "name": "Cat",
+    "category": "Animals",
+    "directionsAsset": "mascots/cat-directions.webp",
+    "reactionsAsset": "mascots/cat-reactions.webp"
+  },
+  {
+    "id": "deer",
+    "name": "Deer",
+    "category": "Animals",
+    "directionsAsset": "mascots/deer-directions.webp",
+    "reactionsAsset": "mascots/deer-reactions.webp"
+  },
+  {
+    "id": "dino",
+    "name": "Dino",
+    "category": "Animals",
+    "directionsAsset": "mascots/dino-directions.webp",
+    "reactionsAsset": "mascots/dino-reactions.webp"
+  },
+  {
+    "id": "fox",
+    "name": "Fox",
+    "category": "Animals",
+    "directionsAsset": "mascots/fox-directions.webp",
+    "reactionsAsset": "mascots/fox-reactions.webp"
+  },
+  {
+    "id": "frog",
+    "name": "Frog",
+    "category": "Animals",
+    "directionsAsset": "mascots/frog-directions.webp",
+    "reactionsAsset": "mascots/frog-reactions.webp"
+  },
+  {
+    "id": "hamster",
+    "name": "Hamster",
+    "category": "Animals",
+    "directionsAsset": "mascots/hamster-directions.webp",
+    "reactionsAsset": "mascots/hamster-reactions.webp"
+  },
+  {
+    "id": "hedgehog",
+    "name": "Hedgehog",
+    "category": "Animals",
+    "directionsAsset": "mascots/hedgehog-directions.webp",
+    "reactionsAsset": "mascots/hedgehog-reactions.webp"
+  },
+  {
+    "id": "koala",
+    "name": "Koala",
+    "category": "Animals",
+    "directionsAsset": "mascots/koala-directions.webp",
+    "reactionsAsset": "mascots/koala-reactions.webp"
+  },
+  {
+    "id": "otter",
+    "name": "Otter",
+    "category": "Animals",
+    "directionsAsset": "mascots/otter-directions.webp",
+    "reactionsAsset": "mascots/otter-reactions.webp"
+  },
+  {
+    "id": "owl",
+    "name": "Owl",
+    "category": "Animals",
+    "directionsAsset": "mascots/owl-directions.webp",
+    "reactionsAsset": "mascots/owl-reactions.webp"
+  },
+  {
+    "id": "panda",
+    "name": "Panda",
+    "category": "Animals",
+    "directionsAsset": "mascots/panda-directions.webp",
+    "reactionsAsset": "mascots/panda-reactions.webp"
+  },
+  {
+    "id": "penguin",
+    "name": "Penguin",
+    "category": "Animals",
+    "directionsAsset": "mascots/penguin-directions.webp",
+    "reactionsAsset": "mascots/penguin-reactions.webp"
+  },
+  {
+    "id": "pug",
+    "name": "Pug",
+    "category": "Animals",
+    "directionsAsset": "mascots/pug-directions.webp",
+    "reactionsAsset": "mascots/pug-reactions.webp"
+  },
+  {
+    "id": "raccoon",
+    "name": "Raccoon",
+    "category": "Animals",
+    "directionsAsset": "mascots/raccoon-directions.webp",
+    "reactionsAsset": "mascots/raccoon-reactions.webp"
+  },
+  {
+    "id": "redpanda",
+    "name": "Redpanda",
+    "category": "Animals",
+    "directionsAsset": "mascots/redpanda-directions.webp",
+    "reactionsAsset": "mascots/redpanda-reactions.webp"
+  },
+  {
+    "id": "sheep",
+    "name": "Sheep",
+    "category": "Animals",
+    "directionsAsset": "mascots/sheep-directions.webp",
+    "reactionsAsset": "mascots/sheep-reactions.webp"
+  },
+  {
+    "id": "sloth",
+    "name": "Sloth",
+    "category": "Animals",
+    "directionsAsset": "mascots/sloth-directions.webp",
+    "reactionsAsset": "mascots/sloth-reactions.webp"
+  },
+  {
+    "id": "tiger",
+    "name": "Tiger",
+    "category": "Animals",
+    "directionsAsset": "mascots/tiger-directions.webp",
+    "reactionsAsset": "mascots/tiger-reactions.webp"
+  },
+  {
+    "id": "afro",
+    "name": "Afro",
+    "category": "People",
+    "directionsAsset": "mascots/afro-directions.webp",
+    "reactionsAsset": "mascots/afro-reactions.webp"
+  },
+  {
+    "id": "astronaut",
+    "name": "Astronaut",
+    "category": "People",
+    "directionsAsset": "mascots/astronaut-directions.webp",
+    "reactionsAsset": "mascots/astronaut-reactions.webp"
+  },
+  {
+    "id": "bald",
+    "name": "Bald",
+    "category": "People",
+    "directionsAsset": "mascots/bald-directions.webp",
+    "reactionsAsset": "mascots/bald-reactions.webp"
+  },
+  {
+    "id": "ballerina",
+    "name": "Ballerina",
+    "category": "People",
+    "directionsAsset": "mascots/ballerina-directions.webp",
+    "reactionsAsset": "mascots/ballerina-reactions.webp"
+  },
+  {
+    "id": "beard",
+    "name": "Beard",
+    "category": "People",
+    "directionsAsset": "mascots/beard-directions.webp",
+    "reactionsAsset": "mascots/beard-reactions.webp"
+  },
+  {
+    "id": "builder",
+    "name": "Builder",
+    "category": "People",
+    "directionsAsset": "mascots/builder-directions.webp",
+    "reactionsAsset": "mascots/builder-reactions.webp"
+  },
+  {
+    "id": "cap",
+    "name": "Cap",
+    "category": "People",
+    "directionsAsset": "mascots/cap-directions.webp",
+    "reactionsAsset": "mascots/cap-reactions.webp"
+  },
+  {
+    "id": "chef",
+    "name": "Chef",
+    "category": "People",
+    "directionsAsset": "mascots/chef-directions.webp",
+    "reactionsAsset": "mascots/chef-reactions.webp"
+  },
+  {
+    "id": "glasses",
+    "name": "Glasses",
+    "category": "People",
+    "directionsAsset": "mascots/glasses-directions.webp",
+    "reactionsAsset": "mascots/glasses-reactions.webp"
+  },
+  {
+    "id": "grandpa",
+    "name": "Grandpa",
+    "category": "People",
+    "directionsAsset": "mascots/grandpa-directions.webp",
+    "reactionsAsset": "mascots/grandpa-reactions.webp"
+  },
+  {
+    "id": "granny",
+    "name": "Granny",
+    "category": "People",
+    "directionsAsset": "mascots/granny-directions.webp",
+    "reactionsAsset": "mascots/granny-reactions.webp"
+  },
+  {
+    "id": "hijabi",
+    "name": "Hijabi",
+    "category": "People",
+    "directionsAsset": "mascots/hijabi-directions.webp",
+    "reactionsAsset": "mascots/hijabi-reactions.webp"
+  },
+  {
+    "id": "nurse",
+    "name": "Nurse",
+    "category": "People",
+    "directionsAsset": "mascots/nurse-directions.webp",
+    "reactionsAsset": "mascots/nurse-reactions.webp"
+  },
+  {
+    "id": "pirate",
+    "name": "Pirate",
+    "category": "People",
+    "directionsAsset": "mascots/pirate-directions.webp",
+    "reactionsAsset": "mascots/pirate-reactions.webp"
+  },
+  {
+    "id": "scientist",
+    "name": "Scientist",
+    "category": "People",
+    "directionsAsset": "mascots/scientist-directions.webp",
+    "reactionsAsset": "mascots/scientist-reactions.webp"
+  },
+  {
+    "id": "sikh",
+    "name": "Sikh",
+    "category": "People",
+    "directionsAsset": "mascots/sikh-directions.webp",
+    "reactionsAsset": "mascots/sikh-reactions.webp"
+  },
+  {
+    "id": "skater",
+    "name": "Skater",
+    "category": "People",
+    "directionsAsset": "mascots/skater-directions.webp",
+    "reactionsAsset": "mascots/skater-reactions.webp"
+  },
+  {
+    "id": "wizard",
+    "name": "Wizard",
+    "category": "People",
+    "directionsAsset": "mascots/wizard-directions.webp",
+    "reactionsAsset": "mascots/wizard-reactions.webp"
+  },
+  {
+    "id": "clockwork",
+    "name": "Clockwork",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/clockwork-directions.webp",
+    "reactionsAsset": "mascots/clockwork-reactions.webp"
+  },
+  {
+    "id": "crt",
+    "name": "Crt",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/crt-directions.webp",
+    "reactionsAsset": "mascots/crt-reactions.webp"
+  },
+  {
+    "id": "cube",
+    "name": "Cube",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/cube-directions.webp",
+    "reactionsAsset": "mascots/cube-reactions.webp"
+  },
+  {
+    "id": "drone",
+    "name": "Drone",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/drone-directions.webp",
+    "reactionsAsset": "mascots/drone-reactions.webp"
+  },
+  {
+    "id": "gearbot",
+    "name": "Gearbot",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/gearbot-directions.webp",
+    "reactionsAsset": "mascots/gearbot-reactions.webp"
+  },
+  {
+    "id": "knight",
+    "name": "Knight",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/knight-directions.webp",
+    "reactionsAsset": "mascots/knight-reactions.webp"
+  },
+  {
+    "id": "lantern",
+    "name": "Lantern",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/lantern-directions.webp",
+    "reactionsAsset": "mascots/lantern-reactions.webp"
+  },
+  {
+    "id": "postbot",
+    "name": "Postbot",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/postbot-directions.webp",
+    "reactionsAsset": "mascots/postbot-reactions.webp"
+  },
+  {
+    "id": "radio",
+    "name": "Radio",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/radio-directions.webp",
+    "reactionsAsset": "mascots/radio-reactions.webp"
+  },
+  {
+    "id": "rocket",
+    "name": "Rocket",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/rocket-directions.webp",
+    "reactionsAsset": "mascots/rocket-reactions.webp"
+  },
+  {
+    "id": "scout",
+    "name": "Scout",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/scout-directions.webp",
+    "reactionsAsset": "mascots/scout-reactions.webp"
+  },
+  {
+    "id": "toaster",
+    "name": "Toaster",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/toaster-directions.webp",
+    "reactionsAsset": "mascots/toaster-reactions.webp"
+  },
+  {
+    "id": "tv",
+    "name": "Tv",
+    "category": "Robots & Things",
+    "directionsAsset": "mascots/tv-directions.webp",
+    "reactionsAsset": "mascots/tv-reactions.webp"
+  },
+  {
+    "id": "fox-ink",
+    "name": "Fox Ink",
+    "category": "Fox Styles",
+    "directionsAsset": "mascots/fox-ink-directions.webp",
+    "reactionsAsset": "mascots/fox-ink-reactions.webp"
+  },
+  {
+    "id": "fox-sketch",
+    "name": "Fox Sketch",
+    "category": "Fox Styles",
+    "directionsAsset": "mascots/fox-sketch-directions.webp",
+    "reactionsAsset": "mascots/fox-sketch-reactions.webp"
+  },
+  {
+    "id": "fox-riso",
+    "name": "Fox Riso",
+    "category": "Fox Styles",
+    "directionsAsset": "mascots/fox-riso-directions.webp",
+    "reactionsAsset": "mascots/fox-riso-reactions.webp"
+  },
+  {
+    "id": "fox-paper",
+    "name": "Fox Paper",
+    "category": "Fox Styles",
+    "directionsAsset": "mascots/fox-paper-directions.webp",
+    "reactionsAsset": "mascots/fox-paper-reactions.webp"
+  },
+  {
+    "id": "fox-pixel",
+    "name": "Fox Pixel",
+    "category": "Fox Styles",
+    "directionsAsset": "mascots/fox-pixel-directions.webp",
+    "reactionsAsset": "mascots/fox-pixel-reactions.webp"
+  }
+]
