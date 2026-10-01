@@ -58,3 +58,11 @@
 - Phase 11 Testing: `EndToEndRegressionSuiteTest` verifying full match loops across Classic Ludo, Snake & Ladder, and Remix Mode with rule isolation guarantees
 - Phase 11 Testing: `LowMemoryPolicy` and `LowMemoryPolicyTest` ensuring graceful particle and shadow degradation on 2GB RAM budget devices
 - Phase 11 Testing: `AccessibilityContrastAuditTest` verifying WCAG 2.1 AA contrast compliance (>3.0:1) across all four color-blind perception palettes
+- Phase 12 Release: Bumped application version to 1.0.0 (versionCode 100) and targetSdk to 34
+- Phase 12 Release: Configured reproducible release signing with environment variable fallback and VIBRATE permission declaration
+- Phase 12 Release: Added comprehensive R8 Proguard rules for Kotlinx Serialization, Room, Compose, and domain engines with crash symbolication line mapping
+- Phase 12 Release: Created Fastlane store metadata across 5 locales (`en-US`, `es-ES`, `fr-FR`, `de-DE`, `hi-IN`) conforming to Google Play length limits
+- Phase 12 Release: Added `distribution/whatsnew/whatsnew-en-US` release notes
+- Phase 12 Release: Published plain-language Privacy Policy (`docs/22_PRIVACY_POLICY.md`) and Terms of Service (`docs/23_TERMS_OF_SERVICE.md`)
+- Phase 12 Release: Published 7-gate pre-flight deployment checklist (`distribution/release_checklist.md`)
+- Phase 12 Release: Added automated `ReleaseReadinessTest` and verification runner validating all release constraints

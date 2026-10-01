@@ -1,0 +1,14 @@
+Ludora lleva los juegos de mesa clasicos a tu dispositivo movil con diseno offline y cero interrupciones durante las partidas. Juega en cualquier lugar sin necesidad de conexion a internet.
+
+MODOS DE JUEGO
+- Ludo Clasico: El juego de estrategia tradicional de 4 fichas para 2 a 4 jugadores. Lanza seises para salir, captura fichas rivales y llega a la meta.
+- Serpientes y Escaleras: La carrera de 100 casillas con escaleras para avanzar y serpientes que te hacen descender. Requiere tiro exacto para ganar.
+- Ludora Remix: Un modo hibrido que combina el tablero de Ludo con casillas de peligro y 5 cartas especiales (Escudo, Impulso, Relanzar, Intercambio y Bomba).
+
+CARACTERISTICAS PRINCIPALES
+- Juego sin Conexion: El motor se ejecuta en tu dispositivo sin consumir datos.
+- Monetizacion Justa: Sin anuncios durante las partidas. Opcion de compra unica para eliminar banners e intersticiales.
+- Progresion Offline: Gana experiencia, sube de nivel y desbloquea aspectos sin conectarte a internet.
+- 56 Mascotas Interactivas: Elige mascotas animadas que reaccionan a tus toques y celebran tus victorias.
+- Accesibilidad: Modos para daltonismo, marcadores geometricos y reduccion de movimiento.
+- Salas Privadas: Crea salas con codigos de 6 caracteres para jugar con amigos en linea.

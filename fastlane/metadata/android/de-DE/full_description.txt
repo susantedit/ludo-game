@@ -1,0 +1,14 @@
+Ludora bringt klassische Brettspiele auf dein Mobilgerat mit Offline-Fokus und ohne unterbrechende Werbung wahrend der Spielrunde.
+
+SPIELMODI
+- Klassisches Ludo: Das traditionelle Strategiespiel mit 4 Spielfiguren fur 2 bis 4 Spieler. Wurfle Sechsen, schlage gegnerische Figuren und erreiche das Ziel.
+- Leiterspiel (Snake & Ladder): Das klassische 100-Felder-Rennen mit Leitern zum Aufstieg und Schlangen zum Abstieg. Exakter Wurf fur den Sieg erforderlich.
+- Ludora Remix: Der Hybridmodus, der das Ludo-Spielfeld mit Hindernisfeldern und 5 Aktionskarten (Schild, Turbo, Neuwurf, Tausch und Bombe) kombiniert.
+
+HAUPTMERKMALE
+- Vollstandig offline spielbar: Die Spiel-Engine lauft direkt auf deinem Gerat.
+- Keine Spielunterbrechungen: Keine Werbebanner oder Videos mitten im Match.
+- Lokaler Fortschritt: Erfahrungspunkte sammeln, Level aufsteigen und Wurfelfarben freischalten ohne Serveranbindung.
+- 56 Interaktive Maskottchen: Animierte Figuren reagieren mit Blickverfolgung auf Beruhrung.
+- Barrierefreiheit: Farbfehlsichtigkeits-Modi, geometrische Markierungen und reduzierte Bewegung.
+- Private Raume: Schnelle 6-Zeichen-Codes fur Online-Spiele mit Freunden.

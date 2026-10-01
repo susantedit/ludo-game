@@ -1,0 +1,17 @@
+Ludora brings classic board gaming to your mobile device with offline-first design and zero mid-game interruptions. Play anywhere without requiring an active internet connection.
+
+GAME MODES
+- Classic Ludo: The traditional 4-token strategy game for 2 to 4 players. Roll sixes to enter the track, capture opponent tokens, and race safely to the center home triangle.
+- Snake & Ladder: The timeless 100-tile race with ladders that boost you forward and snakes that slide you back. Requires an exact roll to finish.
+- Ludora Remix: A hybrid board mode combining Ludo navigation with snake and ladder hazard tiles, plus 5 tactical power cards (Shield, Speed Boost, Reroll, Swap, and Bomb).
+
+KEY FEATURES
+- Fully Offline Play: Complete engine runs on your device. Zero internet needed for single player and local pass-and-play.
+- Fair Monetization: No banner popups or interstitial video ads while a match is in progress. Optional rewarded ads provide fair cosmetic bonuses. A one-time purchase permanently removes all banners and interstitials.
+- Offline Progression: Earn experience points, level up, unlock dice skins and token styles, and complete daily quests without connecting to a server.
+- Interactive Page Mascots: Choose from 56 local animated mascots that react with gaze tracking and celebration animations on your profile.
+- Accessibility First: Includes color-blind palettes for Deuteranopia, Protanopia, and Tritanopia, geometric token markers, and a reduced-motion mode.
+- Tactile Sound and Haptics: Built-in procedural sound synthesizer and 4-tier haptic vibration patterns that make every dice roll and capture feel tangible.
+- Private Rooms: Host or join private 6-character room codes for online matches with friends.
+
+Where every roll matters. Download Ludora today.

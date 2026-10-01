@@ -194,6 +194,17 @@ Alternatives:
 - Uncapped memory allocation on budget hardware: Triggers low-memory killer (OOM) crashes on 2GB RAM budget phones.
 Status: Accepted
 
+## Decision: Phase 12 Production Release, R8 Optimization, and Store Distribution Architecture
+
+Date: 2026-10-01
+Decision: Package Ludora for production distribution with monotonic version code 100 (versionName 1.0.0), target SDK 34, min SDK 26, and reproducible release signing with environment variable fallback; apply full R8 optimization (`isMinifyEnabled = true`, `isShrinkResources = true`) with strict keep rules preserving line numbers and source file names for crash symbolication (`-keepattributes SourceFile,LineNumberTable`), domain models, Kotlinx Serialization serializers, Room database entities, and Compose components; bundle localized Fastlane store metadata across 5 target locales (`en-US`, `es-ES`, `fr-FR`, `de-DE`, `hi-IN`) complying with character limits (Title <= 30 chars, Short Description <= 80 chars, Full Description <= 4000 chars); publish plain-language Privacy Policy (`docs/22_PRIVACY_POLICY.md`) and Terms of Service (`docs/23_TERMS_OF_SERVICE.md`) with explicit COPPA and Google Play Families compliance; and enforce a 7-gate pre-flight deployment checklist (`distribution/release_checklist.md`).
+Reason: Ensures minimal APK/AAB bundle size, protects user privacy with transparent legal disclosures, guarantees deobfuscated production crash reports, and satisfies Google Play Store publication standards.
+Alternatives:
+- Disabling R8 shrinking: Results in a bloated binary (>50MB) and leaves internal business logic vulnerable to decompilation.
+- English-only store metadata: Restricts global discoverability across key non-English gaming markets in Europe and India.
+- Hardcoded signing keys in repository: Introduces severe security risks and exposes release credentials.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:

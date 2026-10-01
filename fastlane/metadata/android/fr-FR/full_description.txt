@@ -1,0 +1,14 @@
+Ludora apporte les jeux de plateau classiques sur votre appareil mobile avec une conception hors ligne et zero interruption pendant les parties.
+
+MODES DE JEU
+- Ludo Classique: Le jeu de strategie traditionnel a 4 pions pour 2 a 4 joueurs. Faites des six pour entrer sur le circuit, capturez les pions adverses et atteignez la zone finale.
+- Serpents et Echelles: Le parcours de 100 cases avec echelles pour monter et serpents pour glisser vers le bas. Necessite un lancer exact pour gagner.
+- Ludora Remix: Un mode hybride combinant le parcours de Ludo avec des cases pieges et 5 cartes de pouvoir (Bouclier, Vitesse, Rejouer, Echange et Bombe).
+
+POINTS FORTS
+- Jeu 100% Hors Ligne: Le moteur tourne integralement sur votre appareil sans connexion requise.
+- Respect du Joueur: Pas de publicites intempestives pendant vos parties.
+- Progression Locale: Gagnez des points d'experience, montez en niveau et debloquez des des et des pions sans connexion serveur.
+- Mascottes Interactives: 56 mascottes animent votre profil avec suivi du regard.
+- Accessibilite Totale: Palettes pour daltoniens, symboles geometriques distincts et mode d'animations reduites.
+- Salons Prives: Creer des parties a code court pour jouer a distance avec vos amis.
