@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ludora</string>
+    <string name="tagline">Where every roll matters</string>
+    <string name="mode_ludo">Ludo</string>
+    <string name="mode_snake">Snake &amp; Ladder</string>
+    <string name="mode_remix">Ludora Remix</string>
+    <string name="play_offline">Play Offline</string>
+    <string name="play_online">Play Online</string>
+</resources>
