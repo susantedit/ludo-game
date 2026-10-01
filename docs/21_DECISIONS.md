@@ -151,6 +151,17 @@ Alternatives:
 - Random numeric codes: Vulnerable to transcription errors and lack sufficient entropy.
 Status: Accepted
 
+## Decision: Phase 8 Server-Authoritative Online Match Coordination and Queue Architecture
+
+Date: 2026-10-01
+Decision: Coordinate online matches with server-authoritative state progression (`OnlineMatchCoordinator`), deterministic sequence numbering (`sequenceId`), strict 15-second turn timers with automatic forfeiture on timeout, 60-second reconnection grace periods with full state snapshots (`MatchSnapshot`), and an MMR-based matchmaking pool (`Matchmaker`) featuring a 45-second timeout fallback offering offline AI bots.
+Reason: Prevents client-side state manipulation or malicious desynchronization, protects match continuity against temporary mobile cellular drops, and prevents player frustration from stalled opponents or dead matchmaking queues.
+Alternatives:
+- Peer-to-peer lockstep: High sensitivity to NAT traversal failures, mobile latency spikes, and vulnerable to malicious client packet tampering.
+- Indefinite turn wait: Enables griefing where a losing player refuses to move.
+- Strict instant disconnect drops: Punishes mobile users for momentary subway tunnel or Wi-Fi handoff packet loss.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:

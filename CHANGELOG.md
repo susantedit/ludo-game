@@ -39,3 +39,6 @@
 - Phase 7 Online Infrastructure: High-entropy 6-character Crockford base-32 `RoomCodeGenerator` (32^6 permutations, zero character ambiguity)
 - Phase 7 Online Infrastructure: Guest authentication models, token sessions, and account linking contracts
 - Phase 7 Online Infrastructure: Realtime WebSocket protocol packets (`ClientPacket`, `ServerPacket`), `RealtimeGateway`, and `InMemoryRealtimeGateway` test harness
+- Phase 8 Online Multiplayer: `MatchmakingTicket` and `Matchmaker` queuing engine with MMR-based pairing and 45-second timeout AI autofill
+- Phase 8 Online Multiplayer: Server-authoritative `OnlineMatchCoordinator` with 15s turn countdown timer, timeout forfeiture, 60s reconnection grace period, and snapshot recovery
+- Phase 8 Online Multiplayer: Interactive Compose UI components (`OnlineLobbyScreen`, `JoinRoomDialog`, `QuickMatchSearchingOverlay`) and MainActivity hub navigation

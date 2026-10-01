@@ -11,6 +11,8 @@ java {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":engine:core"))
+    implementation(project(":engine:ludo"))
+    implementation(project(":engine:snake"))
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.core)
 
