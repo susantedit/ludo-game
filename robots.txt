@@ -1,0 +1,23 @@
+# Robots.txt for Ludora
+User-agent: *
+Allow: /
+
+# AI Crawlers & Search Engines (Allowed for AI Overviews, ChatGPT Search, and Perplexity)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Training Bulk Crawlers (Restricted)
+User-agent: CCBot
+Disallow: /

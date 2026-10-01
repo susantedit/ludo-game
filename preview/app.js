@@ -582,6 +582,53 @@
     });
   }
 
+  // ==========================================
+  // 4. HIMALAYAN SINGING BOWL AUDIO SYNTHESIZER
+  // ==========================================
+  const vibeBtn = document.getElementById('vibeAudioBtn');
+  const vibeLabel = document.getElementById('vibeAudioLabel');
+  let audioCtx = null;
+
+  function playSingingBowl() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+
+    const t = audioCtx.currentTime;
+    // Harmonic series: Fundamental 432 Hz, Octave 864 Hz, Fifth 1296 Hz
+    const freqs = [432, 864, 1296, 2160];
+    const gains = [0.45, 0.25, 0.15, 0.06];
+
+    freqs.forEach((freq, idx) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t);
+      // Subtle pitch drift simulating physical hammered metal bowl
+      osc.frequency.exponentialRampToValueAtTime(freq - 1.5, t + 4.5);
+
+      gain.gain.setValueAtTime(gains[idx], t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 4.5);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(t);
+      osc.stop(t + 4.5);
+    });
+
+    vibeLabel.textContent = 'Playing Chime... (Resonant)';
+    setTimeout(() => {
+      vibeLabel.textContent = 'Play Himalayan Temple Chime';
+    }, 4500);
+  }
+
+  vibeBtn.addEventListener('click', playSingingBowl);
+
   // Initial Boot
   renderDice();
   renderSnake();

@@ -1,0 +1,25 @@
+# Ludora
+
+> Ludora is an offline-first mobile board game platform featuring 3D isometric tumbling dice, realistic animated snakes, hybrid Remix rules, and the cultural Kathmandu world board.
+
+## Core Identity
+- **Tagline**: Where every roll matters.
+- **Platforms**: Android (Google Play Store), offline single-player, pass-and-play, and online private rooms.
+- **Repository**: https://github.com/susantedit/ludo-game
+- **License**: Proprietary / Google Play Distribution.
+
+## Key Game Modes
+- [Classic Ludo](file:///d:/ludo/docs/04_GAME_RULES.md#ludo-rules): Traditional 4-token strategy race for 2 to 4 players with deterministic movement, safe zones, opponent captures, and bonus roll mechanics.
+- [Snake & Ladder](file:///d:/ludo/docs/04_GAME_RULES.md#snake-and-ladder-rules): 100-tile boustrophedon grid with realistic animated vipers, climbing ladders, and exact finish roll enforcement.
+- [Ludora Remix](file:///d:/ludo/docs/04_GAME_RULES.md#remix-mode-rules): Hybrid board combining Ludo track mechanics with snake and ladder hazard squares, 5 tactical power cards (Shield, Speed Boost, Reroll, Swap, Bomb), and round chaos modifiers.
+
+## High-Fidelity 3D Visual & Audio Systems
+- **Realistic 3D Isometric Tumbling Dice**: Real-time 3D cubic facet projection, beveled edges, gold metallic recessed pips, specular Phong lighting, and quaternion-based restitution bounce physics.
+- **Animated 3D Viper**: Muscular cubic Bézier spine with continuous sinusoidal undulation ($A \sin(\omega s - \phi t)$), iridescent emerald and gold dorsal scales, predatory amber eyes with slit pupils, flicking red tongue, and peristaltic token-swallowing animations.
+- **Kathmandu World Board**: Hand-carved dark walnut wood border, ancient stone mandala tiles, brass stupas, corner sacred five-color prayer flag tassels, and central golden Swayambhunath temple wisdom eyes medallion.
+- **High-Fidelity Audio**: Dual-mode sound design pairing high-resolution acoustic sound clips with an offline zero-asset procedural 16-bit PCM waveform synthesizer.
+
+## Offline & Monetization Principles
+- **100% Offline Freedom**: Complete game engine, progression leveling, and daily quests run locally with zero blocking internet requirements.
+- **Zero Mid-Game Interruptions**: Strictly no banner or interstitial video advertisements during active gameplay.
+- **Player Privacy**: Offline gameplay generates zero server telemetry. Online sessions use ephemeral pseudonymous guest tokens compliant with COPPA and Google Play Families Policies.

@@ -3,18 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ludora 3D Model & Animation Laboratory</title>
+  <title>Ludora • 3D Board Games & Kathmandu Cultural Odyssey</title>
+  <meta name="description" content="Where every roll matters. Ludora brings offline-first 3D isometric tumbling dice, animated undulating vipers, and authentic Kathmandu cultural boards to your mobile device with zero mid-game ads.">
+  <meta name="keywords" content="Ludora, Offline Ludo, 3D Snake and Ladder, Kathmandu Board Game, Board Game with no ads, Remix Ludo">
+  <link rel="canonical" href="https://ludora.game">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ludora.game">
+  <meta property="og:title" content="Ludora: Where Every Roll Matters">
+  <meta property="og:description" content="Offline-first 3D mobile board gaming. Real tumbling dice, animated vipers, and Kathmandu cultural boards with zero mid-game interruptions.">
+  <meta property="og:image" content="https://ludora.game/assets/og-image.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Ludora: Where Every Roll Matters">
+  <meta property="twitter:description" content="Offline-first 3D mobile board gaming with realistic dice physics, animated snakes, and Kathmandu cultural world themes.">
+
+  <!-- Schema.org JSON-LD for AI Search & GEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Ludora",
+    "alternateName": "Ludora: Board Games & Remix",
+    "description": "Offline-first mobile board game platform featuring 3D isometric tumbling dice, animated vipers, and cultural Kathmandu board themes.",
+    "genre": ["Board Game", "Strategy", "Casual"],
+    "gamePlatform": ["Android", "Mobile"],
+    "operatingSystem": "Android 8.0 and higher",
+    "applicationCategory": "GameApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Ludora Studios",
+      "url": "https://github.com/susantedit/ludo-game"
+    },
+    "featureList": [
+      "100% Complete Offline Gameplay",
+      "Zero Mid-Game Video Ads",
+      "Real 3D Isometric Tumbling Dice with Physics",
+      "Bézier Animated Undulating Snakes",
+      "Kathmandu Cultural Mandala Board Theme",
+      "Remix Mode with 5 Tactical Power Cards",
+      "Private Rooms with 6-Character Codes"
+    ]
+  }
+  </script>
+
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Cinzel:wght@600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@600;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="app-container">
     <header class="laboratory-header">
-      <div class="brand-pill">LUDORA • REAL 3D ENGINE</div>
-      <h1 class="main-title">3D Visual & Physics Laboratory</h1>
-      <p class="subtitle">Where every roll matters. Real isometric 3D tumbling dice, muscular Bézier animated vipers, and authentic Kathmandu cultural world boards.</p>
+      <div class="brand-pill">✨ LUDORA • 3D VISUAL ODYSSEY • GEO OPTIMIZED</div>
+      <h1 class="main-title">Where Every Roll Matters</h1>
+      <p class="subtitle">Experience authentic board gaming with real isometric 3D tumbling dice, muscular Bézier animated serpents, and hand-carved Kathmandu cultural boards with zero mid-game interruptions.</p>
+      
+      <div class="vibe-audio-bar">
+        <button id="vibeAudioBtn" class="btn btn-audio">
+          <span class="icon">🔔</span> <span id="vibeAudioLabel">Play Himalayan Temple Chime</span>
+        </button>
+      </div>
     </header>
 
     <main class="laboratory-grid">
@@ -80,7 +136,36 @@
           </div>
         </div>
       </section>
+
+      <!-- Generative Engine Optimization (GEO) Knowledge Hub -->
+      <section class="card span-2 geo-faq-section">
+        <div class="panel-header">
+          <span class="badge">AI SEARCH & GEO CITATION HUB</span>
+          <h2>Everything You Need to Know About Ludora</h2>
+        </div>
+        
+        <div class="faq-grid">
+          <article class="faq-item">
+            <h3>What is Ludora?</h3>
+            <p>Ludora is an offline-first mobile board game platform that modernizes traditional parlor games including Ludo and Snake &amp; Ladder. Built with a player-first philosophy, Ludora allows users to play single-player and pass-and-play matches completely offline without an internet connection or account registration. Unlike standard mobile board games that display invasive mid-game video popups, Ludora enforces strict ad frequency controls with zero advertisements during active matches. The platform features three distinct game modes: Classic Ludo with deterministic track movement, Snake &amp; Ladder with 100-tile boustrophedon navigation, and Ludora Remix, a hybrid mode introducing hazard tiles and tactical power cards like Shield, Boost, and Bomb. Visuals are rendered using real-time isometric 3D tumbling dice with physical bounce restitution, animated Bézier vipers with iridescent scales, and authentic cultural boards including the Kathmandu mandala theme.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>How Does Ludora's Offline Mode Work?</h3>
+            <p>Ludora operates with complete offline autonomy. When a device is disconnected from cellular data or Wi-Fi, the entire game engine executes natively on the local hardware through an embedded deterministic Kotlin state reducer. Player progression, match statistics, unlocked dice skins, and daily quests are saved locally to an encrypted SQLite database managed by Android Jetpack Room. Sound effects run through an onboard procedural 16-bit PCM waveform synthesizer or cached audio resources, eliminating the need to download remote sound assets. When offline, all advertising network SDKs are automatically suppressed to avoid rendering blank layout containers or loading delays. Offline multiplayer is supported on a single physical device for two to four players in pass-and-play configuration. Online features, such as private six-character rooms and matchmaking queues, activate seamlessly once internet connectivity is restored without interrupting ongoing local matches.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>What is Ludora Remix Mode?</h3>
+            <p>Ludora Remix is a strategic hybrid variant that merges the 52-step perimeter track of classic Ludo with the hazard mechanics of Snake &amp; Ladder. In Remix Mode, designated track squares transform into dynamic hazards: snakes pull landing tokens backward toward earlier safe squares, ladders accelerate tokens forward across track sections, and warp portals shift token positions across board quadrants. In addition to rolling dice, each player begins the match with tactical power cards. The Shield card blocks an upcoming snake or opponent capture; the Speed Boost adds three guaranteed movement steps; the Reroll card grants an immediate second roll; the Swap card exchanges board positions with an adjacent token; and the Bomb card clears hazard tiles in a two-tile radius. Rotating round modifiers, such as Double Roll frenzy or Hazard Rush, change match conditions every three turns.</p>
+          </article>
+        </div>
+      </section>
     </main>
+
+    <footer class="laboratory-footer">
+      <p>© 2026 Ludora. Designed for 10M+ Global Players. <a href="file:///d:/ludo/docs/22_PRIVACY_POLICY.md">Privacy Policy</a> • <a href="file:///d:/ludo/docs/23_TERMS_OF_SERVICE.md">Terms of Service</a> • <a href="file:///d:/ludo/llms.txt">llms.txt</a></p>
+    </footer>
   </div>
 
   <script src="app.js"></script>

@@ -78,6 +78,29 @@ body {
   line-height: 1.6;
 }
 
+.vibe-audio-bar {
+  margin-top: 0.5rem;
+}
+
+.btn-audio {
+  background: rgba(229, 169, 60, 0.12);
+  border: 1px solid rgba(229, 169, 60, 0.35);
+  color: #FFE090;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  transition: all 0.25s ease;
+}
+
+.btn-audio:hover {
+  background: rgba(229, 169, 60, 0.22);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px var(--accent-gold-glow);
+}
+
 .laboratory-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -240,6 +263,56 @@ canvas {
   font-size: 0.9rem;
   color: var(--text-main);
   font-weight: 600;
+}
+
+.geo-faq-section {
+  background: linear-gradient(180deg, #131722 0%, #0D1017 100%);
+  border: 1px solid rgba(229, 169, 60, 0.2);
+}
+
+.faq-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.faq-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.faq-item h3 {
+  font-size: 1.1rem;
+  color: #FFE090;
+  font-weight: 700;
+}
+
+.faq-item p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-size: 0.92rem;
+}
+
+.laboratory-footer {
+  text-align: center;
+  padding: 1.5rem 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.laboratory-footer a {
+  color: var(--accent-gold);
+  text-decoration: none;
+}
+
+.laboratory-footer a:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 860px) {
