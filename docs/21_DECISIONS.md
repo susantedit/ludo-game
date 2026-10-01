@@ -131,6 +131,16 @@ Alternatives:
 - Random unchecked chaos: Breaks rule predictability and strategy.
 Status: Accepted
 
+## Decision: Phase 6 Progression and Offline Economy Architecture
+
+Date: 2026-10-01
+Decision: Implement player progression using deterministic XP thresholds (`level * 150L`), local match outcome evaluations (placement + captures bonus), offline cosmetic inventories (dice skins, token styles, board themes), and self-contained daily quest event tracking in `:core:common` and `:core:model`.
+Reason: Eliminates dependency on remote game servers for progression and cosmetic unlocks, ensuring players can level up, earn currency, and customize their board entirely offline.
+Alternatives:
+- Server-side XP calculation: Prevents progression when playing offline on commutes or flights.
+- Monolithic progression state: Couples UI components to storage engines.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:

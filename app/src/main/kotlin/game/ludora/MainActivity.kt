@@ -20,7 +20,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,8 +33,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import game.ludora.core.common.progression.DailyQuestEngine
+import game.ludora.core.common.progression.ProgressionEngine
 import game.ludora.core.designsystem.component.LudoraCard
 import game.ludora.core.designsystem.component.LudoraPrimaryButton
 import game.ludora.core.designsystem.component.LudoraSecondaryButton
@@ -45,11 +50,15 @@ import game.ludora.core.designsystem.theme.SlateCard
 import game.ludora.core.designsystem.theme.TextPrimary
 import game.ludora.core.designsystem.theme.TextSecondary
 import game.ludora.core.designsystem.theme.WarmAmberGold
+import game.ludora.core.model.LocalProfile
+import game.ludora.core.model.MatchReward
 import game.ludora.core.model.PlayerColor
 import game.ludora.engine.ai.model.AiDifficulty
 import game.ludora.ui.common.MatchOptions
+import game.ludora.ui.common.MatchRewardDialog
 import game.ludora.ui.common.MatchSetupDialog
 import game.ludora.ui.ludo.LudoGameScreen
+import game.ludora.ui.profile.ProfileProgressionSheet
 import game.ludora.ui.remix.RemixGameScreen
 import game.ludora.ui.snake.SnakeGameScreen
 
@@ -80,15 +89,48 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LudoraRootNavigator(modifier: Modifier = Modifier) {
     var currentScreen by remember { mutableStateOf(AppScreen.DASHBOARD) }
+    var userProfile by remember {
+        mutableStateOf(
+            LocalProfile(
+                profileId = "player_local",
+                displayName = "Susant",
+                coins = 200L,
+                level = 1,
+                experiencePoints = 0L
+            )
+        )
+    }
     var activeMatchOptions by remember {
         mutableStateOf(MatchOptions(playerCount = 2, isVsAi = true, aiDifficulty = AiDifficulty.MEDIUM))
     }
     var pendingSetupMode by remember { mutableStateOf<String?>(null) }
+    var activeMatchReward by remember { mutableStateOf<MatchReward?>(null) }
+    var isProfileSheetVisible by remember { mutableStateOf(false) }
+
+    val handleMatchCompletion: (placement: Int, captures: Int, isWin: Boolean, sixesRolled: Int) -> Unit = { placement, captures, isWin, sixesRolled ->
+        val (updatedProfile, reward) = ProgressionEngine.applyMatchOutcome(
+            profile = userProfile,
+            placement = placement,
+            tokensCaptured = captures,
+            isWin = isWin
+        )
+        val updatedQuests = DailyQuestEngine.recordMatchEvents(
+            quests = updatedProfile.activeQuests,
+            isWin = isWin,
+            tokensCaptured = captures,
+            sixesRolled = sixesRolled
+        )
+        userProfile = updatedProfile.copy(activeQuests = updatedQuests)
+        activeMatchReward = reward
+        currentScreen = AppScreen.DASHBOARD
+    }
 
     when (currentScreen) {
         AppScreen.DASHBOARD -> {
             LudoraDashboardScreen(
                 modifier = modifier,
+                profile = userProfile,
+                onOpenProfileProgression = { isProfileSheetVisible = true },
                 onLaunchMode = { mode ->
                     pendingSetupMode = mode
                 }
@@ -110,26 +152,44 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
                     }
                 )
             }
+
+            if (isProfileSheetVisible) {
+                ProfileProgressionSheet(
+                    profile = userProfile,
+                    onProfileUpdated = { updated -> userProfile = updated },
+                    onDismissRequest = { isProfileSheetVisible = false }
+                )
+            }
+
+            activeMatchReward?.let { reward ->
+                MatchRewardDialog(
+                    reward = reward,
+                    onContinue = { activeMatchReward = null }
+                )
+            }
         }
 
         AppScreen.LUDO_GAME -> {
             LudoGameScreen(
                 options = activeMatchOptions,
-                onBackToMenu = { currentScreen = AppScreen.DASHBOARD }
+                onBackToMenu = { currentScreen = AppScreen.DASHBOARD },
+                onMatchFinished = handleMatchCompletion
             )
         }
 
         AppScreen.SNAKE_GAME -> {
             SnakeGameScreen(
                 options = activeMatchOptions,
-                onBackToMenu = { currentScreen = AppScreen.DASHBOARD }
+                onBackToMenu = { currentScreen = AppScreen.DASHBOARD },
+                onMatchFinished = handleMatchCompletion
             )
         }
 
         AppScreen.REMIX_GAME -> {
             RemixGameScreen(
                 options = activeMatchOptions,
-                onBackToMenu = { currentScreen = AppScreen.DASHBOARD }
+                onBackToMenu = { currentScreen = AppScreen.DASHBOARD },
+                onMatchFinished = handleMatchCompletion
             )
         }
     }
@@ -138,6 +198,8 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
 @Composable
 fun LudoraDashboardScreen(
     modifier: Modifier = Modifier,
+    profile: LocalProfile,
+    onOpenProfileProgression: () -> Unit,
     onLaunchMode: (String) -> Unit
 ) {
     var equippedMascot by remember { mutableStateOf(MascotCatalog.DEFAULT) }
@@ -151,7 +213,7 @@ fun LudoraDashboardScreen(
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         // App Header
         Row(
@@ -173,17 +235,31 @@ fun LudoraDashboardScreen(
                 )
             }
 
-            TurnStatusPill(
-                text = "Offline Ready",
-                activeColor = PlayerColor.GREEN
-            )
+            // Coin counter pill
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(SlateCard)
+                    .border(1.dp, WarmAmberGold.copy(alpha = 0.5f), RoundedCornerShape(20.dp))
+                    .clickable(onClick = onOpenProfileProgression)
+                    .padding(horizontal = 12.dp, vertical = 6.dp)
+            ) {
+                Text(
+                    text = "🪙 ${profile.coins}",
+                    color = WarmAmberGold,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 13.sp
+                )
+            }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
         // Interactive Profile & Mascot Stage Card
         LudoraCard(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onOpenProfileProgression),
             containerColor = LudoraTheme.colors.surfaceElevated,
             borderColor = LudoraTheme.colors.border
         ) {
@@ -194,7 +270,7 @@ fun LudoraDashboardScreen(
                 // Interactive Mascot with boop and gaze tracking
                 Box(
                     modifier = Modifier
-                        .size(100.dp)
+                        .size(92.dp)
                         .clip(CircleShape)
                         .background(SlateCard)
                         .border(2.dp, WarmAmberGold, CircleShape)
@@ -203,43 +279,84 @@ fun LudoraDashboardScreen(
                 ) {
                     LudoraMascotView(
                         mascot = equippedMascot,
-                        size = 88.dp,
+                        size = 80.dp,
                         onMascotClick = { /* boop feedback */ }
                     )
                 }
 
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(14.dp))
 
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "Player Profile",
-                        style = LudoraTheme.typography.titleMedium,
-                        color = TextPrimary
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = profile.displayName,
+                            style = LudoraTheme.typography.titleMedium,
+                            color = TextPrimary
+                        )
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(WarmAmberGold)
+                                .padding(horizontal = 8.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = "Lvl ${profile.level}",
+                                color = LudoraTheme.colors.background,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 11.sp
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    // XP Progress bar
+                    LinearProgressIndicator(
+                        progress = { profile.levelProgressFraction },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(6.dp)
+                            .clip(RoundedCornerShape(3.dp)),
+                        color = WarmAmberGold,
+                        trackColor = SlateCard
                     )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
                     Text(
-                        text = "Mascot: ${equippedMascot.name}",
-                        style = LudoraTheme.typography.bodyMedium,
-                        color = WarmAmberGold
-                    )
-                    Text(
-                        text = "Tap mascot to boop or customize",
+                        text = "${profile.currentLevelXpProgress} / ${profile.xpForNextLevel} XP",
                         style = LudoraTheme.typography.bodyMedium,
                         color = TextSecondary,
-                        fontSize = 12.sp
+                        fontSize = 11.sp
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    LudoraSecondaryButton(
-                        text = "Change Mascot (56)",
-                        onClick = { isMascotSheetVisible = true },
-                        modifier = Modifier.height(38.dp)
-                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        LudoraSecondaryButton(
+                            text = "Mascot (56)",
+                            onClick = { isMascotSheetVisible = true },
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(32.dp)
+                        )
+                        LudoraPrimaryButton(
+                            text = "Quests & Shop",
+                            onClick = onOpenProfileProgression,
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(32.dp)
+                        )
+                    }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(22.dp))
 
         // Game Modes Title
         Text(
@@ -248,7 +365,7 @@ fun LudoraDashboardScreen(
             color = TextPrimary,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 12.dp)
+                .padding(bottom = 10.dp)
         )
 
         // Ludo Mode Card
@@ -258,7 +375,7 @@ fun LudoraDashboardScreen(
             onPlayClick = { onLaunchMode("Classic Ludo") }
         )
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // Snake & Ladder Mode Card
         GameModeCard(
@@ -267,16 +384,16 @@ fun LudoraDashboardScreen(
             onPlayClick = { onLaunchMode("Snake & Ladder") }
         )
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // Remix Mode Card
         GameModeCard(
             title = "Ludora Remix",
-            tagline = "Power-ups, Quick Match & Modifiers",
+            tagline = "Power-ups, Hybrid Hazards & Chaos Modifiers",
             onPlayClick = { onLaunchMode("Ludora Remix") }
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(28.dp))
     }
 
     if (isMascotSheetVisible) {

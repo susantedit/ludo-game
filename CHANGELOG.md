@@ -33,3 +33,5 @@
 - Phase 4 Snake & Ladder Engine: Pure Kotlin JVM module `engine:snake` with 100-tile boustrophedon grid, 7 ladders, 8 snakes, exact finish rule, and 100-match headless simulation
 - Phase 5 Remix Mode: Pure Kotlin JVM module `engine:remix` with hybrid track hazards, 5 tactical power cards (`SHIELD`, `SPEED_BOOST`, `REROLL`, `SWAP`, `BOMB`), and round Chaos Modifiers
 - Interactive Gameplay UI: Interactive Compose Canvas screens for Ludo, Snake & Ladder, and Remix Mode connected to MainActivity dashboard
+- Phase 6 Progression: Offline XP engine with level scaling, match outcome rewards, cosmetic store, and daily quests
+- Phase 6 Progression: `ProfileProgressionSheet` and `MatchRewardDialog` integrated with level-up celebrations and offline coin/XP claiming

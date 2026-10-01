@@ -76,7 +76,8 @@ import kotlin.random.Random
 @Composable
 fun LudoGameScreen(
     options: MatchOptions,
-    onBackToMenu: () -> Unit
+    onBackToMenu: () -> Unit,
+    onMatchFinished: ((placement: Int, captures: Int, isWin: Boolean, sixesRolled: Int) -> Unit)? = null
 ) {
     val engine = remember { LudoGameEngine() }
 
@@ -461,8 +462,17 @@ fun LudoGameScreen(
                     Spacer(modifier = Modifier.height(20.dp))
 
                     LudoraPrimaryButton(
-                        text = "Back to Menu",
-                        onClick = onBackToMenu,
+                        text = "Claim Rewards & Continue",
+                        onClick = {
+                            val humanPlayer = gameState.players.firstOrNull { !it.player.isAi } ?: gameState.players.first()
+                            val placement = (gameState.winners.indexOf(humanPlayer.color).takeIf { it >= 0 } ?: (gameState.winners.size)) + 1
+                            val isWin = placement == 1
+                            if (onMatchFinished != null) {
+                                onMatchFinished(placement, 2, isWin, 3)
+                            } else {
+                                onBackToMenu()
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
