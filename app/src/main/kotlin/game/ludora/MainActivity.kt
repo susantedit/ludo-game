@@ -31,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import game.ludora.core.designsystem.component.LudoraCard
@@ -40,7 +39,6 @@ import game.ludora.core.designsystem.component.LudoraSecondaryButton
 import game.ludora.core.designsystem.component.TurnStatusPill
 import game.ludora.core.designsystem.mascot.LudoraMascotView
 import game.ludora.core.designsystem.mascot.MascotCatalog
-import game.ludora.core.designsystem.mascot.MascotDefinition
 import game.ludora.core.designsystem.mascot.MascotSelectorSheet
 import game.ludora.core.designsystem.theme.LudoraTheme
 import game.ludora.core.designsystem.theme.SlateCard
@@ -48,6 +46,19 @@ import game.ludora.core.designsystem.theme.TextPrimary
 import game.ludora.core.designsystem.theme.TextSecondary
 import game.ludora.core.designsystem.theme.WarmAmberGold
 import game.ludora.core.model.PlayerColor
+import game.ludora.engine.ai.model.AiDifficulty
+import game.ludora.ui.common.MatchOptions
+import game.ludora.ui.common.MatchSetupDialog
+import game.ludora.ui.ludo.LudoGameScreen
+import game.ludora.ui.remix.RemixGameScreen
+import game.ludora.ui.snake.SnakeGameScreen
+
+enum class AppScreen {
+    DASHBOARD,
+    LUDO_GAME,
+    SNAKE_GAME,
+    REMIX_GAME
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +70,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     containerColor = LudoraTheme.colors.background
                 ) { innerPadding ->
-                    LudoraDashboardScreen(modifier = Modifier.padding(innerPadding))
+                    LudoraRootNavigator(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -67,7 +78,68 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun LudoraDashboardScreen(modifier: Modifier = Modifier) {
+fun LudoraRootNavigator(modifier: Modifier = Modifier) {
+    var currentScreen by remember { mutableStateOf(AppScreen.DASHBOARD) }
+    var activeMatchOptions by remember {
+        mutableStateOf(MatchOptions(playerCount = 2, isVsAi = true, aiDifficulty = AiDifficulty.MEDIUM))
+    }
+    var pendingSetupMode by remember { mutableStateOf<String?>(null) }
+
+    when (currentScreen) {
+        AppScreen.DASHBOARD -> {
+            LudoraDashboardScreen(
+                modifier = modifier,
+                onLaunchMode = { mode ->
+                    pendingSetupMode = mode
+                }
+            )
+
+            pendingSetupMode?.let { mode ->
+                MatchSetupDialog(
+                    gameTitle = mode,
+                    onDismiss = { pendingSetupMode = null },
+                    onStartMatch = { options ->
+                        activeMatchOptions = options
+                        currentScreen = when (mode) {
+                            "Classic Ludo" -> AppScreen.LUDO_GAME
+                            "Snake & Ladder" -> AppScreen.SNAKE_GAME
+                            "Ludora Remix" -> AppScreen.REMIX_GAME
+                            else -> AppScreen.LUDO_GAME
+                        }
+                        pendingSetupMode = null
+                    }
+                )
+            }
+        }
+
+        AppScreen.LUDO_GAME -> {
+            LudoGameScreen(
+                options = activeMatchOptions,
+                onBackToMenu = { currentScreen = AppScreen.DASHBOARD }
+            )
+        }
+
+        AppScreen.SNAKE_GAME -> {
+            SnakeGameScreen(
+                options = activeMatchOptions,
+                onBackToMenu = { currentScreen = AppScreen.DASHBOARD }
+            )
+        }
+
+        AppScreen.REMIX_GAME -> {
+            RemixGameScreen(
+                options = activeMatchOptions,
+                onBackToMenu = { currentScreen = AppScreen.DASHBOARD }
+            )
+        }
+    }
+}
+
+@Composable
+fun LudoraDashboardScreen(
+    modifier: Modifier = Modifier,
+    onLaunchMode: (String) -> Unit
+) {
     var equippedMascot by remember { mutableStateOf(MascotCatalog.DEFAULT) }
     var isMascotSheetVisible by remember { mutableStateOf(false) }
 
@@ -183,8 +255,7 @@ fun LudoraDashboardScreen(modifier: Modifier = Modifier) {
         GameModeCard(
             title = "Classic Ludo",
             tagline = "2 to 4 Players • Strategy & Captures",
-            accentColor = PlayerColor.RED,
-            onPlayClick = { /* Navigate to Ludo */ }
+            onPlayClick = { onLaunchMode("Classic Ludo") }
         )
 
         Spacer(modifier = Modifier.height(14.dp))
@@ -193,8 +264,7 @@ fun LudoraDashboardScreen(modifier: Modifier = Modifier) {
         GameModeCard(
             title = "Snake & Ladder",
             tagline = "100 Tiles • Ladders & Snakes Race",
-            accentColor = PlayerColor.GREEN,
-            onPlayClick = { /* Navigate to Snake */ }
+            onPlayClick = { onLaunchMode("Snake & Ladder") }
         )
 
         Spacer(modifier = Modifier.height(14.dp))
@@ -202,15 +272,13 @@ fun LudoraDashboardScreen(modifier: Modifier = Modifier) {
         // Remix Mode Card
         GameModeCard(
             title = "Ludora Remix",
-            tagline = "Hazards, Power Cards & Chaos Modifiers",
-            accentColor = PlayerColor.YELLOW,
-            onPlayClick = { /* Navigate to Remix */ }
+            tagline = "Power-ups, Quick Match & Modifiers",
+            onPlayClick = { onLaunchMode("Ludora Remix") }
         )
 
         Spacer(modifier = Modifier.height(32.dp))
     }
 
-    // Modal Bottom Sheet for 56 Mascot selector
     if (isMascotSheetVisible) {
         MascotSelectorSheet(
             selectedMascotId = equippedMascot.id,
@@ -226,7 +294,6 @@ fun LudoraDashboardScreen(modifier: Modifier = Modifier) {
 private fun GameModeCard(
     title: String,
     tagline: String,
-    accentColor: PlayerColor,
     onPlayClick: () -> Unit
 ) {
     LudoraCard(

@@ -63,6 +63,9 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":engine:core"))
     implementation(project(":engine:ludo"))
+    implementation(project(":engine:snake"))
+    implementation(project(":engine:ai"))
+    implementation(project(":engine:remix"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
