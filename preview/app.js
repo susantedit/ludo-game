@@ -448,6 +448,8 @@
   // ==========================================
   // 3. KATHMANDU CULTURAL WORLD BOARD RENDERER
   // ==========================================
+  // 3. AUTHENTIC 15x15 KATHMANDU CULTURAL LUDO BOARD RENDERER
+  // ==========================================
   const boardCanvas = document.getElementById('boardCanvas');
   const boardCtx = boardCanvas.getContext('2d');
 
@@ -456,142 +458,428 @@
     const h = boardCanvas.height;
     boardCtx.clearRect(0, 0, w, h);
 
-    const pad = 24;
-    const size = Math.min(w, h) - pad * 2;
-    const ox = (w - size) / 2;
-    const oy = (h - size) / 2;
-    const cx = ox + size / 2;
-    const cy = oy + size / 2;
+    const pad = 12;
+    const boardSize = Math.min(w - pad * 2, h - pad * 2);
+    const ox = (w - boardSize) / 2;
+    const oy = (h - boardSize) / 2;
 
-    // 1. Carved Dark Walnut Outer Frame
+    const borderThick = boardSize * 0.042;
+    const innerSize = boardSize - borderThick * 2;
+    const gridOx = ox + borderThick;
+    const gridOy = oy + borderThick;
+    const cellSize = innerSize / 15;
+
+    // Helper: cell to pixel coordinates
+    const cellX = (c) => gridOx + c * cellSize;
+    const cellY = (r) => gridOy + r * cellSize;
+    const cellCenter = (c, r) => [cellX(c) + cellSize / 2, cellY(r) + cellSize / 2];
+
+    // 1. CARVED DARK WALNUT WOOD FRAME
     boardCtx.save();
-    boardCtx.fillStyle = '#1A120B';
-    boardCtx.fillRect(ox, oy, size, size);
+    const woodGrad = boardCtx.createLinearGradient(ox, oy, ox + boardSize, oy + boardSize);
+    woodGrad.addColorStop(0, '#1E130B');
+    woodGrad.addColorStop(0.3, '#2A1A0F');
+    woodGrad.addColorStop(0.7, '#1E130B');
+    woodGrad.addColorStop(1, '#160E08');
+    boardCtx.fillStyle = woodGrad;
+    boardCtx.fillRect(ox, oy, boardSize, boardSize);
+
+    // Subtle wood grain lines
+    boardCtx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+    boardCtx.lineWidth = 1;
+    for (let i = 4; i < boardSize; i += 10) {
+      boardCtx.beginPath();
+      boardCtx.moveTo(ox + i, oy);
+      boardCtx.lineTo(ox + i, oy + boardSize);
+      boardCtx.stroke();
+    }
+
+    // Outer and Inner Gold Inlay Trim
     boardCtx.strokeStyle = '#D4AF37';
-    boardCtx.lineWidth = 3.5;
-    boardCtx.strokeRect(ox, oy, size, size);
-
-    // Inner Brass Inlay Ring
-    boardCtx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
-    boardCtx.lineWidth = 1.5;
-    boardCtx.strokeRect(ox + 14, oy + 14, size - 28, size - 28);
-    boardCtx.restore();
-
-    // 2. Stone Mandala Tile Grid
-    const innerSize = size - 36;
-    const startX = ox + 18;
-    const startY = oy + 18;
-    const tilesPerSide = 10;
-    const tileSize = innerSize / tilesPerSide;
-
-    for (let r = 0; r < tilesPerSide; r++) {
-      for (let c = 0; c < tilesPerSide; c++) {
-        const tx = startX + c * tileSize;
-        const ty = startY + r * tileSize;
-        boardCtx.save();
-        boardCtx.fillStyle = (r + c) % 2 === 0 ? '#26221D' : '#1F1B16';
-        boardCtx.fillRect(tx, ty, tileSize, tileSize);
-        boardCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-        boardCtx.strokeRect(tx, ty, tileSize, tileSize);
-
-        // Ancient mandala glyph on special tiles
-        if ((r * 10 + c) % 7 === 0) {
-          boardCtx.beginPath();
-          boardCtx.arc(tx + tileSize/2, ty + tileSize/2, tileSize * 0.22, 0, Math.PI * 2);
-          boardCtx.strokeStyle = 'rgba(229, 169, 60, 0.25)';
-          boardCtx.stroke();
-        }
-        boardCtx.restore();
-      }
-    }
-
-    // 3. Central Golden Swayambhunath Wisdom Eyes Medallion
-    const medR = size * 0.18;
-    boardCtx.save();
-    boardCtx.beginPath();
-    boardCtx.arc(cx, cy, medR, 0, Math.PI * 2);
-
-    const goldGrad = boardCtx.createRadialGradient(cx - medR*0.3, cy - medR*0.3, 5, cx, cy, medR);
-    goldGrad.addColorStop(0, '#FFE899');
-    goldGrad.addColorStop(0.6, '#D4AF37');
-    goldGrad.addColorStop(1, '#8A6812');
-    boardCtx.fillStyle = goldGrad;
-    boardCtx.fill();
-    boardCtx.strokeStyle = '#3D2800';
-    boardCtx.lineWidth = 3;
-    boardCtx.stroke();
-
-    // Swayambhunath Wisdom Eyes
-    const eyeSpacing = medR * 0.42;
-    const eyeY = cy - medR * 0.12;
-
-    function drawWisdomEye(ex, isLeft) {
-      boardCtx.save();
-      boardCtx.beginPath();
-      // Curved upper eyelid
-      boardCtx.moveTo(ex - 16, eyeY);
-      boardCtx.quadraticCurveTo(ex, eyeY - 12, ex + 16, eyeY);
-      // Curved lower eyelid
-      boardCtx.quadraticCurveTo(ex, eyeY + 8, ex - 16, eyeY);
-      boardCtx.fillStyle = '#FFFFFF';
-      boardCtx.fill();
-      boardCtx.strokeStyle = '#0B0E14';
-      boardCtx.lineWidth = 2.2;
-      boardCtx.stroke();
-
-      // Deep Blue/Black Iris
-      boardCtx.beginPath();
-      boardCtx.arc(ex, eyeY - 1, 6, 0, Math.PI * 2);
-      boardCtx.fillStyle = '#0E2442';
-      boardCtx.fill();
-
-      // Eyebrow
-      boardCtx.beginPath();
-      boardCtx.moveTo(ex - 18, eyeY - 8);
-      boardCtx.quadraticCurveTo(ex, eyeY - 18, ex + 18, eyeY - 6);
-      boardCtx.strokeStyle = '#0B0E14';
-      boardCtx.lineWidth = 2.5;
-      boardCtx.stroke();
-      boardCtx.restore();
-    }
-
-    drawWisdomEye(cx - eyeSpacing, true);
-    drawWisdomEye(cx + eyeSpacing, false);
-
-    // Question-mark shaped Nose of Unity ("Ek" in Nepali)
-    boardCtx.beginPath();
-    boardCtx.moveTo(cx, cy + medR * 0.08);
-    boardCtx.quadraticCurveTo(cx + 10, cy + medR * 0.25, cx, cy + medR * 0.38);
-    boardCtx.strokeStyle = '#0B0E14';
     boardCtx.lineWidth = 2.5;
-    boardCtx.stroke();
-
+    boardCtx.strokeRect(ox, oy, boardSize, boardSize);
+    boardCtx.strokeRect(gridOx - 1, gridOy - 1, innerSize + 2, innerSize + 2);
     boardCtx.restore();
 
-    // 4. Sacred 5-Color Prayer Flag Corner Tassels
+    // 2. ORNATE NEWARI BRASS CORNERS & PRAYER FLAG TASSELS
     const flagColors = ['#0066CC', '#EEEEEE', '#CC2222', '#008844', '#FFCC00'];
     const corners = [
-      [ox + 6, oy + 6],
-      [ox + size - 6, oy + 6],
-      [ox + size - 6, oy + size - 6],
-      [ox + 6, oy + size - 6]
+      [ox + 4, oy + 4, 1, 1],
+      [ox + boardSize - 4, oy + 4, -1, 1],
+      [ox + boardSize - 4, oy + boardSize - 4, -1, -1],
+      [ox + 4, oy + boardSize - 4, 1, -1]
     ];
 
-    corners.forEach(([cornerX, cornerY]) => {
+    corners.forEach(([kx, ky, dx, dy]) => {
+      // Corner brass bracket
+      boardCtx.save();
+      boardCtx.strokeStyle = '#FFE090';
+      boardCtx.lineWidth = 2;
+      boardCtx.beginPath();
+      boardCtx.moveTo(kx, ky + dy * 18);
+      boardCtx.lineTo(kx, ky);
+      boardCtx.lineTo(kx + dx * 18, ky);
+      boardCtx.stroke();
+      boardCtx.restore();
+
+      // Hanging 5-color prayer flag tassels
       flagColors.forEach((col, idx) => {
         boardCtx.save();
         boardCtx.beginPath();
-        const tLen = 22 + idx * 4;
-        const angle = (idx - 2) * 0.22;
-        boardCtx.moveTo(cornerX, cornerY);
-        boardCtx.lineTo(cornerX + Math.cos(angle) * tLen, cornerY + Math.sin(angle) * tLen);
+        const tLen = 14 + idx * 3.5;
+        const angle = (idx - 2) * 0.18 + (dx < 0 ? Math.PI : 0);
+        boardCtx.moveTo(kx, ky);
+        boardCtx.lineTo(kx + Math.cos(angle) * tLen, ky + Math.sin(angle) * tLen);
         boardCtx.strokeStyle = col;
-        boardCtx.lineWidth = 3;
+        boardCtx.lineWidth = 2.4;
         boardCtx.lineCap = 'round';
         boardCtx.stroke();
         boardCtx.restore();
       });
     });
+
+    // 3. DRAW FOUR 6x6 COURTYARD YARDS (CHOWKS)
+    function drawYard(startCol, startRow, colorHex, accentHex, labelText, palaceName) {
+      const x = cellX(startCol);
+      const y = cellY(startRow);
+      const yardWidth = cellSize * 6;
+
+      boardCtx.save();
+      // Courtyard floor
+      const yardGrad = boardCtx.createRadialGradient(x + yardWidth/2, y + yardWidth/2, 10, x + yardWidth/2, y + yardWidth/2, yardWidth/2);
+      yardGrad.addColorStop(0, colorHex);
+      yardGrad.addColorStop(1, '#0C0F17');
+      boardCtx.fillStyle = yardGrad;
+      boardCtx.fillRect(x, y, yardWidth, yardWidth);
+
+      // Yard brass border
+      boardCtx.strokeStyle = accentHex;
+      boardCtx.lineWidth = 2;
+      boardCtx.strokeRect(x + 1, y + 1, yardWidth - 2, yardWidth - 2);
+
+      // Inner raised courtyard pedestal
+      const innerMargin = cellSize * 0.85;
+      const innerW = yardWidth - innerMargin * 2;
+      boardCtx.fillStyle = '#141824';
+      boardCtx.fillRect(x + innerMargin, y + innerMargin, innerW, innerW);
+      boardCtx.strokeStyle = '#D4AF37';
+      boardCtx.lineWidth = 1.5;
+      boardCtx.strokeRect(x + innerMargin, y + innerMargin, innerW, innerW);
+
+      // Palace Label
+      boardCtx.fillStyle = 'rgba(255, 224, 144, 0.75)';
+      boardCtx.font = `600 ${Math.max(9, cellSize * 0.32)}px Cinzel, serif`;
+      boardCtx.textAlign = 'center';
+      boardCtx.fillText(palaceName, x + yardWidth / 2, y + innerMargin * 0.65);
+
+      // 4 Circular Token Slots (Bases)
+      const slotOffsets = [
+        [x + cellSize * 2.0, y + cellSize * 2.0],
+        [x + cellSize * 4.0, y + cellSize * 2.0],
+        [x + cellSize * 2.0, y + cellSize * 4.0],
+        [x + cellSize * 4.0, y + cellSize * 4.0]
+      ];
+
+      slotOffsets.forEach(([sx, sy], sIdx) => {
+        boardCtx.save();
+        // Recessed base rim
+        boardCtx.beginPath();
+        boardCtx.arc(sx, sy, cellSize * 0.65, 0, Math.PI * 2);
+        boardCtx.fillStyle = '#080B11';
+        boardCtx.fill();
+        boardCtx.strokeStyle = accentHex;
+        boardCtx.lineWidth = 1.8;
+        boardCtx.stroke();
+
+        // Inner gold ring
+        boardCtx.beginPath();
+        boardCtx.arc(sx, sy, cellSize * 0.45, 0, Math.PI * 2);
+        boardCtx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
+        boardCtx.stroke();
+
+        // 2 Resting Tokens inside each home yard
+        if (sIdx < 2) {
+          draw3DToken(sx, sy, cellSize * 0.42, colorHex);
+        }
+        boardCtx.restore();
+      });
+
+      boardCtx.restore();
+    }
+
+    // Draw the 4 authentic player yards
+    drawYard(0, 0, '#9E2A1A', '#FF7D6B', 'RED', 'Patan Chowk');       // Top-Left (Red)
+    drawYard(9, 0, '#0E5C38', '#5AE49A', 'GREEN', 'Bhaktapur');       // Top-Right (Green)
+    drawYard(9, 9, '#A6730A', '#FFDF75', 'YELLOW', 'Basantapur');     // Bottom-Right (Yellow)
+    drawYard(0, 9, '#154182', '#7AA8FF', 'BLUE', 'Kirtipur');        // Bottom-Left (Blue)
+
+    // 4. DRAW 72 CROSS TRACK CELLS
+    // Helper to identify cell role
+    function getCellInfo(c, r) {
+      // Check if inside yards
+      if ((c < 6 && r < 6) || (c > 8 && r < 6) || (c < 6 && r > 8) || (c > 8 && r > 8)) {
+        return { isTrack: false };
+      }
+      // Check if inside center
+      if (c >= 6 && c <= 8 && r >= 6 && r <= 8) {
+        return { isCenter: true, isTrack: false };
+      }
+
+      // Check Home Columns
+      if (c === 7 && r >= 1 && r <= 5) return { isTrack: true, isHomePath: true, color: '#0E5C38', arrow: '↓' };
+      if (c === 7 && r >= 9 && r <= 13) return { isTrack: true, isHomePath: true, color: '#154182', arrow: '↑' };
+      if (r === 7 && c >= 1 && c <= 5) return { isTrack: true, isHomePath: true, color: '#9E2A1A', arrow: '→' };
+      if (r === 7 && c >= 9 && c <= 13) return { isTrack: true, isHomePath: true, color: '#A6730A', arrow: '←' };
+
+      // Safe Stars
+      const starCells = [
+        [1, 6], [6, 2], [8, 1], [12, 6], [13, 8], [8, 12], [6, 13], [2, 8]
+      ];
+      const isStar = starCells.some(([sc, sr]) => sc === c && sr === r);
+
+      // Starting squares with player colors
+      let startColor = null;
+      if (c === 1 && r === 6) startColor = '#9E2A1A'; // Red start
+      if (c === 8 && r === 1) startColor = '#0E5C38'; // Green start
+      if (c === 13 && r === 8) startColor = '#A6730A'; // Yellow start
+      if (c === 6 && r === 13) startColor = '#154182'; // Blue start
+
+      return { isTrack: true, isStar, isStart: !!startColor, startColor };
+    }
+
+    // Render all track tiles
+    for (let r = 0; r < 15; r++) {
+      for (let c = 0; c < 15; c++) {
+        const info = getCellInfo(c, r);
+        if (!info.isTrack) continue;
+
+        const x = cellX(c);
+        const y = cellY(r);
+
+        boardCtx.save();
+        // Tile Background
+        if (info.isHomePath) {
+          boardCtx.fillStyle = info.color;
+        } else if (info.isStart) {
+          boardCtx.fillStyle = info.startColor;
+        } else {
+          boardCtx.fillStyle = (r + c) % 2 === 0 ? '#1C212E' : '#141822';
+        }
+        boardCtx.fillRect(x, y, cellSize, cellSize);
+
+        // Tile Brass Grid Border
+        boardCtx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+        boardCtx.lineWidth = 1;
+        boardCtx.strokeRect(x, y, cellSize, cellSize);
+
+        // Directional Home Column Chevrons
+        if (info.isHomePath && info.arrow) {
+          boardCtx.fillStyle = 'rgba(255, 224, 144, 0.85)';
+          boardCtx.font = `700 ${cellSize * 0.45}px sans-serif`;
+          boardCtx.textAlign = 'center';
+          boardCtx.textBaseline = 'middle';
+          boardCtx.fillText(info.arrow, x + cellSize / 2, y + cellSize / 2 + 1);
+        }
+
+        // 8-Pointed Golden Nepali Mandala Stars on Safe Squares
+        if (info.isStar) {
+          drawNepaliMandalaStar(x + cellSize / 2, y + cellSize / 2, cellSize * 0.38);
+        }
+
+        boardCtx.restore();
+      }
+    }
+
+    // Helper: Draw 8-pointed Nepali mandala star
+    function drawNepaliMandalaStar(cx, cy, r) {
+      boardCtx.save();
+      boardCtx.fillStyle = '#FFE090';
+      boardCtx.strokeStyle = '#D4AF37';
+      boardCtx.lineWidth = 1.2;
+      boardCtx.beginPath();
+      for (let i = 0; i < 16; i++) {
+        const rad = (i % 2 === 0) ? r : r * 0.45;
+        const ang = (i * Math.PI) / 8 - Math.PI / 2;
+        const px = cx + Math.cos(ang) * rad;
+        const py = cy + Math.sin(ang) * rad;
+        if (i === 0) boardCtx.moveTo(px, py);
+        else boardCtx.lineTo(px, py);
+      }
+      boardCtx.closePath();
+      boardCtx.fill();
+      boardCtx.stroke();
+      boardCtx.restore();
+    }
+
+    // 5. DRAW CENTRAL 3x3 HOME TRIANGLES
+    const goalX = cellX(6);
+    const goalY = cellY(6);
+    const goalW = cellSize * 3;
+    const centerPt = [goalX + goalW / 2, goalY + goalW / 2];
+
+    const homeTriangles = [
+      { p1: [goalX, goalY], p2: [goalX, goalY + goalW], color: '#9E2A1A' },           // Left (Red)
+      { p1: [goalX, goalY], p2: [goalX + goalW, goalY], color: '#0E5C38' },           // Top (Green)
+      { p1: [goalX + goalW, goalY], p2: [goalX + goalW, goalY + goalW], color: '#A6730A' }, // Right (Yellow)
+      { p1: [goalX, goalY + goalW], p2: [goalX + goalW, goalY + goalW], color: '#154182' }  // Bottom (Blue)
+    ];
+
+    homeTriangles.forEach(tri => {
+      boardCtx.save();
+      boardCtx.beginPath();
+      boardCtx.moveTo(centerPt[0], centerPt[1]);
+      boardCtx.lineTo(tri.p1[0], tri.p1[1]);
+      boardCtx.lineTo(tri.p2[0], tri.p2[1]);
+      boardCtx.closePath();
+      boardCtx.fillStyle = tri.color;
+      boardCtx.fill();
+      boardCtx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+      boardCtx.lineWidth = 1.5;
+      boardCtx.stroke();
+      boardCtx.restore();
+    });
+
+    // 6. CENTRAL SWAYAMBHUNATH WISDOM EYES MEDALLION
+    const medR = cellSize * 1.35;
+    const [mcx, mcy] = centerPt;
+
+    // Outer Lotus Petals (16 sculpted petals)
+    boardCtx.save();
+    for (let p = 0; p < 16; p++) {
+      const pAng = (p * Math.PI * 2) / 16;
+      const px = mcx + Math.cos(pAng) * (medR + 4);
+      const py = mcy + Math.sin(pAng) * (medR + 4);
+      boardCtx.save();
+      boardCtx.translate(px, py);
+      boardCtx.rotate(pAng + Math.PI / 2);
+      boardCtx.fillStyle = (p % 2 === 0) ? '#D4AF37' : '#9E2A1A';
+      boardCtx.beginPath();
+      boardCtx.ellipse(0, 0, 3.5, 8, 0, 0, Math.PI * 2);
+      boardCtx.fill();
+      boardCtx.restore();
+    }
+
+    // Gold Medallion Disk
+    const goldGrad = boardCtx.createRadialGradient(mcx - medR * 0.3, mcy - medR * 0.3, 4, mcx, mcy, medR);
+    goldGrad.addColorStop(0, '#FFF1B8');
+    goldGrad.addColorStop(0.55, '#D4AF37');
+    goldGrad.addColorStop(1, '#7A5B0B');
+    boardCtx.fillStyle = goldGrad;
+    boardCtx.beginPath();
+    boardCtx.arc(mcx, mcy, medR, 0, Math.PI * 2);
+    boardCtx.fill();
+    boardCtx.strokeStyle = '#2B1C03';
+    boardCtx.lineWidth = 2.5;
+    boardCtx.stroke();
+
+    // Swayambhunath Eyes & Unity Nose
+    const eyeSpacing = medR * 0.38;
+    const eyeElevation = medR * 0.12;
+
+    function drawWisdomEye(ex) {
+      boardCtx.save();
+      // White Sclera
+      boardCtx.beginPath();
+      boardCtx.moveTo(ex - 12, mcy - eyeElevation);
+      boardCtx.quadraticCurveTo(ex, mcy - eyeElevation - 9, ex + 12, mcy - eyeElevation);
+      boardCtx.quadraticCurveTo(ex, mcy - eyeElevation + 7, ex - 12, mcy - eyeElevation);
+      boardCtx.fillStyle = '#FFFFFF';
+      boardCtx.fill();
+      boardCtx.strokeStyle = '#0B0E14';
+      boardCtx.lineWidth = 1.8;
+      boardCtx.stroke();
+
+      // Blue/Black Iris
+      boardCtx.beginPath();
+      boardCtx.arc(ex, mcy - eyeElevation - 0.5, 4.2, 0, Math.PI * 2);
+      boardCtx.fillStyle = '#0F2C59';
+      boardCtx.fill();
+
+      // Eyebrow
+      boardCtx.beginPath();
+      boardCtx.moveTo(ex - 14, mcy - eyeElevation - 6);
+      boardCtx.quadraticCurveTo(ex, mcy - eyeElevation - 14, ex + 14, mcy - eyeElevation - 5);
+      boardCtx.strokeStyle = '#0B0E14';
+      boardCtx.lineWidth = 2;
+      boardCtx.stroke();
+      boardCtx.restore();
+    }
+
+    drawWisdomEye(mcx - eyeSpacing);
+    drawWisdomEye(mcx + eyeSpacing);
+
+    // Question-mark curl of unity ("Ek")
+    boardCtx.beginPath();
+    boardCtx.moveTo(mcx, mcy + medR * 0.05);
+    boardCtx.lineTo(mcx, mcy + medR * 0.22);
+    boardCtx.quadraticCurveTo(mcx + 7, mcy + medR * 0.32, mcx, mcy + medR * 0.42);
+    boardCtx.strokeStyle = '#0B0E14';
+    boardCtx.lineWidth = 2.2;
+    boardCtx.stroke();
+
+    // Red Urna (Third eye of wisdom)
+    boardCtx.beginPath();
+    boardCtx.arc(mcx, mcy - medR * 0.32, 2.5, 0, Math.PI * 2);
+    boardCtx.fillStyle = '#CC2222';
+    boardCtx.fill();
+    boardCtx.restore();
+
+    // 7. REAL TACTILE 3D TOKENS ON ACTIVE TRACK
+    function draw3DToken(tx, ty, r, colHex) {
+      boardCtx.save();
+      // Drop Shadow
+      boardCtx.beginPath();
+      boardCtx.ellipse(tx + 2, ty + 3, r * 1.05, r * 0.55, 0, 0, Math.PI * 2);
+      boardCtx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+      boardCtx.filter = 'blur(3px)';
+      boardCtx.fill();
+      boardCtx.filter = 'none';
+
+      // Glossy Token Body
+      const tokenGrad = boardCtx.createRadialGradient(tx - r * 0.3, ty - r * 0.35, r * 0.1, tx, ty, r);
+      tokenGrad.addColorStop(0, '#FFFFFF');
+      tokenGrad.addColorStop(0.25, colHex);
+      tokenGrad.addColorStop(1, '#0B0E14');
+      boardCtx.beginPath();
+      boardCtx.arc(tx, ty, r, 0, Math.PI * 2);
+      boardCtx.fillStyle = tokenGrad;
+      boardCtx.fill();
+      boardCtx.strokeStyle = '#D4AF37';
+      boardCtx.lineWidth = 1.4;
+      boardCtx.stroke();
+
+      // Gold Crown Pip
+      boardCtx.beginPath();
+      boardCtx.arc(tx, ty, r * 0.32, 0, Math.PI * 2);
+      boardCtx.fillStyle = '#FFE090';
+      boardCtx.fill();
+      boardCtx.restore();
+    }
+
+    // Active tokens traversing the 15x15 board
+    const [rtx, rty] = cellCenter(4, 6);
+    draw3DToken(rtx, rty, cellSize * 0.42, '#FF4433'); // Red token on track
+
+    const [gtx, gty] = cellCenter(8, 3);
+    draw3DToken(gtx, gty, cellSize * 0.42, '#00D878'); // Green token on track
+
+    const [ytx, yty] = cellCenter(11, 8);
+    draw3DToken(ytx, yty, cellSize * 0.42, '#FFCA28'); // Yellow token on track
+
+    const [btx, bty] = cellCenter(7, 11);
+    draw3DToken(btx, bty, cellSize * 0.42, '#3884FF'); // Blue token in home path
+
+    // 8. SIDE ANNOTATION BADGES ON HORIZONTAL SPACE
+    if (w > boardSize + 140) {
+      boardCtx.save();
+      boardCtx.fillStyle = '#FFE090';
+      boardCtx.font = '700 11px Cinzel, serif';
+      boardCtx.textAlign = 'left';
+      boardCtx.fillText('🇳🇵 KATHMANDU THEME', ox + 10, oy - 4 > 14 ? oy - 6 : 18);
+      boardCtx.textAlign = 'right';
+      boardCtx.fillText('15×15 TOURNAMENT BOARD', ox + boardSize - 10, oy - 4 > 14 ? oy - 6 : 18);
+      boardCtx.restore();
+    }
   }
 
   // ==========================================

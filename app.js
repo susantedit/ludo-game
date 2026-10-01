@@ -487,139 +487,389 @@
       const h = boardCanvas.height;
       bCtx.clearRect(0, 0, w, h);
 
-      // Walnut Wood Border
-      const woodGrad = bCtx.createLinearGradient(0, 0, w, h);
-      woodGrad.addColorStop(0, '#1E140C');
-      woodGrad.addColorStop(0.5, '#2D1F13');
-      woodGrad.addColorStop(1, '#1A110A');
+      const pad = 12;
+      const boardSize = Math.min(w - pad * 2, h - pad * 2);
+      const ox = (w - boardSize) / 2;
+      const oy = (h - boardSize) / 2;
+
+      const borderThick = boardSize * 0.042;
+      const innerSize = boardSize - borderThick * 2;
+      const gridOx = ox + borderThick;
+      const gridOy = oy + borderThick;
+      const cellSize = innerSize / 15;
+
+      const cellX = (c) => gridOx + c * cellSize;
+      const cellY = (r) => gridOy + r * cellSize;
+      const cellCenter = (c, r) => [cellX(c) + cellSize / 2, cellY(r) + cellSize / 2];
+
+      // 1. CARVED DARK WALNUT WOOD FRAME
+      bCtx.save();
+      const woodGrad = bCtx.createLinearGradient(ox, oy, ox + boardSize, oy + boardSize);
+      woodGrad.addColorStop(0, '#1E130B');
+      woodGrad.addColorStop(0.3, '#2A1A0F');
+      woodGrad.addColorStop(0.7, '#1E130B');
+      woodGrad.addColorStop(1, '#160E08');
       bCtx.fillStyle = woodGrad;
-      bCtx.fillRect(0, 0, w, h);
+      bCtx.fillRect(ox, oy, boardSize, boardSize);
 
-      // Inset Board Surface
-      const margin = 24;
-      const innerW = w - margin * 2;
-      const innerH = h - margin * 2;
+      bCtx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+      bCtx.lineWidth = 1;
+      for (let i = 4; i < boardSize; i += 10) {
+        bCtx.beginPath();
+        bCtx.moveTo(ox + i, oy);
+        bCtx.lineTo(ox + i, oy + boardSize);
+        bCtx.stroke();
+      }
 
-      bCtx.fillStyle = '#11151E';
-      bCtx.fillRect(margin, margin, innerW, innerH);
-
-      // Brass Inlay Border
       bCtx.strokeStyle = '#D4AF37';
       bCtx.lineWidth = 2.5;
-      bCtx.strokeRect(margin + 6, margin + 6, innerW - 12, innerH - 12);
+      bCtx.strokeRect(ox, oy, boardSize, boardSize);
+      bCtx.strokeRect(gridOx - 1, gridOy - 1, innerSize + 2, innerSize + 2);
+      bCtx.restore();
 
-      // Central Mandala Medallion
-      const cx = w / 2;
-      const cy = h / 2;
-      const radius = 100;
+      // 2. ORNATE NEWARI BRASS CORNERS & PRAYER FLAG TASSELS
+      const flagColors = ['#0066CC', '#EEEEEE', '#CC2222', '#008844', '#FFCC00'];
+      const corners = [
+        [ox + 4, oy + 4, 1, 1],
+        [ox + boardSize - 4, oy + 4, -1, 1],
+        [ox + boardSize - 4, oy + boardSize - 4, -1, -1],
+        [ox + 4, oy + boardSize - 4, 1, -1]
+      ];
 
-      // Outer Lotus Petals
-      const numPetals = 16;
-      for (let i = 0; i < numPetals; i++) {
-        const angle = (i * Math.PI * 2) / numPetals;
-        const px = cx + Math.cos(angle) * (radius + 15);
-        const py = cy + Math.sin(angle) * (radius + 15);
+      corners.forEach(([kx, ky, dx, dy]) => {
+        bCtx.save();
+        bCtx.strokeStyle = '#FFE090';
+        bCtx.lineWidth = 2;
+        bCtx.beginPath();
+        bCtx.moveTo(kx, ky + dy * 18);
+        bCtx.lineTo(kx, ky);
+        bCtx.lineTo(kx + dx * 18, ky);
+        bCtx.stroke();
+        bCtx.restore();
+
+        flagColors.forEach((col, idx) => {
+          bCtx.save();
+          bCtx.beginPath();
+          const tLen = 14 + idx * 3.5;
+          const angle = (idx - 2) * 0.18 + (dx < 0 ? Math.PI : 0);
+          bCtx.moveTo(kx, ky);
+          bCtx.lineTo(kx + Math.cos(angle) * tLen, ky + Math.sin(angle) * tLen);
+          bCtx.strokeStyle = col;
+          bCtx.lineWidth = 2.4;
+          bCtx.lineCap = 'round';
+          bCtx.stroke();
+          bCtx.restore();
+        });
+      });
+
+      // 3. DRAW FOUR 6x6 COURTYARD YARDS (CHOWKS)
+      function drawYard(startCol, startRow, colorHex, accentHex, labelText, palaceName) {
+        const x = cellX(startCol);
+        const y = cellY(startRow);
+        const yardWidth = cellSize * 6;
 
         bCtx.save();
-        bCtx.translate(px, py);
-        bCtx.rotate(angle + Math.PI / 2);
-        bCtx.fillStyle = (i % 2 === 0) ? '#962A1A' : '#C48720';
-        bCtx.beginPath();
-        bCtx.ellipse(0, 0, 7, 16, 0, 0, Math.PI * 2);
-        bCtx.fill();
+        const yardGrad = bCtx.createRadialGradient(x + yardWidth/2, y + yardWidth/2, 10, x + yardWidth/2, y + yardWidth/2, yardWidth/2);
+        yardGrad.addColorStop(0, colorHex);
+        yardGrad.addColorStop(1, '#0C0F17');
+        bCtx.fillStyle = yardGrad;
+        bCtx.fillRect(x, y, yardWidth, yardWidth);
+
+        bCtx.strokeStyle = accentHex;
+        bCtx.lineWidth = 2;
+        bCtx.strokeRect(x + 1, y + 1, yardWidth - 2, yardWidth - 2);
+
+        const innerMargin = cellSize * 0.85;
+        const innerW = yardWidth - innerMargin * 2;
+        bCtx.fillStyle = '#141824';
+        bCtx.fillRect(x + innerMargin, y + innerMargin, innerW, innerW);
+        bCtx.strokeStyle = '#D4AF37';
+        bCtx.lineWidth = 1.5;
+        bCtx.strokeRect(x + innerMargin, y + innerMargin, innerW, innerW);
+
+        bCtx.fillStyle = 'rgba(255, 224, 144, 0.75)';
+        bCtx.font = `600 ${Math.max(9, cellSize * 0.32)}px Cinzel, serif`;
+        bCtx.textAlign = 'center';
+        bCtx.fillText(palaceName, x + yardWidth / 2, y + innerMargin * 0.65);
+
+        const slotOffsets = [
+          [x + cellSize * 2.0, y + cellSize * 2.0],
+          [x + cellSize * 4.0, y + cellSize * 2.0],
+          [x + cellSize * 2.0, y + cellSize * 4.0],
+          [x + cellSize * 4.0, y + cellSize * 4.0]
+        ];
+
+        slotOffsets.forEach(([sx, sy], sIdx) => {
+          bCtx.save();
+          bCtx.beginPath();
+          bCtx.arc(sx, sy, cellSize * 0.65, 0, Math.PI * 2);
+          bCtx.fillStyle = '#080B11';
+          bCtx.fill();
+          bCtx.strokeStyle = accentHex;
+          bCtx.lineWidth = 1.8;
+          bCtx.stroke();
+
+          bCtx.beginPath();
+          bCtx.arc(sx, sy, cellSize * 0.45, 0, Math.PI * 2);
+          bCtx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
+          bCtx.stroke();
+
+          if (sIdx < 2) {
+            draw3DToken(sx, sy, cellSize * 0.42, colorHex);
+          }
+          bCtx.restore();
+        });
+
         bCtx.restore();
       }
 
-      // Mandala Disk
-      const diskGrad = bCtx.createRadialGradient(cx, cy, 10, cx, cy, radius);
-      diskGrad.addColorStop(0, '#FFDF85');
-      diskGrad.addColorStop(0.7, '#D49B28');
-      diskGrad.addColorStop(1, '#66470C');
+      drawYard(0, 0, '#9E2A1A', '#FF7D6B', 'RED', 'Patan Chowk');
+      drawYard(9, 0, '#0E5C38', '#5AE49A', 'GREEN', 'Bhaktapur');
+      drawYard(9, 9, '#A6730A', '#FFDF75', 'YELLOW', 'Basantapur');
+      drawYard(0, 9, '#154182', '#7AA8FF', 'BLUE', 'Kirtipur');
 
-      bCtx.fillStyle = diskGrad;
-      bCtx.beginPath();
-      bCtx.arc(cx, cy, radius, 0, Math.PI * 2);
-      bCtx.fill();
-      bCtx.lineWidth = 3;
-      bCtx.strokeStyle = '#FFEAA7';
-      bCtx.stroke();
+      // 4. DRAW 72 CROSS TRACK CELLS
+      function getCellInfo(c, r) {
+        if ((c < 6 && r < 6) || (c > 8 && r < 6) || (c < 6 && r > 8) || (c > 8 && r > 8)) {
+          return { isTrack: false };
+        }
+        if (c >= 6 && c <= 8 && r >= 6 && r <= 8) {
+          return { isCenter: true, isTrack: false };
+        }
 
-      // Swayambhunath Wisdom Eyes
-      function drawWisdomEye(ox, ey) {
+        if (c === 7 && r >= 1 && r <= 5) return { isTrack: true, isHomePath: true, color: '#0E5C38', arrow: '↓' };
+        if (c === 7 && r >= 9 && r <= 13) return { isTrack: true, isHomePath: true, color: '#154182', arrow: '↑' };
+        if (r === 7 && c >= 1 && c <= 5) return { isTrack: true, isHomePath: true, color: '#9E2A1A', arrow: '→' };
+        if (r === 7 && c >= 9 && c <= 13) return { isTrack: true, isHomePath: true, color: '#A6730A', arrow: '←' };
+
+        const starCells = [
+          [1, 6], [6, 2], [8, 1], [12, 6], [13, 8], [8, 12], [6, 13], [2, 8]
+        ];
+        const isStar = starCells.some(([sc, sr]) => sc === c && sr === r);
+
+        let startColor = null;
+        if (c === 1 && r === 6) startColor = '#9E2A1A';
+        if (c === 8 && r === 1) startColor = '#0E5C38';
+        if (c === 13 && r === 8) startColor = '#A6730A';
+        if (c === 6 && r === 13) startColor = '#154182';
+
+        return { isTrack: true, isStar, isStart: !!startColor, startColor };
+      }
+
+      for (let r = 0; r < 15; r++) {
+        for (let c = 0; c < 15; c++) {
+          const info = getCellInfo(c, r);
+          if (!info.isTrack) continue;
+
+          const x = cellX(c);
+          const y = cellY(r);
+
+          bCtx.save();
+          if (info.isHomePath) {
+            bCtx.fillStyle = info.color;
+          } else if (info.isStart) {
+            bCtx.fillStyle = info.startColor;
+          } else {
+            bCtx.fillStyle = (r + c) % 2 === 0 ? '#1C212E' : '#141822';
+          }
+          bCtx.fillRect(x, y, cellSize, cellSize);
+
+          bCtx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+          bCtx.lineWidth = 1;
+          bCtx.strokeRect(x, y, cellSize, cellSize);
+
+          if (info.isHomePath && info.arrow) {
+            bCtx.fillStyle = 'rgba(255, 224, 144, 0.85)';
+            bCtx.font = `700 ${cellSize * 0.45}px sans-serif`;
+            bCtx.textAlign = 'center';
+            bCtx.textBaseline = 'middle';
+            bCtx.fillText(info.arrow, x + cellSize / 2, y + cellSize / 2 + 1);
+          }
+
+          if (info.isStar) {
+            drawNepaliMandalaStar(x + cellSize / 2, y + cellSize / 2, cellSize * 0.38);
+          }
+
+          bCtx.restore();
+        }
+      }
+
+      function drawNepaliMandalaStar(cx, cy, r) {
         bCtx.save();
-        bCtx.translate(cx + ox, cy + ey);
-        bCtx.fillStyle = '#FFFFFF';
+        bCtx.fillStyle = '#FFE090';
+        bCtx.strokeStyle = '#D4AF37';
+        bCtx.lineWidth = 1.2;
         bCtx.beginPath();
-        bCtx.moveTo(-24, 0);
-        bCtx.quadraticCurveTo(0, -12, 24, 0);
-        bCtx.quadraticCurveTo(0, 12, -24, 0);
+        for (let i = 0; i < 16; i++) {
+          const rad = (i % 2 === 0) ? r : r * 0.45;
+          const ang = (i * Math.PI) / 8 - Math.PI / 2;
+          const px = cx + Math.cos(ang) * rad;
+          const py = cy + Math.sin(ang) * rad;
+          if (i === 0) bCtx.moveTo(px, py);
+          else bCtx.lineTo(px, py);
+        }
+        bCtx.closePath();
         bCtx.fill();
-
-        // Iris
-        bCtx.fillStyle = '#1D5BBF';
-        bCtx.beginPath();
-        bCtx.arc(0, 0, 7.5, 0, Math.PI * 2);
-        bCtx.fill();
-
-        // Pupil
-        bCtx.fillStyle = '#000000';
-        bCtx.beginPath();
-        bCtx.arc(0, 0, 4, 0, Math.PI * 2);
-        bCtx.fill();
-
-        // Eye Outline
-        bCtx.strokeStyle = '#0F172A';
-        bCtx.lineWidth = 1.8;
-        bCtx.beginPath();
-        bCtx.moveTo(-24, 0);
-        bCtx.quadraticCurveTo(0, -12, 24, 0);
-        bCtx.quadraticCurveTo(0, 12, -24, 0);
         bCtx.stroke();
         bCtx.restore();
       }
 
-      drawWisdomEye(-34, -14);
-      drawWisdomEye(34, -14);
+      // 5. DRAW CENTRAL 3x3 HOME TRIANGLES
+      const goalX = cellX(6);
+      const goalY = cellY(6);
+      const goalW = cellSize * 3;
+      const centerPt = [goalX + goalW / 2, goalY + goalW / 2];
 
-      // Sacred Unity Curl (Ek Number)
+      const homeTriangles = [
+        { p1: [goalX, goalY], p2: [goalX, goalY + goalW], color: '#9E2A1A' },
+        { p1: [goalX, goalY], p2: [goalX + goalW, goalY], color: '#0E5C38' },
+        { p1: [goalX + goalW, goalY], p2: [goalX + goalW, goalY + goalW], color: '#A6730A' },
+        { p1: [goalX, goalY + goalW], p2: [goalX + goalW, goalY + goalW], color: '#154182' }
+      ];
+
+      homeTriangles.forEach(tri => {
+        bCtx.save();
+        bCtx.beginPath();
+        bCtx.moveTo(centerPt[0], centerPt[1]);
+        bCtx.lineTo(tri.p1[0], tri.p1[1]);
+        bCtx.lineTo(tri.p2[0], tri.p2[1]);
+        bCtx.closePath();
+        bCtx.fillStyle = tri.color;
+        bCtx.fill();
+        bCtx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+        bCtx.lineWidth = 1.5;
+        bCtx.stroke();
+        bCtx.restore();
+      });
+
+      // 6. CENTRAL SWAYAMBHUNATH WISDOM EYES MEDALLION
+      const medR = cellSize * 1.35;
+      const [mcx, mcy] = centerPt;
+
       bCtx.save();
-      bCtx.strokeStyle = '#0F172A';
-      bCtx.lineWidth = 3;
+      for (let p = 0; p < 16; p++) {
+        const pAng = (p * Math.PI * 2) / 16;
+        const px = mcx + Math.cos(pAng) * (medR + 4);
+        const py = mcy + Math.sin(pAng) * (medR + 4);
+        bCtx.save();
+        bCtx.translate(px, py);
+        bCtx.rotate(pAng + Math.PI / 2);
+        bCtx.fillStyle = (p % 2 === 0) ? '#D4AF37' : '#9E2A1A';
+        bCtx.beginPath();
+        bCtx.ellipse(0, 0, 3.5, 8, 0, 0, Math.PI * 2);
+        bCtx.fill();
+        bCtx.restore();
+      }
+
+      const goldGrad = bCtx.createRadialGradient(mcx - medR * 0.3, mcy - medR * 0.3, 4, mcx, mcy, medR);
+      goldGrad.addColorStop(0, '#FFF1B8');
+      goldGrad.addColorStop(0.55, '#D4AF37');
+      goldGrad.addColorStop(1, '#7A5B0B');
+      bCtx.fillStyle = goldGrad;
       bCtx.beginPath();
-      bCtx.moveTo(cx, cy + 2);
-      bCtx.lineTo(cx, cy + 18);
-      bCtx.quadraticCurveTo(cx + 8, cy + 26, cx, cy + 34);
+      bCtx.arc(mcx, mcy, medR, 0, Math.PI * 2);
+      bCtx.fill();
+      bCtx.strokeStyle = '#2B1C03';
+      bCtx.lineWidth = 2.5;
       bCtx.stroke();
 
-      // Third Eye Urna
-      bCtx.fillStyle = '#C23B22';
+      const eyeSpacing = medR * 0.38;
+      const eyeElevation = medR * 0.12;
+
+      function drawWisdomEye(ex) {
+        bCtx.save();
+        bCtx.beginPath();
+        bCtx.moveTo(ex - 12, mcy - eyeElevation);
+        bCtx.quadraticCurveTo(ex, mcy - eyeElevation - 9, ex + 12, mcy - eyeElevation);
+        bCtx.quadraticCurveTo(ex, mcy - eyeElevation + 7, ex - 12, mcy - eyeElevation);
+        bCtx.fillStyle = '#FFFFFF';
+        bCtx.fill();
+        bCtx.strokeStyle = '#0B0E14';
+        bCtx.lineWidth = 1.8;
+        bCtx.stroke();
+
+        bCtx.beginPath();
+        bCtx.arc(ex, mcy - eyeElevation - 0.5, 4.2, 0, Math.PI * 2);
+        bCtx.fillStyle = '#0F2C59';
+        bCtx.fill();
+
+        bCtx.beginPath();
+        bCtx.moveTo(ex - 14, mcy - eyeElevation - 6);
+        bCtx.quadraticCurveTo(ex, mcy - eyeElevation - 14, ex + 14, mcy - eyeElevation - 5);
+        bCtx.strokeStyle = '#0B0E14';
+        bCtx.lineWidth = 2;
+        bCtx.stroke();
+        bCtx.restore();
+      }
+
+      drawWisdomEye(mcx - eyeSpacing);
+      drawWisdomEye(mcx + eyeSpacing);
+
       bCtx.beginPath();
-      bCtx.arc(cx, cy - 28, 4.5, 0, Math.PI * 2);
+      bCtx.moveTo(mcx, mcy + medR * 0.05);
+      bCtx.lineTo(mcx, mcy + medR * 0.22);
+      bCtx.quadraticCurveTo(mcx + 7, mcy + medR * 0.32, mcx, mcy + medR * 0.42);
+      bCtx.strokeStyle = '#0B0E14';
+      bCtx.lineWidth = 2.2;
+      bCtx.stroke();
+
+      bCtx.beginPath();
+      bCtx.arc(mcx, mcy - medR * 0.32, 2.5, 0, Math.PI * 2);
+      bCtx.fillStyle = '#CC2222';
       bCtx.fill();
       bCtx.restore();
 
-      // Four Corner Prayer Flags (Blue, White, Red, Green, Yellow)
-      const colors = ['#2A72FF', '#FFFFFF', '#C23B22', '#00C875', '#E5A93C'];
-      const corners = [
-        [margin + 20, margin + 20],
-        [w - margin - 20, margin + 20],
-        [w - margin - 20, h - margin - 20],
-        [margin + 20, h - margin - 20]
-      ];
+      // 7. REAL TACTILE 3D TOKENS ON ACTIVE TRACK
+      function draw3DToken(tx, ty, r, colHex) {
+        bCtx.save();
+        bCtx.beginPath();
+        bCtx.ellipse(tx + 2, ty + 3, r * 1.05, r * 0.55, 0, 0, Math.PI * 2);
+        bCtx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+        bCtx.filter = 'blur(3px)';
+        bCtx.fill();
+        bCtx.filter = 'none';
 
-      corners.forEach(([kx, ky], cIdx) => {
-        colors.forEach((col, fIdx) => {
-          bCtx.fillStyle = col;
-          bCtx.beginPath();
-          const ox = (cIdx % 2 === 0 ? 1 : -1) * (fIdx * 12);
-          const oy = (cIdx < 2 ? 1 : -1) * (fIdx * 6);
-          bCtx.moveTo(kx + ox, ky + oy);
-          bCtx.lineTo(kx + ox + 10, ky + oy + 4);
-          bCtx.lineTo(kx + ox + 5, ky + oy + 14);
-          bCtx.closePath();
-          bCtx.fill();
-        });
-      });
+        const tokenGrad = bCtx.createRadialGradient(tx - r * 0.3, ty - r * 0.35, r * 0.1, tx, ty, r);
+        tokenGrad.addColorStop(0, '#FFFFFF');
+        tokenGrad.addColorStop(0.25, colHex);
+        tokenGrad.addColorStop(1, '#0B0E14');
+        bCtx.beginPath();
+        bCtx.arc(tx, ty, r, 0, Math.PI * 2);
+        bCtx.fillStyle = tokenGrad;
+        bCtx.fill();
+        bCtx.strokeStyle = '#D4AF37';
+        bCtx.lineWidth = 1.4;
+        bCtx.stroke();
+
+        bCtx.beginPath();
+        bCtx.arc(tx, ty, r * 0.32, 0, Math.PI * 2);
+        bCtx.fillStyle = '#FFE090';
+        bCtx.fill();
+        bCtx.restore();
+      }
+
+      const [rtx, rty] = cellCenter(4, 6);
+      draw3DToken(rtx, rty, cellSize * 0.42, '#FF4433');
+
+      const [gtx, gty] = cellCenter(8, 3);
+      draw3DToken(gtx, gty, cellSize * 0.42, '#00D878');
+
+      const [ytx, yty] = cellCenter(11, 8);
+      draw3DToken(ytx, yty, cellSize * 0.42, '#FFCA28');
+
+      const [btx, bty] = cellCenter(7, 11);
+      draw3DToken(btx, bty, cellSize * 0.42, '#3884FF');
+
+      if (w > boardSize + 140) {
+        bCtx.save();
+        bCtx.fillStyle = '#FFE090';
+        bCtx.font = '700 11px Cinzel, serif';
+        bCtx.textAlign = 'left';
+        bCtx.fillText('🇳🇵 KATHMANDU THEME', ox + 10, oy - 4 > 14 ? oy - 6 : 18);
+        bCtx.textAlign = 'right';
+        bCtx.fillText('15×15 TOURNAMENT BOARD', ox + boardSize - 10, oy - 4 > 14 ? oy - 6 : 18);
+        bCtx.restore();
+      }
     }
 
     renderKathmanduBoard();
