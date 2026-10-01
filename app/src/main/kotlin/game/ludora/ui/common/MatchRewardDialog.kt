@@ -35,16 +35,21 @@ import game.ludora.core.model.MatchReward
 @Composable
 fun MatchRewardDialog(
     reward: MatchReward,
+    reducedMotion: Boolean = false,
     onContinue: () -> Unit
 ) {
     Dialog(onDismissRequest = onContinue) {
-        LudoraCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            containerColor = LudoraTheme.colors.surfaceElevated,
-            borderColor = WarmAmberGold
-        ) {
+        Box(contentAlignment = Alignment.Center) {
+            if (reward.placement == 1) {
+                game.ludora.ui.animation.ConfettiCelebration(reducedMotion = reducedMotion)
+            }
+            LudoraCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                containerColor = LudoraTheme.colors.surfaceElevated,
+                borderColor = WarmAmberGold
+            ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -153,5 +158,6 @@ fun MatchRewardDialog(
                 )
             }
         }
+    }
     }
 }

@@ -173,6 +173,17 @@ Alternatives:
 - Uncapped rewarded ads: Triggers virtual economy hyperinflation and undermines gameplay rewards.
 Status: Accepted
 
+## Decision: Phase 10 Procedural Audio Synthesis, Multi-Tier Haptics, and Multi-Modal Accessibility
+
+Date: 2026-10-01
+Decision: Implement in-game sound design using zero-asset procedural 16-bit PCM waveform synthesis (`AudioSoundManager`) generating sine, sweep, arpeggio, and harmonic chords mathematically without external audio files; pair every audio cue with tactile vibration patterns (`HapticFeedbackManager`) scaled across 4 user-selected intensity tiers (`OFF`, `LIGHT`, `MEDIUM`, `STRONG`); provide full WCAG AA color-blind palette transformations (`Deuteranopia`, `Protanopia`, `Tritanopia`) alongside color-independent geometric piece markers (Circle, Triangle, Diamond, Square); enforce strict Reduced Motion compliance by suppressing celebratory confetti particle explosions (`ConfettiCelebration`) and simplifying 3D dice rolls to instant 100ms fade transitions (`AnimatedDiceView`).
+Reason: Guarantees 100% offline multi-modal feedback with zero audio asset bloat, satisfies strict accessibility guidelines for players with sensory impairments, and ensures fluid performance on low-end hardware.
+Alternatives:
+- Bundling large MP3/OGG sound files: Increases APK size, introduces audio decode latency on budget devices, and complicates offline file asset licensing.
+- Relying solely on color for piece identification: Excludes players with red-green or blue-yellow color vision deficiencies.
+- Forcing decorative animations for all users: Causes motion sickness and battery drain for users requiring reduced motion.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:

@@ -42,6 +42,11 @@ import androidx.compose.ui.unit.sp
 import game.ludora.core.common.ads.AdPolicyManager
 import game.ludora.core.common.ads.FakeAdProvider
 import game.ludora.core.common.ads.FakeBillingService
+import game.ludora.core.common.feedback.AudioSoundManager
+import game.ludora.core.common.feedback.HapticFeedbackManager
+import game.ludora.core.common.feedback.HapticIntensity
+import game.ludora.core.common.feedback.HapticPattern
+import game.ludora.core.common.feedback.SoundEffect
 import game.ludora.core.common.progression.DailyQuestEngine
 import game.ludora.core.common.progression.ProgressionEngine
 import game.ludora.core.designsystem.component.LudoraCard
@@ -55,6 +60,7 @@ import game.ludora.core.designsystem.theme.SlateCard
 import game.ludora.core.designsystem.theme.TextPrimary
 import game.ludora.core.designsystem.theme.TextSecondary
 import game.ludora.core.designsystem.theme.WarmAmberGold
+import game.ludora.core.model.AccessibilityConfig
 import game.ludora.core.model.AdPlacement
 import game.ludora.core.model.AdReward
 import game.ludora.core.model.GameType
@@ -63,6 +69,7 @@ import game.ludora.core.model.MatchReward
 import game.ludora.core.network.gateway.InMemoryRealtimeGateway
 import game.ludora.core.network.matchmaking.Matchmaker
 import game.ludora.core.network.matchmaking.MatchmakingTicket
+import game.ludora.ui.settings.AccessibilitySettingsSheet
 import game.ludora.ui.ads.HomeBannerAdView
 import game.ludora.ui.ads.PostMatchInterstitialDialog
 import game.ludora.ui.ads.RewardedAdButton
@@ -112,6 +119,12 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
     val coroutineScope = rememberCoroutineScope()
     val realtimeGateway = remember { InMemoryRealtimeGateway() }
     val matchmaker = remember { Matchmaker() }
+
+    // Audio, Haptics & Accessibility Infrastructure
+    val audioSoundManager = remember { AudioSoundManager(isSoundEnabled = true) }
+    val hapticFeedbackManager = remember { HapticFeedbackManager(intensity = HapticIntensity.MEDIUM) }
+    var accessibilityConfig by remember { mutableStateOf(AccessibilityConfig()) }
+    var isAccessibilitySheetVisible by remember { mutableStateOf(false) }
 
     // Ad & Monetization Infrastructure
     val adPolicyManager = remember { AdPolicyManager(initialSessionCount = 3) }
@@ -223,6 +236,7 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
                 remainingRewardedAds = adPolicyManager.remainingRewardedAdsToday(),
                 onWatchRewardedAd = handleWatchRewardedAd,
                 onOpenProfileProgression = { isProfileSheetVisible = true },
+                onOpenAccessibilitySettings = { isAccessibilitySheetVisible = true },
                 onLaunchMode = { mode -> pendingSetupMode = mode },
                 onStartQuickMatch = { isSearchingMatchVisible = true },
                 onCreatePrivateRoom = {
@@ -312,6 +326,24 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
                 )
             }
 
+            if (isAccessibilitySheetVisible) {
+                AccessibilitySettingsSheet(
+                    config = accessibilityConfig,
+                    onConfigUpdated = { updated ->
+                        accessibilityConfig = updated
+                        audioSoundManager.isSoundEnabled = updated.soundEnabled
+                        audioSoundManager.volume = updated.soundVolume
+                        hapticFeedbackManager.intensity = when (updated.hapticIntensity) {
+                            "OFF" -> HapticIntensity.OFF
+                            "LIGHT" -> HapticIntensity.LIGHT
+                            "STRONG" -> HapticIntensity.STRONG
+                            else -> HapticIntensity.MEDIUM
+                        }
+                    },
+                    onDismissRequest = { isAccessibilitySheetVisible = false }
+                )
+            }
+
             if (showPostMatchInterstitial) {
                 PostMatchInterstitialDialog(
                     onDismissed = {
@@ -326,6 +358,7 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
             activeMatchReward?.let { reward ->
                 MatchRewardDialog(
                     reward = reward,
+                    reducedMotion = accessibilityConfig.reducedMotion,
                     onContinue = { activeMatchReward = null }
                 )
             }
@@ -397,6 +430,7 @@ fun LudoraDashboardScreen(
     remainingRewardedAds: Int = 5,
     onWatchRewardedAd: () -> Unit = {},
     onOpenProfileProgression: () -> Unit,
+    onOpenAccessibilitySettings: () -> Unit = {},
     onLaunchMode: (String) -> Unit,
     onStartQuickMatch: () -> Unit,
     onCreatePrivateRoom: () -> Unit,
@@ -435,20 +469,35 @@ fun LudoraDashboardScreen(
                 )
             }
 
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(SlateCard)
-                    .border(1.dp, WarmAmberGold.copy(alpha = 0.5f), RoundedCornerShape(20.dp))
-                    .clickable(onClick = onOpenProfileProgression)
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
-            ) {
-                Text(
-                    text = "🪙 ${profile.coins}",
-                    color = WarmAmberGold,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp
-                )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(CircleShape)
+                        .background(SlateCard)
+                        .clickable(onClick = onOpenAccessibilitySettings),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "⚙️", fontSize = 16.sp)
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(SlateCard)
+                        .border(1.dp, WarmAmberGold.copy(alpha = 0.5f), RoundedCornerShape(20.dp))
+                        .clickable(onClick = onOpenProfileProgression)
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                ) {
+                    Text(
+                        text = "🪙 ${profile.coins}",
+                        color = WarmAmberGold,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp
+                    )
+                }
             }
         }
 

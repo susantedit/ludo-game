@@ -66,6 +66,28 @@ fun PlayerColor.toColor(): Color = when (this) {
     PlayerColor.BLUE -> PlayerBlue
 }
 
+fun PlayerColor.toAccessibleColor(mode: game.ludora.core.model.ColorBlindMode): Color = when (mode) {
+    game.ludora.core.model.ColorBlindMode.STANDARD -> toColor()
+    game.ludora.core.model.ColorBlindMode.DEUTERANOPIA -> when (this) {
+        PlayerColor.RED -> Color(0xFFE66101) // High-contrast Vermilion
+        PlayerColor.GREEN -> Color(0xFF009688) // Distinct Teal
+        PlayerColor.YELLOW -> Color(0xFFFFC107) // Amber Gold
+        PlayerColor.BLUE -> Color(0xFF5E3C99) // Deep Purple-Blue
+    }
+    game.ludora.core.model.ColorBlindMode.PROTANOPIA -> when (this) {
+        PlayerColor.RED -> Color(0xFF0288D1) // Bright Sky Blue
+        PlayerColor.GREEN -> Color(0xFF2E7D32) // Forest Pine
+        PlayerColor.YELLOW -> Color(0xFFFFEB3B) // High-visibility Lemon
+        PlayerColor.BLUE -> Color(0xFF673AB7) // Indigo Purple
+    }
+    game.ludora.core.model.ColorBlindMode.TRITANOPIA -> when (this) {
+        PlayerColor.RED -> Color(0xFFD32F2F) // Crimson Red
+        PlayerColor.GREEN -> Color(0xFF4CAF50) // Emerald Green
+        PlayerColor.YELLOW -> Color(0xFFFF7043) // Coral Salmon
+        PlayerColor.BLUE -> Color(0xFF00ACC1) // Deep Cyan
+    }
+}
+
 fun PlayerColor.toDarkColor(): Color = when (this) {
     PlayerColor.RED -> PlayerRedDark
     PlayerColor.GREEN -> PlayerGreenDark

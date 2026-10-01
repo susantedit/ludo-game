@@ -48,3 +48,8 @@
 - Phase 9 Ads & Monetization: `BillingService` and `FakeBillingService` for permanent "Remove Ads" IAP pass
 - Phase 9 Ads & Monetization: `ServerSideRewardVerifier` for cryptographic SSV callback verification
 - Phase 9 Ads & Monetization: Interactive UI components (`HomeBannerAdView`, `PostMatchInterstitialDialog`, `RewardedAdButton`, `RemoveAdsCard`) and MainActivity dashboard integration
+- Phase 10 Polish: Procedural 16-bit PCM audio synthesizer `AudioSoundManager` generating sine, sweep, arpeggio, and fanfare waveforms without external assets
+- Phase 10 Polish: Multi-pattern `HapticFeedbackManager` (Tick, Click, Dice Bounce, Capture Impact, Hazard Rumble, Victory Pulse) with 4 intensity tiers
+- Phase 10 Polish: `AccessibilityConfig` domain model and WCAG AA color-blind palette transformations (`Deuteranopia`, `Protanopia`, `Tritanopia`) in `Color.kt`
+- Phase 10 Polish: `AccessibilitySettingsSheet` allowing live adjustment of contrast, shape markers, reduced motion, volume, and haptic intensity
+- Phase 10 Polish: `ConfettiCelebration` Canvas particle burst on victory screens and tactile `AnimatedDiceView` with spring bounce and reduced motion fallback
