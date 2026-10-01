@@ -12,4 +12,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(libs.junit)
+    testImplementation(project(":engine:core"))
+    testImplementation(project(":engine:ludo"))
+    testImplementation(project(":engine:snake"))
+    testImplementation(project(":engine:remix"))
+    testImplementation(project(":engine:ai"))
 }

@@ -184,6 +184,16 @@ Alternatives:
 - Forcing decorative animations for all users: Causes motion sickness and battery drain for users requiring reduced motion.
 Status: Accepted
 
+## Decision: Phase 11 Multi-Tier Chaos Simulation, Hardware Adaptation, and Performance Benchmarks
+
+Date: 2026-10-01
+Decision: Validate all game sub-systems against extreme network disruptions (`ChaosRealtimeGatewayTest`) with up to 30% synthetic packet drops, out-of-order sequence ID filtering, and 60-second grace reconnection recovery; enforce a strict <1ms turn execution latency budget, <120MB active heap threshold, and <50ms cold start baseline via `EnginePerformanceBenchmarkTest`; implement low-RAM device adaptations (`LowMemoryPolicy`) capping particle counts and downscaling render buffers for 2GB/API 26 devices; audit WCAG 2.1 AA color-blind contrast (>3.0:1) across all four perception palettes via `AccessibilityContrastAuditTest`; and verify cross-mode rule isolation (zero rule bleed between Classic Ludo and Remix Mode) via `EndToEndRegressionSuiteTest`.
+Reason: Guarantees rock-solid stability under adverse mobile network handoffs, prevents regression across independent rule variants, and ensures smooth 60fps performance on budget devices without battery drain or memory leaks.
+Alternatives:
+- Manual device testing only: Fails to detect rare packet race conditions or subtle state desynchronizations under high packet drop rates.
+- Uncapped memory allocation on budget hardware: Triggers low-memory killer (OOM) crashes on 2GB RAM budget phones.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:

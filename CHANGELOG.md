@@ -53,3 +53,8 @@
 - Phase 10 Polish: `AccessibilityConfig` domain model and WCAG AA color-blind palette transformations (`Deuteranopia`, `Protanopia`, `Tritanopia`) in `Color.kt`
 - Phase 10 Polish: `AccessibilitySettingsSheet` allowing live adjustment of contrast, shape markers, reduced motion, volume, and haptic intensity
 - Phase 10 Polish: `ConfettiCelebration` Canvas particle burst on victory screens and tactile `AnimatedDiceView` with spring bounce and reduced motion fallback
+- Phase 11 Testing: `ChaosRealtimeGatewayTest` simulating 30% synthetic packet drops, latency jitter, 60s grace reconnection recovery, and out-of-order sequence filtering
+- Phase 11 Testing: `EnginePerformanceBenchmarkTest` benchmarking <1ms turn execution budget, 1,000-turn throughput, <120MB active heap threshold, and <50ms cold start baseline
+- Phase 11 Testing: `EndToEndRegressionSuiteTest` verifying full match loops across Classic Ludo, Snake & Ladder, and Remix Mode with rule isolation guarantees
+- Phase 11 Testing: `LowMemoryPolicy` and `LowMemoryPolicyTest` ensuring graceful particle and shadow degradation on 2GB RAM budget devices
+- Phase 11 Testing: `AccessibilityContrastAuditTest` verifying WCAG 2.1 AA contrast compliance (>3.0:1) across all four color-blind perception palettes
