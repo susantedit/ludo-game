@@ -19,6 +19,7 @@ data class LocalProfile(
     val equippedBoardThemeId: String = "board_obsidian",
     val unlockedCosmeticIds: List<String> = listOf("dice_classic", "token_classic", "board_obsidian"),
     val activeQuests: List<DailyQuest> = DailyQuest.defaultQuests(),
+    val isAdFree: Boolean = false,
     val lastActiveTimestamp: Long = System.currentTimeMillis()
 ) {
     val winRate: Float

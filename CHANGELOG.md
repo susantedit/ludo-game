@@ -42,3 +42,9 @@
 - Phase 8 Online Multiplayer: `MatchmakingTicket` and `Matchmaker` queuing engine with MMR-based pairing and 45-second timeout AI autofill
 - Phase 8 Online Multiplayer: Server-authoritative `OnlineMatchCoordinator` with 15s turn countdown timer, timeout forfeiture, 60s reconnection grace period, and snapshot recovery
 - Phase 8 Online Multiplayer: Interactive Compose UI components (`OnlineLobbyScreen`, `JoinRoomDialog`, `QuickMatchSearchingOverlay`) and MainActivity hub navigation
+- Phase 9 Ads & Monetization: `AdPlacement`, `AdReward`, `AdState`, and `AdPolicyConfig` core domain models in `:core:model`
+- Phase 9 Ads & Monetization: `AdPolicyManager` with 8-min/2-match interstitial cooldowns, 3/hr cap, 5/day rewarded cap, 3-session onboarding grace period, and strict offline suppression
+- Phase 9 Ads & Monetization: Vendor-agnostic `AdProvider` interface with in-memory `FakeAdProvider` test double
+- Phase 9 Ads & Monetization: `BillingService` and `FakeBillingService` for permanent "Remove Ads" IAP pass
+- Phase 9 Ads & Monetization: `ServerSideRewardVerifier` for cryptographic SSV callback verification
+- Phase 9 Ads & Monetization: Interactive UI components (`HomeBannerAdView`, `PostMatchInterstitialDialog`, `RewardedAdButton`, `RemoveAdsCard`) and MainActivity dashboard integration

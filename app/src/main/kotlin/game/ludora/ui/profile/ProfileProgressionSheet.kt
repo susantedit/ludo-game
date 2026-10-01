@@ -58,10 +58,15 @@ import game.ludora.core.model.LocalProfile
 fun ProfileProgressionSheet(
     profile: LocalProfile,
     onProfileUpdated: (LocalProfile) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    isOnline: Boolean = true,
+    remainingRewardedAds: Int = 5,
+    onPurchaseAdFree: () -> Unit = {},
+    onRestoreAdFree: () -> Unit = {},
+    onWatchRewardedAd: () -> Unit = {}
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var selectedTab by remember { mutableIntStateOf(0) } // 0 = Stats, 1 = Cosmetics, 2 = Quests
+    var selectedTab by remember { mutableIntStateOf(0) } // 0 = Stats, 1 = Cosmetics, 2 = Quests, 3 = VIP Store
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -172,7 +177,7 @@ fun ProfileProgressionSheet(
                 containerColor = SlateCard,
                 contentColor = WarmAmberGold
             ) {
-                listOf("Stats", "Cosmetics", "Quests").forEachIndexed { idx, title ->
+                listOf("Stats", "Cosmetics", "Quests", "VIP").forEachIndexed { idx, title ->
                     Tab(
                         selected = selectedTab == idx,
                         onClick = { selectedTab = idx },
@@ -180,7 +185,7 @@ fun ProfileProgressionSheet(
                             Text(
                                 text = title,
                                 fontWeight = if (selectedTab == idx) FontWeight.Bold else FontWeight.Medium,
-                                fontSize = 14.sp
+                                fontSize = 13.sp
                             )
                         }
                     )
@@ -193,8 +198,44 @@ fun ProfileProgressionSheet(
                 0 -> StatsTabContent(profile)
                 1 -> CosmeticsTabContent(profile, onProfileUpdated)
                 2 -> QuestsTabContent(profile, onProfileUpdated)
+                3 -> VipTabContent(
+                    isAdFree = profile.isAdFree,
+                    isOnline = isOnline,
+                    remainingRewardedAds = remainingRewardedAds,
+                    onPurchaseAdFree = onPurchaseAdFree,
+                    onRestoreAdFree = onRestoreAdFree,
+                    onWatchRewardedAd = onWatchRewardedAd
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun VipTabContent(
+    isAdFree: Boolean,
+    isOnline: Boolean,
+    remainingRewardedAds: Int,
+    onPurchaseAdFree: () -> Unit,
+    onRestoreAdFree: () -> Unit,
+    onWatchRewardedAd: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        game.ludora.ui.ads.RemoveAdsCard(
+            isAdFree = isAdFree,
+            onPurchaseClicked = onPurchaseAdFree,
+            onRestoreClicked = onRestoreAdFree
+        )
+
+        game.ludora.ui.ads.RewardedAdButton(
+            rewardTitle = "+50 Coins",
+            remainingToday = remainingRewardedAds,
+            isOnline = isOnline,
+            onWatchAdClicked = onWatchRewardedAd
+        )
     }
 }
 

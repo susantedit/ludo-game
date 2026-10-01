@@ -39,6 +39,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import game.ludora.core.common.ads.AdPolicyManager
+import game.ludora.core.common.ads.FakeAdProvider
+import game.ludora.core.common.ads.FakeBillingService
 import game.ludora.core.common.progression.DailyQuestEngine
 import game.ludora.core.common.progression.ProgressionEngine
 import game.ludora.core.designsystem.component.LudoraCard
@@ -52,12 +55,17 @@ import game.ludora.core.designsystem.theme.SlateCard
 import game.ludora.core.designsystem.theme.TextPrimary
 import game.ludora.core.designsystem.theme.TextSecondary
 import game.ludora.core.designsystem.theme.WarmAmberGold
+import game.ludora.core.model.AdPlacement
+import game.ludora.core.model.AdReward
 import game.ludora.core.model.GameType
 import game.ludora.core.model.LocalProfile
 import game.ludora.core.model.MatchReward
 import game.ludora.core.network.gateway.InMemoryRealtimeGateway
 import game.ludora.core.network.matchmaking.Matchmaker
 import game.ludora.core.network.matchmaking.MatchmakingTicket
+import game.ludora.ui.ads.HomeBannerAdView
+import game.ludora.ui.ads.PostMatchInterstitialDialog
+import game.ludora.ui.ads.RewardedAdButton
 import game.ludora.core.network.model.RoomConfig
 import game.ludora.core.network.model.RoomDetails
 import game.ludora.engine.ai.model.AiDifficulty
@@ -105,6 +113,14 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
     val realtimeGateway = remember { InMemoryRealtimeGateway() }
     val matchmaker = remember { Matchmaker() }
 
+    // Ad & Monetization Infrastructure
+    val adPolicyManager = remember { AdPolicyManager(initialSessionCount = 3) }
+    val adProvider = remember { FakeAdProvider().apply { initialize() } }
+    val billingService = remember { FakeBillingService() }
+    var isOnline by remember { mutableStateOf(true) }
+    var showPostMatchInterstitial by remember { mutableStateOf(false) }
+    var pendingMatchReward by remember { mutableStateOf<MatchReward?>(null) }
+
     var currentScreen by remember { mutableStateOf(AppScreen.DASHBOARD) }
     var userProfile by remember {
         mutableStateOf(
@@ -113,7 +129,8 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
                 displayName = "Susant",
                 coins = 200L,
                 level = 1,
-                experiencePoints = 0L
+                experiencePoints = 0L,
+                isAdFree = false
             )
         )
     }
@@ -129,6 +146,49 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
     var isJoinRoomDialogVisible by remember { mutableStateOf(false) }
     var isSearchingMatchVisible by remember { mutableStateOf(false) }
 
+    val handleWatchRewardedAd: () -> Unit = {
+        adProvider.showRewarded(
+            placement = AdPlacement.REWARDED_DAILY_BONUS,
+            onRewarded = { reward ->
+                adPolicyManager.recordRewardedShown()
+                val bonusCoins = when (reward) {
+                    is AdReward.Coins -> reward.amount.toLong()
+                    else -> 50L
+                }
+                userProfile = userProfile.copy(coins = userProfile.coins + bonusCoins)
+                Toast.makeText(context, "Bonus claimed: +$bonusCoins Coins! 🪙", Toast.LENGTH_SHORT).show()
+            },
+            onClosed = {},
+            onFailed = { msg ->
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
+
+    val handlePurchaseAdFree: () -> Unit = {
+        coroutineScope.launch {
+            val result = billingService.purchaseRemoveAds()
+            if (result.isSuccess) {
+                adPolicyManager.setAdFree(true)
+                userProfile = userProfile.copy(isAdFree = true)
+                Toast.makeText(context, "Ad-Free VIP Activated! All banners and interstitials removed.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    val handleRestoreAdFree: () -> Unit = {
+        coroutineScope.launch {
+            val result = billingService.restorePurchases()
+            if (result.isSuccess && result.getOrNull() == true) {
+                adPolicyManager.setAdFree(true)
+                userProfile = userProfile.copy(isAdFree = true)
+                Toast.makeText(context, "Purchases restored: Ad-Free VIP Active.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "No active Ad-Free purchase found to restore.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     val handleMatchCompletion: (placement: Int, captures: Int, isWin: Boolean, sixesRolled: Int) -> Unit = { placement, captures, isWin, sixesRolled ->
         val (updatedProfile, reward) = ProgressionEngine.applyMatchOutcome(
             profile = userProfile,
@@ -143,7 +203,14 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
             sixesRolled = sixesRolled
         )
         userProfile = updatedProfile.copy(activeQuests = updatedQuests)
-        activeMatchReward = reward
+        adPolicyManager.recordMatchFinished()
+
+        if (adPolicyManager.canShowInterstitial(isOnline)) {
+            pendingMatchReward = reward
+            showPostMatchInterstitial = true
+        } else {
+            activeMatchReward = reward
+        }
         currentScreen = AppScreen.DASHBOARD
     }
 
@@ -152,6 +219,9 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
             LudoraDashboardScreen(
                 modifier = modifier,
                 profile = userProfile,
+                isOnline = isOnline,
+                remainingRewardedAds = adPolicyManager.remainingRewardedAdsToday(),
+                onWatchRewardedAd = handleWatchRewardedAd,
                 onOpenProfileProgression = { isProfileSheetVisible = true },
                 onLaunchMode = { mode -> pendingSetupMode = mode },
                 onStartQuickMatch = { isSearchingMatchVisible = true },
@@ -233,7 +303,23 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
                 ProfileProgressionSheet(
                     profile = userProfile,
                     onProfileUpdated = { updated -> userProfile = updated },
-                    onDismissRequest = { isProfileSheetVisible = false }
+                    onDismissRequest = { isProfileSheetVisible = false },
+                    isOnline = isOnline,
+                    remainingRewardedAds = adPolicyManager.remainingRewardedAdsToday(),
+                    onPurchaseAdFree = handlePurchaseAdFree,
+                    onRestoreAdFree = handleRestoreAdFree,
+                    onWatchRewardedAd = handleWatchRewardedAd
+                )
+            }
+
+            if (showPostMatchInterstitial) {
+                PostMatchInterstitialDialog(
+                    onDismissed = {
+                        adPolicyManager.recordInterstitialShown()
+                        showPostMatchInterstitial = false
+                        activeMatchReward = pendingMatchReward
+                        pendingMatchReward = null
+                    }
                 )
             }
 
@@ -307,6 +393,9 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
 fun LudoraDashboardScreen(
     modifier: Modifier = Modifier,
     profile: LocalProfile,
+    isOnline: Boolean = true,
+    remainingRewardedAds: Int = 5,
+    onWatchRewardedAd: () -> Unit = {},
     onOpenProfileProgression: () -> Unit,
     onLaunchMode: (String) -> Unit,
     onStartQuickMatch: () -> Unit,
@@ -539,7 +628,25 @@ fun LudoraDashboardScreen(
             onPlayClick = { onLaunchMode("Ludora Remix") }
         )
 
-        Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+
+        // Rewarded Video Opt-In Banner
+        RewardedAdButton(
+            rewardTitle = "+50 Coins",
+            remainingToday = remainingRewardedAds,
+            isOnline = isOnline,
+            onWatchAdClicked = onWatchRewardedAd
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Collapsible Bottom Home Banner (Zero-height when offline or ad-free)
+        HomeBannerAdView(
+            isOnline = isOnline,
+            isAdFree = profile.isAdFree
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
     }
 
     if (isMascotSheetVisible) {

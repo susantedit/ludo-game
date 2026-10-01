@@ -162,6 +162,17 @@ Alternatives:
 - Strict instant disconnect drops: Punishes mobile users for momentary subway tunnel or Wi-Fi handoff packet loss.
 Status: Accepted
 
+## Decision: Phase 9 AdProvider Abstraction, Frequency Protection, and IAP Entitlement Architecture
+
+Date: 2026-10-01
+Decision: Decouple advertising networks through a vendor-agnostic `AdProvider` interface with in-memory test doubles (`FakeAdProvider`), strictly enforce offline suppression, gate post-match interstitials behind an 8-minute/2-match cooldown and 3-session onboarding grace period via `AdPolicyManager`, require Server-Side Verification (SSV) for rewarded video bonuses (`ServerSideRewardVerifier`), and provide a non-consumable "Remove Ads" pass (`BillingService`) that permanently eliminates banners and interstitials while preserving optional rewarded ads.
+Reason: Adheres strictly to the core Ludora monetization manifesto: zero mid-game interruptions, absolute offline freedom (zero ad loading delays or empty layout boxes when offline), and player-first fairness.
+Alternatives:
+- Direct Google Mobile Ads / Unity SDK coupling: Couples presentation code to platform SDKs and breaks JVM unit testability.
+- Mid-game interstitial banners: Causes player rage quits and compromises board focus.
+- Uncapped rewarded ads: Triggers virtual economy hyperinflation and undermines gameplay rewards.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:
