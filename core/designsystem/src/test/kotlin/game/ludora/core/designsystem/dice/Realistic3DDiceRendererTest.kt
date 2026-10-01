@@ -82,4 +82,26 @@ class Realistic3DDiceRendererTest {
             assertEquals("Face $face must have $face pips", face, pips.size)
         }
     }
+
+    @Test
+    fun `computeSettledFacets guarantees rolled face is visible and top-most for all values 1 to 6`() {
+        for (rolled in 1..6) {
+            val facets = renderer.computeSettledFacets(
+                centerX = 100f,
+                centerY = 100f,
+                size = 80f,
+                rolledValue = rolled
+            )
+            val visibleFacets = facets.filter { it.isVisible }
+            assertTrue("Must have visible facets", visibleFacets.isNotEmpty())
+
+            // The top-most face in world space has the highest normal Y component
+            val topFacet = visibleFacets.maxByOrNull { it.normal.y }!!
+            assertEquals("Rolled face $rolled must be the top-most face", rolled, topFacet.faceValue)
+            assertTrue("Top face must be visible", topFacet.isVisible)
+            assertTrue("Top face normal must have positive Y", topFacet.normal.y > 0.7f)
+            assertTrue("Top face normal must face camera with positive Z", topFacet.normal.z > 0.3f)
+        }
+    }
 }
+

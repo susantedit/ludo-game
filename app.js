@@ -78,9 +78,55 @@
       { value: 4, normal: [-1, 0, 0], indices: [0, 4, 7, 3] }
     ];
 
-    let rotX = 0.615;
-    let rotY = 0.785;
-    let rotZ = 0.0;
+    // Matrix math helpers for 3D rotation
+    function rotXMat(a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return [[1, 0, 0], [0, c, -s], [0, s, c]];
+    }
+    function rotYMat(a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return [[c, 0, s], [0, 1, 0], [-s, 0, c]];
+    }
+    function rotZMat(a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return [[c, -s, 0], [s, c, 0], [0, 0, 1]];
+    }
+    function matMul(a, b) {
+      const res = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          for (let k = 0; k < 3; k++) {
+            res[r][c] += a[r][k] * b[k][c];
+          }
+        }
+      }
+      return res;
+    }
+    function matMulVec(m, v) {
+      return [
+        m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2],
+        m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2],
+        m[2][0] * v[0] + m[2][1] * v[1] + m[2][2] * v[2]
+      ];
+    }
+
+    // Exact rotations that map each die face normal to +Y (top orientation)
+    const FACE_TO_TOP_MATRICES = {
+      1: rotXMat(-Math.PI / 2),
+      2: rotXMat(0),
+      3: rotZMat(Math.PI / 2),
+      4: rotZMat(-Math.PI / 2),
+      5: rotXMat(Math.PI),
+      6: rotXMat(Math.PI / 2)
+    };
+    const R_CAM = matMul(rotXMat(0.615), rotYMat(0.785));
+
+    function getTargetMatrix(face) {
+      const fMat = FACE_TO_TOP_MATRICES[face] || FACE_TO_TOP_MATRICES[6];
+      return matMul(R_CAM, fMat);
+    }
+
+    let currentDiceMatrix = getTargetMatrix(6);
     let velX = 0;
     let velY = 0;
     let velZ = 0;
@@ -88,20 +134,6 @@
     let altVel = 0;
     let isRolling = false;
     let currentDiceFace = 6;
-
-    function rotateVector(v, ax, ay, az) {
-      let [x, y, z] = v;
-      let cx = Math.cos(ax), sx = Math.sin(ax);
-      let y1 = y * cx - z * sx;
-      let z1 = y * sx + z * cx;
-      let cy = Math.cos(ay), sy = Math.sin(ay);
-      let x2 = x * cy + z1 * sy;
-      let z2 = -x * sy + z1 * cy;
-      let cz = Math.cos(az), sz = Math.sin(az);
-      let x3 = x2 * cz - y1 * sz;
-      let y3 = x2 * sz + y1 * cz;
-      return [x3, y3, z2];
-    }
 
     function project(v, size, cx, cy) {
       const depth = 1 + v[2] * 0.15;
@@ -126,20 +158,6 @@
         rollDice();
       }
     });
-
-    function snapToFace(faceValue) {
-      switch (faceValue) {
-        case 1: rotX = 0; rotY = 0; rotZ = 0; break;
-        case 6: rotX = 0; rotY = Math.PI; rotZ = 0; break;
-        case 2: rotX = Math.PI / 2; rotY = 0; rotZ = 0; break;
-        case 5: rotX = -Math.PI / 2; rotY = 0; rotZ = 0; break;
-        case 3: rotX = 0; rotY = -Math.PI / 2; rotZ = 0; break;
-        case 4: rotX = 0; rotY = Math.PI / 2; rotZ = 0; break;
-      }
-      rotX += 0.45;
-      rotY += 0.55;
-      if (dicePill) dicePill.textContent = `Resting Face: ${faceValue}`;
-    }
 
     function drawPip(cx, cy, radius, isSix) {
       diceCtx.save();
@@ -196,9 +214,8 @@
       const size = 68;
 
       if (isRolling) {
-        rotX += velX;
-        rotY += velY;
-        rotZ += velZ;
+        const deltaR = matMul(rotZMat(velZ), matMul(rotYMat(velY), rotXMat(velX)));
+        currentDiceMatrix = matMul(deltaR, currentDiceMatrix);
         velX *= 0.96;
         velY *= 0.96;
         velZ *= 0.96;
@@ -209,7 +226,9 @@
           altVel = -altVel * 0.58;
           if (Math.abs(altVel) < 1 && Math.abs(velX) < 0.05 && Math.abs(velY) < 0.05) {
             isRolling = false;
-            snapToFace(currentDiceFace);
+            // Snap to exact top-face orientation for the rolled number
+            currentDiceMatrix = getTargetMatrix(currentDiceFace);
+            if (dicePill) dicePill.textContent = `Rolled: ${currentDiceFace} (On Top)`;
           }
         }
       }
@@ -226,12 +245,12 @@
       diceCtx.fill();
 
       const renderCy = cy - altitude;
-      const rotatedVertices = CUBE_VERTICES.map(v => rotateVector(v, rotX, rotY, rotZ));
+      const rotatedVertices = CUBE_VERTICES.map(v => matMulVec(currentDiceMatrix, v));
 
       const facesToDraw = [];
       CUBE_FACES.forEach(face => {
-        const normRot = rotateVector(face.normal, rotX, rotY, rotZ);
-        if (normRot[2] > 0) {
+        const normRot = matMulVec(currentDiceMatrix, face.normal);
+        if (normRot[2] > 0.04) {
           const depth = (rotatedVertices[face.indices[0]][2] +
             rotatedVertices[face.indices[1]][2] +
             rotatedVertices[face.indices[2]][2] +

@@ -25,9 +25,55 @@
     { value: 4, normal: [-1, 0, 0], indices: [0, 4, 7, 3] }  // Left (-X): 4
   ];
 
-  let rotX = 0.615; // Standard isometric tilt
-  let rotY = 0.785;
-  let rotZ = 0.0;
+  // Matrix math helpers for 3D rotation
+  function rotXMat(a) {
+    const c = Math.cos(a), s = Math.sin(a);
+    return [[1, 0, 0], [0, c, -s], [0, s, c]];
+  }
+  function rotYMat(a) {
+    const c = Math.cos(a), s = Math.sin(a);
+    return [[c, 0, s], [0, 1, 0], [-s, 0, c]];
+  }
+  function rotZMat(a) {
+    const c = Math.cos(a), s = Math.sin(a);
+    return [[c, -s, 0], [s, c, 0], [0, 0, 1]];
+  }
+  function matMul(a, b) {
+    const res = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) {
+        for (let k = 0; k < 3; k++) {
+          res[r][c] += a[r][k] * b[k][c];
+        }
+      }
+    }
+    return res;
+  }
+  function matMulVec(m, v) {
+    return [
+      m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2],
+      m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2],
+      m[2][0] * v[0] + m[2][1] * v[1] + m[2][2] * v[2]
+    ];
+  }
+
+  // Exact rotations that map each die face normal to +Y (top orientation)
+  const FACE_TO_TOP_MATRICES = {
+    1: rotXMat(-Math.PI / 2),
+    2: rotXMat(0),
+    3: rotZMat(Math.PI / 2),
+    4: rotZMat(-Math.PI / 2),
+    5: rotXMat(Math.PI),
+    6: rotXMat(Math.PI / 2)
+  };
+  const R_CAM = matMul(rotXMat(0.615), rotYMat(0.785));
+
+  function getTargetMatrix(face) {
+    const fMat = FACE_TO_TOP_MATRICES[face] || FACE_TO_TOP_MATRICES[6];
+    return matMul(R_CAM, fMat);
+  }
+
+  let currentDiceMatrix = getTargetMatrix(6);
   let velX = 0;
   let velY = 0;
   let velZ = 0;
@@ -35,23 +81,6 @@
   let altVel = 0;
   let isRolling = false;
   let currentDiceFace = 6;
-
-  function rotateVector(v, ax, ay, az) {
-    let [x, y, z] = v;
-    // Rotate X
-    let cx = Math.cos(ax), sx = Math.sin(ax);
-    let y1 = y * cx - z * sx;
-    let z1 = y * sx + z * cx;
-    // Rotate Y
-    let cy = Math.cos(ay), sy = Math.sin(ay);
-    let x2 = x * cy + z1 * sy;
-    let z2 = -x * sy + z1 * cy;
-    // Rotate Z
-    let cz = Math.cos(az), sz = Math.sin(az);
-    let x3 = x2 * cz - y1 * sz;
-    let y3 = x2 * sz + y1 * cz;
-    return [x3, y3, z2];
-  }
 
   function project(v, size, cx, cy) {
     const depth = 1 + v[2] * 0.15;
@@ -82,9 +111,8 @@
 
     // Physics update
     if (isRolling) {
-      rotX += velX;
-      rotY += velY;
-      rotZ += velZ;
+      const deltaR = matMul(rotZMat(velZ), matMul(rotYMat(velY), rotXMat(velX)));
+      currentDiceMatrix = matMul(deltaR, currentDiceMatrix);
       velX *= 0.96;
       velY *= 0.96;
       velZ *= 0.96;
@@ -96,9 +124,9 @@
         altVel = -altVel * 0.58; // bounce restitution
         if (Math.abs(altVel) < 1 && Math.abs(velX) < 0.05 && Math.abs(velY) < 0.05) {
           isRolling = false;
-          // Snap to resting face
-          snapToFace(currentDiceFace);
-          dicePill.textContent = `Face: ${currentDiceFace}`;
+          // Snap target matrix so the rolled face is guaranteed to be on top
+          currentDiceMatrix = getTargetMatrix(currentDiceFace);
+          dicePill.textContent = `Rolled: ${currentDiceFace} (On Top)`;
         }
       }
     }
@@ -117,7 +145,7 @@
     diceCtx.restore();
 
     // Transform vertices
-    const rotVertices = CUBE_VERTICES.map(v => rotateVector(v, rotX, rotY, rotZ));
+    const rotVertices = CUBE_VERTICES.map(v => matMulVec(currentDiceMatrix, v));
     const projVertices = rotVertices.map(v => project(v, size, cx, currentY));
 
     // Sort faces by depth
@@ -126,7 +154,7 @@
     const nl = lightDir.map(n => n / lenL);
 
     const sortedFaces = CUBE_FACES.map(f => {
-      const rotNorm = rotateVector(f.normal, rotX, rotY, rotZ);
+      const rotNorm = matMulVec(currentDiceMatrix, f.normal);
       const isVisible = rotNorm[2] > 0.04;
       const dot = Math.max(0.15, rotNorm[0] * nl[0] + rotNorm[1] * nl[1] + rotNorm[2] * nl[2]);
       return { ...f, rotNorm, isVisible, dot };
@@ -159,22 +187,6 @@
     });
 
     requestAnimationFrame(renderDice);
-  }
-
-  function snapToFace(face) {
-    // Aligns orientation to face target
-    const alignments = {
-      1: [0.615, 0.785, 0],
-      2: [-1.2, 0.785, 0],
-      3: [0.615, -0.785, 0],
-      4: [0.615, 2.35, 0],
-      5: [1.2, 0.785, 0],
-      6: [0.615, -2.35, 0]
-    };
-    const target = alignments[face] || [0.615, 0.785, 0];
-    rotX = target[0];
-    rotY = target[1];
-    rotZ = target[2];
   }
 
   function drawPips(value, quad) {

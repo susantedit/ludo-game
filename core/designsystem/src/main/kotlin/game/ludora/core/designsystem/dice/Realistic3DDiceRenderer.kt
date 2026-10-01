@@ -109,6 +109,64 @@ class Realistic3DDiceRenderer(
         )
     }
 
+    companion object {
+        private val SETTLED_FACETS_MATRICES = mapOf(
+            1 to floatArrayOf(0.7074f, -0.7068f, 0.0f, 0.4078f, 0.4081f, 0.8168f, -0.5773f, -0.5778f, 0.577f),
+            2 to floatArrayOf(0.7074f, 0.0f, 0.7068f, 0.4078f, 0.8168f, -0.4081f, -0.5773f, 0.577f, 0.5778f),
+            3 to floatArrayOf(0.0f, -0.7074f, 0.7068f, 0.8168f, -0.4078f, -0.4081f, 0.577f, 0.5773f, 0.5778f),
+            4 to floatArrayOf(0.0f, 0.7074f, 0.7068f, -0.8168f, 0.4078f, -0.4081f, -0.577f, -0.5773f, 0.5778f),
+            5 to floatArrayOf(0.7074f, 0.0f, -0.7068f, 0.4078f, -0.8168f, 0.4081f, -0.5773f, -0.577f, -0.5778f),
+            6 to floatArrayOf(0.7074f, 0.7068f, 0.0f, 0.4078f, -0.4081f, -0.8168f, -0.5773f, 0.5778f, -0.577f)
+        )
+    }
+
+    /**
+     * Transforms vector by 3x3 matrix row-major FloatArray.
+     */
+    fun transformWithMatrix(m: FloatArray, v: Vector3D): Vector3D {
+        return Vector3D(
+            x = m[0] * v.x + m[1] * v.y + m[2] * v.z,
+            y = m[3] * v.x + m[4] * v.y + m[5] * v.z,
+            z = m[6] * v.x + m[7] * v.y + m[8] * v.z
+        )
+    }
+
+    /**
+     * Computes facets with the rolled number guaranteed to be facing upward on the top face.
+     */
+    fun computeSettledFacets(
+        centerX: Float,
+        centerY: Float,
+        size: Float,
+        rolledValue: Int
+    ): List<DiceFacet> {
+        val matrix = SETTLED_FACETS_MATRICES[rolledValue.coerceIn(1, 6)] ?: SETTLED_FACETS_MATRICES[6]!!
+        val rotatedVertices = baseCubeVertices.map { transformWithMatrix(matrix, it) }
+        val projectedVertices = rotatedVertices.map { projectToScreen(it, centerX, centerY, size) }
+
+        return faces.map { (faceValue, normal, indices) ->
+            val rotatedNormal = transformWithMatrix(matrix, normal).normalize()
+            val isVisible = rotatedNormal.dot(cameraDirection) > 0.05f
+            val lightIntensity = computeLighting(rotatedNormal)
+            val faceVertices = indices.map { projectedVertices[it] }
+
+            val pips = if (isVisible) {
+                calculatePips(faceValue, faceVertices, size * 0.09f)
+            } else {
+                emptyList()
+            }
+
+            DiceFacet(
+                faceValue = faceValue,
+                normal = rotatedNormal,
+                vertices = faceVertices,
+                lightIntensity = lightIntensity,
+                isVisible = isVisible,
+                pips = pips
+            )
+        }.sortedBy { it.normal.z }
+    }
+
     fun computeFacets(
         centerX: Float,
         centerY: Float,
