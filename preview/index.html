@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ludora 3D Model & Animation Laboratory</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Cinzel:wght@600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header class="laboratory-header">
+      <div class="brand-pill">LUDORA • REAL 3D ENGINE</div>
+      <h1 class="main-title">3D Visual & Physics Laboratory</h1>
+      <p class="subtitle">Where every roll matters. Real isometric 3D tumbling dice, muscular Bézier animated vipers, and authentic Kathmandu cultural world boards.</p>
+    </header>
+
+    <main class="laboratory-grid">
+      <!-- 3D Dice Panel -->
+      <section class="card panel-dice">
+        <div class="panel-header">
+          <span class="badge">REAL 3D MODEL</span>
+          <h2>Isometric Tumbling Dice</h2>
+        </div>
+        <div class="canvas-wrapper">
+          <canvas id="diceCanvas" width="400" height="360"></canvas>
+          <div id="diceValuePill" class="value-pill">Face: 6</div>
+        </div>
+        <div class="controls">
+          <button id="rollDiceBtn" class="btn btn-primary">Roll 3D Dice (Space)</button>
+          <div class="metric-row">
+            <span>Material: Heavy Ivory Resin</span>
+            <span>Pips: Gold Metallic Concave</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3D Animated Snake Panel -->
+      <section class="card panel-snake">
+        <div class="panel-header">
+          <span class="badge badge-emerald">BÉZIER UNDULATION</span>
+          <h2>3D Animated Viper</h2>
+        </div>
+        <div class="canvas-wrapper">
+          <canvas id="snakeCanvas" width="400" height="360"></canvas>
+          <div id="snakeStatePill" class="value-pill">Slithering • 60 FPS</div>
+        </div>
+        <div class="controls">
+          <button id="swallowTokenBtn" class="btn btn-secondary">Simulate Token Swallow</button>
+          <div class="metric-row">
+            <span>Spine: Cubic Bézier Curve</span>
+            <span>Scales: Iridescent Emerald & Gold</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kathmandu World Board Panel -->
+      <section class="card panel-kathmandu span-2">
+        <div class="panel-header">
+          <span class="badge badge-gold">CULTURAL WORLD THEME</span>
+          <h2>Kathmandu Mandala Board Layout</h2>
+        </div>
+        <div class="canvas-wrapper large-canvas-wrapper">
+          <canvas id="boardCanvas" width="800" height="520"></canvas>
+        </div>
+        <div class="controls flex-controls">
+          <div class="info-group">
+            <span class="info-title">Central Feature:</span>
+            <span class="info-desc">Swayambhunath Temple Wisdom Eyes Medallion</span>
+          </div>
+          <div class="info-group">
+            <span class="info-title">Wood Frame:</span>
+            <span class="info-desc">Carved Dark Walnut with Brass Inlays</span>
+          </div>
+          <div class="info-group">
+            <span class="info-title">Corners:</span>
+            <span class="info-desc">Sacred Five-Color Prayer Flag Tassels</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
