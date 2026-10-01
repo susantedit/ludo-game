@@ -30,20 +30,20 @@
 **Interfaces:**
 - Produces: Centralized dependency catalog definitions (`libs.versions.toml`) and project inclusion configuration for `app`, `core:*`, `engine:*`, and `feature:*`.
 
-- [ ] **Step 1: Create `gradle/libs.versions.toml`**
+- [x] **Step 1: Create `gradle/libs.versions.toml`**
   Define version numbers, plugins (Android Application, Android Library, Kotlin JVM, Kotlin Android, Compose Compiler, Kotlinx Serialization), and core libraries (Coroutines, Compose BOM, Material 3, Room, DataStore).
 
-- [ ] **Step 2: Create root `settings.gradle.kts`**
+- [x] **Step 2: Create root `settings.gradle.kts`**
   Configure pluginManagement, dependencyResolutionManagement with mavenCentral() and google(), rootProject.name = "ludora", and include submodules:
   - `:app`
   - `:core:common`, `:core:model`, `:core:designsystem`, `:core:database`, `:core:datastore`, `:core:network`
   - `:engine:core`, `:engine:ludo`, `:engine:snake`, `:engine:ai`, `:engine:remix`
   - `:feature:home`, `:feature:ludo`, `:feature:snake`, `:feature:remix`, `:feature:profile`, `:feature:rooms`, `:feature:settings`
 
-- [ ] **Step 3: Create root `build.gradle.kts` and `gradle.properties`**
+- [x] **Step 3: Create root `build.gradle.kts` and `gradle.properties`**
   Configure root buildscript with alias plugins apply false, JVM target configuration, and Android build properties (`android.useAndroidX=true`, `kotlin.code.style=official`).
 
-- [ ] **Step 4: Verify syntax and file existence**
+- [x] **Step 4: Verify syntax and file existence**
   Ensure all Gradle configuration files are syntactically valid and have matching module paths.
 
 ---
@@ -65,16 +65,16 @@
 **Interfaces:**
 - Produces: `PlayerColor`, `TokenState`, `GameType`, `PlayerSeat`, `EngineAction`, `EngineResult`, `GameEvent`, and deterministic `DiceRoller` interface with default CSPRNG implementation.
 
-- [ ] **Step 1: Create module build scripts**
+- [x] **Step 1: Create module build scripts**
   Configure `engine/core/build.gradle.kts` and `core/model/build.gradle.kts` as pure Kotlin JVM library modules.
 
-- [ ] **Step 2: Implement domain models in `core:model`**
+- [x] **Step 2: Implement domain models in `core:model`**
   Implement immutable data classes: `PlayerColor` (RED, GREEN, YELLOW, BLUE with associated starting/star indices), `TokenState` (IN_BASE, ON_TRACK, IN_HOME_PATH, FINISHED), `GameType` (LUDO, SNAKE_AND_LADDER, REMIX), and `LocalProfile`.
 
-- [ ] **Step 3: Implement EngineContract & GameEvent in `engine:core`**
+- [x] **Step 3: Implement EngineContract & GameEvent in `engine:core`**
   Define `EngineAction`, `EngineResult`, `GameEvent`, and `GameEngine<State, Action>` interfaces.
 
-- [ ] **Step 4: Implement deterministic `DiceRoller` and test**
+- [x] **Step 4: Implement deterministic `DiceRoller` and test**
   Implement `DiceRoller` interface and `SecureDiceRoller` using `java.security.SecureRandom`. Write `DiceRollerTest` asserting values strictly fall in range [1, 6] across 10,000 iterations.
 
 ---
@@ -95,10 +95,10 @@
 **Interfaces:**
 - Produces: `Result<T>`, Room database entities, DAOs, and database class definition conforming to [docs/08_DATA_MODEL.md](file:///d:/ludo/docs/08_DATA_MODEL.md).
 
-- [ ] **Step 1: Create `core:common` utilities**
+- [x] **Step 1: Create `core:common` utilities**
   Implement `Result<T>` sealed interface (`Success`, `Error`, `Loading`) and coroutine dispatchers wrapper.
 
-- [ ] **Step 2: Create `core:database` Room definitions**
+- [x] **Step 2: Create `core:database` Room definitions**
   Define `LocalProfileEntity`, `MatchHistoryEntity`, corresponding DAOs (`LocalProfileDao`, `MatchHistoryDao`), and `LudoraDatabase` abstract class.
 
 ---
@@ -116,13 +116,13 @@
 **Interfaces:**
 - Produces: Main Android application entry point, launcher Activity, permissions (strictly non-intrusive), and basic theme setup.
 
-- [ ] **Step 1: Create `app/build.gradle.kts`**
+- [x] **Step 1: Create `app/build.gradle.kts`**
   Configure Android Application plugin, compileSdk 34, minSdk 26, applicationId "game.ludora", version code 1, version name "0.1.0", and module dependencies.
 
-- [ ] **Step 2: Configure `AndroidManifest.xml`**
+- [x] **Step 2: Configure `AndroidManifest.xml`**
   Define `LudoraApplication`, `MainActivity` with portrait orientation and launcher intent filter. Zero intrusive permissions (network state only).
 
-- [ ] **Step 3: Create `LudoraApplication.kt` and `MainActivity.kt`**
+- [x] **Step 3: Create `LudoraApplication.kt` and `MainActivity.kt`**
   Implement base Application class and single Activity with `enableEdgeToEdge()` and basic Compose content host.
 
 ---
@@ -133,8 +133,8 @@
 - Modify: `docs/21_DECISIONS.md` (Log Phase 1 scaffolding completion)
 - Modify: `CHANGELOG.md` (Add Phase 1 scaffolding entry)
 
-- [ ] **Step 1: Verify all module directories and files**
+- [x] **Step 1: Verify all module directories and files**
   Audit directory tree against [docs/07_TECH_ARCHITECTURE.md](file:///d:/ludo/docs/07_TECH_ARCHITECTURE.md).
 
-- [ ] **Step 2: Update project status and changelog**
+- [x] **Step 2: Update project status and changelog**
   Record Phase 1 foundation artifacts in `CHANGELOG.md`.

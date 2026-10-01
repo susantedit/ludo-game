@@ -94,6 +94,15 @@ Alternatives:
 - Infinite play: Vulnerable to griefing and device battery drain.
 Status: Accepted
 
+## Decision: Phase 1 Foundation Scaffolding and Multi-Module Structure
+
+Date: 2026-10-01
+Decision: Scaffold the Android project using Gradle Version Catalog (`gradle/libs.versions.toml`), pure Kotlin JVM library modules for `engine:core` and `core:model`, Android library for `core:database`, and Android application shell for `app`.
+Reason: Decouples domain models and game engine state machines from Android UI packages, enabling instantaneous deterministic unit testing while adhering to modern Android standards.
+Alternatives:
+- Monolithic single-module app: Leads to circular dependencies and couples game engine code to Android SDK.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:
