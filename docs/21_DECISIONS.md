@@ -103,6 +103,15 @@ Alternatives:
 - Monolithic single-module app: Leads to circular dependencies and couples game engine code to Android SDK.
 Status: Accepted
 
+## Decision: Phase 3 Deterministic Headless Ludo Engine Architecture
+
+Date: 2026-10-01
+Decision: Implement `engine:ludo` as a pure Kotlin state reducer (`LudoStateReducer`) coupled with coordinate calculations (`LudoBoard`) and discrete event generation (`LudoEvent`), conforming to `GameEngine<LudoGameState, EngineAction>`.
+Reason: Enforces absolute determinism, guarantees UI/presentation independence, eliminates runtime dependencies on the Android framework, and enables automated testing and simulation of thousands of matches in milliseconds.
+Alternatives:
+- State coupled to Android ViewModels: Breaks offline/online engine code sharing and slows down headless test suites.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:
