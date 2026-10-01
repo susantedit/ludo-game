@@ -16,6 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ludora">
 
+        <!-- Google Mobile Ads App ID -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9145129314168118~7063463688" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

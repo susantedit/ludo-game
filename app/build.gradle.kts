@@ -19,6 +19,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "ADMOB_APP_ID", "\"ca-app-pub-9145129314168118~7063463688\"")
     }
 
     signingConfigs {
@@ -43,10 +44,16 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BANNER_AD_ID", "\"ca-app-pub-9145129314168118/3938692611\"")
+            buildConfigField("String", "INTERSTITIAL_AD_ID", "\"ca-app-pub-9145129314168118/7682410787\"")
+            buildConfigField("String", "REWARDED_AD_ID", "\"ca-app-pub-9145129314168118/9454657458\"")
         }
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
+            buildConfigField("String", "BANNER_AD_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+            buildConfigField("String", "INTERSTITIAL_AD_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
+            buildConfigField("String", "REWARDED_AD_ID", "\"ca-app-pub-3940256099942544/5224354917\"")
         }
     }
 
@@ -61,6 +68,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     packaging {
@@ -85,6 +93,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.play.services.ads)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)

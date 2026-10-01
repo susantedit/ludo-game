@@ -1,7 +1,9 @@
 package game.ludora
 
+import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
+import game.ludora.ads.AdMobProvider
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -128,7 +130,14 @@ fun LudoraRootNavigator(modifier: Modifier = Modifier) {
 
     // Ad & Monetization Infrastructure
     val adPolicyManager = remember { AdPolicyManager(initialSessionCount = 3) }
-    val adProvider = remember { FakeAdProvider().apply { initialize() } }
+    val activity = context as? Activity
+    val adProvider = remember(activity) {
+        if (activity != null) {
+            AdMobProvider(activity).apply { initialize() }
+        } else {
+            FakeAdProvider().apply { initialize() }
+        }
+    }
     val billingService = remember { FakeBillingService() }
     var isOnline by remember { mutableStateOf(true) }
     var showPostMatchInterstitial by remember { mutableStateOf(false) }
