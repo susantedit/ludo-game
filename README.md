@@ -4,7 +4,7 @@
 
 Ludora is a mobile board game platform built with an offline-first architecture. It combines classic physical board gameplay with modern game modes, local and AI opponents, and optional server-authoritative online multiplayer.
 
-> **Documentation phase - implementation has not started.**
+> **Active Development - Phase 1 (Foundation) and Phase 3 (Ludo Game Engine) implemented.**
 
 ## Core Games
 - **Ludo**: Classic 2 to 4 player strategy board game with token racing, captures, safe squares, and configurable house rules.
