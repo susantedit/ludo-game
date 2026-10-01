@@ -35,3 +35,7 @@
 - Interactive Gameplay UI: Interactive Compose Canvas screens for Ludo, Snake & Ladder, and Remix Mode connected to MainActivity dashboard
 - Phase 6 Progression: Offline XP engine with level scaling, match outcome rewards, cosmetic store, and daily quests
 - Phase 6 Progression: `ProfileProgressionSheet` and `MatchRewardDialog` integrated with level-up celebrations and offline coin/XP claiming
+- Phase 7 Online Infrastructure: Pure Kotlin networking library `:core:network` with serialization and coroutine support
+- Phase 7 Online Infrastructure: High-entropy 6-character Crockford base-32 `RoomCodeGenerator` (32^6 permutations, zero character ambiguity)
+- Phase 7 Online Infrastructure: Guest authentication models, token sessions, and account linking contracts
+- Phase 7 Online Infrastructure: Realtime WebSocket protocol packets (`ClientPacket`, `ServerPacket`), `RealtimeGateway`, and `InMemoryRealtimeGateway` test harness

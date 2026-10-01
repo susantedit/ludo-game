@@ -141,6 +141,16 @@ Alternatives:
 - Monolithic progression state: Couples UI components to storage engines.
 Status: Accepted
 
+## Decision: Phase 7 Online Realtime Gateway and Room Synchronization Architecture
+
+Date: 2026-10-01
+Decision: Implement online infrastructure using a pure Kotlin `:core:network` module with high-entropy 6-character Crockford base-32 room codes (`RoomCodeGenerator`), discrete client/server WebSocket packets (`ClientPacket`, `ServerPacket`), and an in-memory server-authoritative gateway (`InMemoryRealtimeGateway`) for headless simulation and low-latency synchronization.
+Reason: Decouples multiplayer transport logic from external cloud vendor SDKs, guarantees 100% testability on JVM, and prevents character ambiguity in user-entered room codes.
+Alternatives:
+- Third-party BaaS SDKs (Firebase/Photon): Couples game state to proprietary vendor APIs and prevents offline simulation testing.
+- Random numeric codes: Vulnerable to transcription errors and lack sufficient entropy.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:
