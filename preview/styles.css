@@ -298,6 +298,152 @@ canvas {
   font-size: 0.92rem;
 }
 
+/* ==========================================================================
+   POLICY & LEGAL HUB STYLES
+   ========================================================================== */
+.policy-hub-section {
+  background: linear-gradient(180deg, #121622 0%, #0A0D14 100%);
+  border: 1px solid rgba(229, 169, 60, 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.policy-tab-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.85rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.policy-tab-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 1.15rem;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.policy-tab-btn:hover {
+  background: rgba(229, 169, 60, 0.08);
+  color: var(--text-main);
+  border-color: rgba(229, 169, 60, 0.3);
+}
+
+.policy-tab-btn.active {
+  background: rgba(229, 169, 60, 0.16);
+  border-color: var(--accent-gold);
+  color: #FFE090;
+  box-shadow: 0 0 12px var(--accent-gold-glow);
+}
+
+.policy-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.policy-search-input {
+  background: #06080D;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-main);
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: var(--font-body);
+  outline: none;
+  min-width: 240px;
+}
+
+.policy-search-input:focus {
+  border-color: var(--accent-gold);
+}
+
+.policy-pane {
+  display: none;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.policy-pane.active {
+  display: flex;
+}
+
+.policy-article {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.policy-article h3 {
+  font-size: 1.15rem;
+  color: #FFE090;
+  font-weight: 700;
+  border-left: 3px solid var(--accent-gold);
+  padding-left: 0.75rem;
+}
+
+.policy-article p {
+  color: #CBD5E1;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.policy-article ul, .policy-article ol {
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.policy-article li {
+  color: #CBD5E1;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.policy-callout {
+  padding: 0.9rem 1.2rem;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.policy-callout.info {
+  background: rgba(42, 114, 255, 0.08);
+  border-left: 3px solid #4A8CFF;
+  color: #C0D6FF;
+}
+
+.policy-callout.warning {
+  background: rgba(229, 169, 60, 0.08);
+  border-left: 3px solid var(--accent-gold);
+  color: #FFE4A3;
+}
+
+.policy-callout.success {
+  background: rgba(0, 200, 117, 0.08);
+  border-left: 3px solid #00C875;
+  color: #B4F5D5;
+}
+
 .laboratory-footer {
   text-align: center;
   padding: 1.5rem 0;

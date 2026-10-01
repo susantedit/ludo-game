@@ -639,10 +639,44 @@
     }, 4500);
   }
 
-  vibeBtn.addEventListener('click', playSingingBowl);
+  if (vibeBtn) vibeBtn.addEventListener('click', playSingingBowl);
+
+  // ==========================================
+  // 5. POLICY & COMPLIANCE HUB CONTROLLER
+  // ==========================================
+  const policyTabBtns = document.querySelectorAll('.policy-tab-btn');
+  const policyPanes = document.querySelectorAll('.policy-pane');
+
+  policyTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetPaneId = btn.getAttribute('data-policy-tab');
+      policyTabBtns.forEach(b => b.classList.remove('active'));
+      policyPanes.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const target = document.getElementById(targetPaneId);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  const policySearch = document.getElementById('policySearchInput');
+  if (policySearch) {
+    policySearch.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      const activePane = document.querySelector('.policy-pane.active');
+      if (!activePane) return;
+
+      const articles = activePane.querySelectorAll('.policy-article');
+      articles.forEach(art => {
+        const text = art.textContent.toLowerCase();
+        art.style.display = (!query || text.includes(query)) ? 'flex' : 'none';
+      });
+    });
+  }
 
   // Initial Boot
   renderDice();
   renderSnake();
   renderKathmanduBoard();
 })();
+

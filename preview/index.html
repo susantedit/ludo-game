@@ -203,13 +203,171 @@
           </article>
         </div>
       </section>
+
+      <!-- Comprehensive Policy, Legal & Player Rights Hub -->
+      <section class="card span-2 policy-hub-section" id="policyHub">
+        <div class="panel-header">
+          <span class="badge badge-gold">UNABRIDGED LEGAL &amp; PLAYER CHARTER</span>
+          <h2>Official Policies, Terms &amp; Compliance Hub</h2>
+        </div>
+
+        <!-- Policy Tab Buttons -->
+        <nav class="policy-tab-nav" role="tablist">
+          <button class="policy-tab-btn active" data-policy-tab="policy-privacy" role="tab">Privacy Policy</button>
+          <button class="policy-tab-btn" data-policy-tab="policy-terms" role="tab">Terms of Service</button>
+          <button class="policy-tab-btn" data-policy-tab="policy-coppa" role="tab">Children's Privacy (COPPA)</button>
+          <button class="policy-tab-btn" data-policy-tab="policy-iap" role="tab">In-App Purchases &amp; Refunds</button>
+          <button class="policy-tab-btn" data-policy-tab="policy-security" role="tab">Security &amp; Fair Play</button>
+        </nav>
+
+        <!-- Meta Information & Keyword Search -->
+        <div class="policy-meta-row">
+          <div>
+            <span><strong>Effective Date:</strong> October 1, 2026</span> • 
+            <span><strong>Release Version:</strong> 1.0.0 (Production)</span> • 
+            <span><strong>License:</strong> Personal Entertainment</span>
+          </div>
+          <div>
+            <input type="text" id="policySearchInput" class="policy-search-input" placeholder="Search policy clauses (e.g. offline, refund, data)...">
+          </div>
+        </div>
+
+        <!-- PANE 1: COMPLETE PRIVACY POLICY -->
+        <div class="policy-pane active" id="policy-privacy" role="tabpanel">
+          <article class="policy-article">
+            <h3>1. Overview &amp; Data Minimization Commitment</h3>
+            <p>Ludora ("we", "us", or "our") is an offline-first mobile board game application. We value player privacy and adhere strictly to data minimization principles. The majority of gameplay features run entirely on your local device without transmitting telemetry, tracking cookies, or analytics over the internet.</p>
+          </article>
+
+          <article class="policy-article">
+            <h3>2. Local Offline Device Storage (Android Room)</h3>
+            <p>When playing Ludora in single-player or local pass-and-play mode, all player profiles, match statistics, unlocked dice skins, board themes, and daily quest progress are saved locally on your device in an encrypted SQLite database managed by Android Jetpack Room. This data never leaves your device unless you initiate a system-level device backup or transfer.</p>
+          </article>
+
+          <article class="policy-article">
+            <h3>3. Online Multiplayer Ephemeral Data</h3>
+            <p>When participating in online multiplayer rooms:</p>
+            <ul>
+              <li><strong>Guest UUID:</strong> A cryptographically secure random UUID is generated in device memory to route game packets. We do not require registration, email addresses, phone numbers, or social media logins.</li>
+              <li><strong>Matchmaking Metadata:</strong> Ephemeral rating information and connection state exist in memory only for the duration of the match.</li>
+              <li><strong>WebSocket Packets:</strong> Dice rolls, token selections, and card activations are transmitted over secure WebSockets (WSS) and are permanently purged upon room closure.</li>
+            </ul>
+          </article>
+
+          <article class="policy-article">
+            <h3>4. Advertising Policies &amp; Offline Suppression</h3>
+            <p>Ludora strictly prohibits advertisements during active matches. Outside of active turns, non-personalized contextual ads or voluntary rewarded videos may appear through certified networks (Google Mobile Ads). When your device is offline or in airplane mode, all advertising SDKs are suppressed to prevent blank layout containers and battery consumption. Purchasing the "Remove Ads" pass permanently disables all banner and interstitial advertising requests.</p>
+          </article>
+
+          <article class="policy-article">
+            <h3>5. Data Retention, Portability &amp; Deletion Rights</h3>
+            <p>You retain complete authority over your data. To permanently delete your records, select "Reset Data" in the in-app profile settings, or clear application storage via Android System Settings. Because we do not maintain centralized cloud profiles, deleting local data completely purges your history.</p>
+          </article>
+
+          <article class="policy-article">
+            <h3>6. Privacy Inquiries &amp; Contact</h3>
+            <p>For questions regarding our privacy practices or data rights, contact us at: <strong>privacy@ludora.game</strong> or visit our <a href="https://github.com/susantedit/ludo-game" target="_blank" rel="noopener">GitHub repository</a>.</p>
+          </article>
+        </div>
+
+        <!-- PANE 2: COMPLETE TERMS OF SERVICE -->
+        <div class="policy-pane" id="policy-terms" role="tabpanel">
+          <article class="policy-article">
+            <h3>1. Acceptance of Terms</h3>
+            <p>By downloading, installing, accessing, or playing Ludora, you agree to be bound by these Terms of Service. If you do not agree to these terms, you must not install or use the application.</p>
+          </article>
+
+          <article class="policy-article">
+            <h3>2. Grant of Limited Entertainment License</h3>
+            <p>We grant you a personal, non-exclusive, non-transferable, revocable license to install and play Ludora on compatible Android mobile devices for non-commercial entertainment. You agree not to reverse-engineer, decompile, modify, or distribute unauthorized derivative copies of the binary executable, except as permitted under applicable open-source library licenses.</p>
+          </article>
+
+          <article class="policy-article">
+            <h3>3. Fair Play Code of Conduct</h3>
+            <p>To preserve tournament integrity and player trust, you agree not to:</p>
+            <ul>
+              <li><strong>No Client Modification:</strong> Use modified APKs, memory editors, packet interceptors, or automated bots to alter game states or dice rolls.</li>
+              <li><strong>No Network Disruption:</strong> Interfere with, flood, desynchronize, or launch denial-of-service attacks against online multiplayer WebSocket gateways.</li>
+              <li><strong>No Abusive Display Names:</strong> Host or join rooms using display names that contain hate speech, obscenity, defamation, or harassment.</li>
+            </ul>
+            <div class="policy-callout warning">
+              <strong>Sanctions:</strong> Violating fair play rules results in immediate and permanent suspension of online multiplayer and room hosting privileges.
+            </div>
+          </article>
+
+          <article class="policy-article">
+            <h3>4. Virtual Currencies &amp; Cosmetic Items</h3>
+            <p>In-game coins, XP, levels, dice skins, and board themes are virtual gameplay items. They possess zero real-world monetary value, cannot be redeemed for legal currency, and cannot be transferred or sold between players outside the application.</p>
+          </article>
+
+          <article class="policy-article">
+            <h3>5. In-App Purchases, Billing &amp; Google Play Terms</h3>
+            <p>All financial transactions, including the "Remove Ads" pass, are billed securely through Google Play In-App Billing. The "Remove Ads" pass grants a permanent non-consumable entitlement that can be restored on any device linked to your Google Play account by tapping "Restore Purchases". Refund requests are governed by Google Play standard refund guidelines.</p>
+          </article>
+
+          <article class="policy-article">
+            <h3>6. Limitation of Liability &amp; Disclaimers</h3>
+            <p>LUDORA IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND. TO THE FULLEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW, LUDORA STUDIOS AND ITS CONTRIBUTORS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING FROM YOUR USE OF THE APPLICATION.</p>
+          </article>
+        </div>
+
+        <!-- PANE 3: CHILDREN'S PRIVACY & COPPA -->
+        <div class="policy-pane" id="policy-coppa" role="tabpanel">
+          <article class="policy-article">
+            <h3>Children's Online Privacy Protection Act (COPPA) Compliance</h3>
+            <p>Ludora is designed for all audiences, including families and children. We strictly comply with COPPA and Google Play Families Policies:</p>
+            <ul>
+              <li><strong>Zero PII Collection:</strong> We do not knowingly solicit or collect personal identifiable information (names, emails, phone numbers, locations) from children under the age of 13.</li>
+              <li><strong>Suppression of Behavioral Ads:</strong> When child-directed mode is active or an age under 13 is indicated, behavioral advertising and interest-based profiling are completely disabled.</li>
+              <li><strong>Families Self-Certified SDKs:</strong> Only advertising SDKs certified under the Google Play Families program are initialized in family configurations.</li>
+              <li><strong>Family-Safe Emote Communication:</strong> In-game player interaction is restricted to pre-defined friendly animated emotes, preventing any open text messaging between children and strangers.</li>
+            </ul>
+            <div class="policy-callout success">
+              <strong>Parental Rights:</strong> Parents or guardians may direct any inquiry regarding child safety and data practices to: <strong>safety@ludora.game</strong>.
+            </div>
+          </article>
+        </div>
+
+        <!-- PANE 4: IN-APP PURCHASES & REFUND POLICY -->
+        <div class="policy-pane" id="policy-iap" role="tabpanel">
+          <article class="policy-article">
+            <h3>In-App Purchases, Pricing &amp; Refund Policy</h3>
+            <p>Ludora maintains transparent, player-first monetization policies:</p>
+            <ul>
+              <li><strong>Permanent Ad Removal:</strong> A single, one-time in-app purchase permanently removes all menu banners and post-match interstitials. No recurring subscriptions or surprise renewals exist.</li>
+              <li><strong>Instant Restore:</strong> If you reinstall the app or change devices, tap "Restore Purchases" in the Game Settings menu to re-validate your Google Play license immediately.</li>
+              <li><strong>Voluntary Rewarded Videos:</strong> Watching rewarded video advertisements is 100% voluntary and offers bonus cosmetic coins. Gameplay modes and competitive fairness are never paywalled.</li>
+              <li><strong>Google Play Refunds:</strong> All payments are handled by Google. To request a refund, follow the <a href="https://support.google.com/googleplay/workflow/9813244" target="_blank" rel="noopener">Google Play Refund Workflow</a> within 48 hours of purchase.</li>
+            </ul>
+          </article>
+        </div>
+
+        <!-- PANE 5: SECURITY & FAIR PLAY PROTECTIONS -->
+        <div class="policy-pane" id="policy-security" role="tabpanel">
+          <article class="policy-article">
+            <h3>Technical Security Standards &amp; Vulnerability Mitigations</h3>
+            <p>Our codebase underwent an automated static analysis audit to protect users from common mobile software vulnerabilities:</p>
+            <ul>
+              <li><strong>CWE-89 (SQL Injection Protection):</strong> All local database queries use parameterized Room DAO interfaces, eliminating dynamic SQL string concatenation.</li>
+              <li><strong>CWE-926 (Exported Android Components):</strong> All internal activities, receivers, and services enforce <code>android:exported="false"</code> to prevent unauthorized inter-process communication.</li>
+              <li><strong>CWE-330 (Cryptographic Randomness):</strong> Dice rolls and room tokens are generated using <code>java.security.SecureRandom</code> to prevent roll prediction.</li>
+              <li><strong>CWE-312 (Cleartext Data Exposure):</strong> Local databases are stored in private internal app sandboxes.</li>
+              <li><strong>CWE-400 (Resource Exhaustion):</strong> WebSocket message size is capped at 4KB with rate-limiting per turn.</li>
+            </ul>
+            <div class="policy-callout info">
+              <strong>Security Contact:</strong> Security researchers can report potential vulnerabilities to: <strong>security@ludora.game</strong>.
+            </div>
+          </article>
+        </div>
+      </section>
     </main>
 
     <footer class="laboratory-footer">
-      <p>© 2026 Ludora. Designed for 10M+ Global Players. <a href="file:///d:/ludo/docs/22_PRIVACY_POLICY.md">Privacy Policy</a> • <a href="file:///d:/ludo/docs/23_TERMS_OF_SERVICE.md">Terms of Service</a> • <a href="file:///d:/ludo/llms.txt">llms.txt</a></p>
+      <p>© 2026 Ludora. Designed for 10M+ Global Players. <a href="#policyHub">Privacy Policy</a> • <a href="#policyHub">Terms of Service</a> • <a href="file:///d:/ludo/llms.txt">llms.txt</a></p>
     </footer>
   </div>
 
   <script src="app.js"></script>
 </body>
 </html>
+
