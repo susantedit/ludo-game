@@ -22,36 +22,78 @@
 
   <!-- Schema.org JSON-LD for AI Search & GEO -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "VideoGame",
-    "name": "Ludora",
-    "alternateName": "Ludora: Board Games & Remix",
-    "description": "Offline-first mobile board game platform featuring 3D isometric tumbling dice, animated vipers, and cultural Kathmandu board themes.",
-    "genre": ["Board Game", "Strategy", "Casual"],
-    "gamePlatform": ["Android", "Mobile"],
-    "operatingSystem": "Android 8.0 and higher",
-    "applicationCategory": "GameApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Ludora",
+      "alternateName": "Ludora: Board Games & Remix",
+      "description": "Offline-first mobile board game platform featuring 3D isometric tumbling dice, animated vipers, and cultural Kathmandu board themes.",
+      "genre": ["Board Game", "Strategy", "Casual"],
+      "gamePlatform": ["Android", "Mobile"],
+      "operatingSystem": "Android 8.0 and higher",
+      "applicationCategory": "GameApplication",
+      "datePublished": "2026-10-01",
+      "dateModified": "2026-10-01",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Ludora Studios",
+        "url": "https://github.com/susantedit/ludo-game",
+        "founder": {
+          "@type": "Person",
+          "name": "Susant Acharya",
+          "url": "https://github.com/susantedit"
+        },
+        "sameAs": [
+          "https://github.com/susantedit/ludo-game"
+        ]
+      },
+      "featureList": [
+        "100% Complete Offline Gameplay",
+        "Zero Mid-Game Video Ads",
+        "Real 3D Isometric Tumbling Dice with Physics",
+        "Bézier Animated Undulating Snakes",
+        "Kathmandu Cultural Mandala Board Theme",
+        "Remix Mode with 5 Tactical Power Cards",
+        "Private Rooms with 6-Character Codes"
+      ]
     },
-    "author": {
-      "@type": "Organization",
-      "name": "Ludora Studios",
-      "url": "https://github.com/susantedit/ludo-game"
-    },
-    "featureList": [
-      "100% Complete Offline Gameplay",
-      "Zero Mid-Game Video Ads",
-      "Real 3D Isometric Tumbling Dice with Physics",
-      "Bézier Animated Undulating Snakes",
-      "Kathmandu Cultural Mandala Board Theme",
-      "Remix Mode with 5 Tactical Power Cards",
-      "Private Rooms with 6-Character Codes"
-    ]
-  }
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Ludora?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ludora is an offline-first mobile board game platform that modernizes traditional parlor games including Ludo and Snake & Ladder. Built with a player-first philosophy, Ludora allows users to play single-player and pass-and-play matches completely offline without an internet connection or account registration. Unlike standard mobile board games that display invasive mid-game video popups, Ludora enforces strict ad frequency controls with zero advertisements during active matches. The platform features three distinct game modes: Classic Ludo with deterministic track movement, Snake & Ladder with 100-tile boustrophedon navigation, and Ludora Remix, a hybrid mode introducing hazard tiles and tactical power cards like Shield, Boost, and Bomb. Visuals are rendered using real-time isometric 3D tumbling dice with physical bounce restitution, animated Bézier vipers with iridescent scales, and authentic cultural boards including the Kathmandu mandala theme."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How Does Ludora's Offline Mode Work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ludora operates with complete offline autonomy. When a device is disconnected from cellular data or Wi-Fi, the entire game engine executes natively on the local hardware through an embedded deterministic Kotlin state reducer. Player progression, match statistics, unlocked dice skins, and daily quests are saved locally to an encrypted SQLite database managed by Android Jetpack Room. Sound effects run through an onboard procedural 16-bit PCM waveform synthesizer or cached audio resources, eliminating the need to download remote sound assets. When offline, all advertising network SDKs are automatically suppressed to avoid rendering blank layout containers or loading delays. Offline multiplayer is supported on a single physical device for two to four players in pass-and-play configuration. Online features, such as private six-character rooms and matchmaking queues, activate seamlessly once internet connectivity is restored without interrupting ongoing local matches."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Ludora Remix Mode?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ludora Remix is a strategic hybrid variant that merges the 52-step perimeter track of classic Ludo with the hazard mechanics of Snake & Ladder. In Remix Mode, designated track squares transform into dynamic hazards: snakes pull landing tokens backward toward earlier safe squares, ladders accelerate tokens forward across track sections, and warp portals shift token positions across board quadrants. In addition to rolling dice, each player begins the match with tactical power cards. The Shield card blocks an upcoming snake or opponent capture; the Speed Boost adds three guaranteed movement steps; the Reroll card grants an immediate second roll; the Swap card exchanges board positions with an adjacent token; and the Bomb card clears hazard tiles in a two-tile radius. Rotating round modifiers, such as Double Roll frenzy or Hazard Rush, change match conditions every three turns."
+          }
+        }
+      ]
+    }
+  ]
   </script>
 
   <link rel="stylesheet" href="styles.css">
