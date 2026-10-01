@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 enum class PowerUpType {
     SHIELD,
     SPEED_BOOST,
+    REROLL,
     SWAP,
     BOMB
 }
@@ -21,9 +22,12 @@ data class PowerUp(
 data class RemixConfig(
     val tokenCountPerPlayer: Int = 2,
     val maxRounds: Int = 100,
+    val enableHazards: Boolean = true,
+    val enableChaosModifiers: Boolean = true,
     val allowedPowerUps: Set<PowerUpType> = setOf(
         PowerUpType.SHIELD,
         PowerUpType.SPEED_BOOST,
+        PowerUpType.REROLL,
         PowerUpType.SWAP,
         PowerUpType.BOMB
     )

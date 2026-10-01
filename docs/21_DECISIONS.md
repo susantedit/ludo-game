@@ -121,6 +121,16 @@ Alternatives:
 - Rendering tokens with individual Android Views: High layout overhead and sluggish frame rates on budget mobile hardware.
 Status: Accepted
 
+## Decision: Phase 5 Hybrid Remix Mode Engine and Power Card Architecture
+
+Date: 2026-10-01
+Decision: Implement Remix Mode as a pure Kotlin module (`engine:remix`) layering hybrid track hazards (ladders catapulting tokens, snakes swallowing tokens) onto the 52-step Ludo track, paired with an inventory of five tactical power cards (`SHIELD`, `SPEED_BOOST`, `REROLL`, `SWAP`, `BOMB`) and dynamic round Chaos Modifiers (`DOUBLE_ROLL`, `HAZARD_RUSH`, `SHIELD_FRENZY`).
+Reason: Provides high-tempo dynamic gameplay that blends mechanics from both classic titles while remaining completely deterministic and testable.
+Alternatives:
+- Separate standalone board layout: Increases asset overhead and confuses players.
+- Random unchecked chaos: Breaks rule predictability and strategy.
+Status: Accepted
+
 ## Standardized Game Terminology
 
 The following standard terms must be used consistently across all documents and code:

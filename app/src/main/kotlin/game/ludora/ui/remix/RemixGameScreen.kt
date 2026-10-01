@@ -2,6 +2,7 @@ package game.ludora.ui.remix
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,11 +28,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -59,8 +65,11 @@ import game.ludora.engine.ludo.model.LudoPosition
 import game.ludora.engine.ludo.model.LudoTurnPhase
 import game.ludora.engine.remix.RemixGameEngine
 import game.ludora.engine.remix.RemixGameState
+import game.ludora.engine.remix.model.ChaosModifier
+import game.ludora.engine.remix.model.HazardType
 import game.ludora.engine.remix.model.PowerUpType
 import game.ludora.engine.remix.model.RemixConfig
+import game.ludora.engine.remix.model.RemixHazard
 import game.ludora.ui.common.MatchOptions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -76,7 +85,7 @@ fun RemixGameScreen(
     var gameState by remember {
         val baseRemix = engine.getInitialState(
             playerCount = options.playerCount,
-            config = RemixConfig(tokenCountPerPlayer = 2)
+            config = RemixConfig(tokenCountPerPlayer = 2, enableHazards = true, enableChaosModifiers = true)
         )
         val setupPlayers = baseRemix.baseState.players.mapIndexed { idx, pState ->
             val isAi = if (idx == 0) false else options.isVsAi
@@ -88,7 +97,13 @@ fun RemixGameScreen(
             )
         }
         val fullInventories = baseRemix.baseState.players.associate {
-            it.color to listOf(PowerUpType.SHIELD, PowerUpType.SPEED_BOOST, PowerUpType.BOMB, PowerUpType.SWAP)
+            it.color to listOf(
+                PowerUpType.SHIELD,
+                PowerUpType.SPEED_BOOST,
+                PowerUpType.REROLL,
+                PowerUpType.SWAP,
+                PowerUpType.BOMB
+            )
         }
         mutableStateOf(
             baseRemix.copy(
@@ -99,7 +114,7 @@ fun RemixGameScreen(
     }
 
     var displayedDiceValue by remember { mutableIntStateOf(6) }
-    var statusMessage by remember { mutableStateOf("Remix Mode: Use Power-ups to dominate!") }
+    var statusMessage by remember { mutableStateOf("Remix Mode: Hybrid Hazards & Power Cards Active!") }
     var legalMoves by remember { mutableStateOf<List<LegalMove>>(emptyList()) }
     var isRollingAnimation by remember { mutableStateOf(false) }
 
@@ -145,6 +160,7 @@ fun RemixGameScreen(
                         val moveState = engine.step(nextState, LudoAction.SelectMove(chosenMove.tokenId))
                         gameState = moveState
                         legalMoves = emptyList()
+                        moveState.lastTriggeredHazardDescription?.let { statusMessage = it }
                     }
                 }
             }
@@ -159,11 +175,12 @@ fun RemixGameScreen(
                     val nextState = engine.step(gameState, LudoAction.SelectMove(legalMoves.first().tokenId))
                     gameState = nextState
                     legalMoves = emptyList()
+                    nextState.lastTriggeredHazardDescription?.let { statusMessage = it }
                 } else {
                     statusMessage = "Tap your highlighted token to move!"
                 }
             } else if (gameState.baseState.phase == LudoTurnPhase.WAITING_FOR_ROLL) {
-                statusMessage = "Your turn! Tap dice or activate a power-up."
+                statusMessage = "Your turn! Tap dice or activate a power card."
                 legalMoves = emptyList()
             }
         }
@@ -188,12 +205,13 @@ fun RemixGameScreen(
 
     fun onUsePowerUp(powerUp: PowerUpType) {
         if (activePlayer.player.isAi) return
-        gameState = engine.activatePowerUp(
+        val next = engine.activatePowerUp(
             state = gameState,
             playerColor = activePlayer.color,
             powerUp = powerUp,
             targetTokenId = 0
         )
+        gameState = next
         statusMessage = "Activated ${powerUp.name}! ⚡"
     }
 
@@ -203,6 +221,7 @@ fun RemixGameScreen(
             val nextState = engine.step(gameState, LudoAction.SelectMove(tokenId))
             gameState = nextState
             legalMoves = emptyList()
+            nextState.lastTriggeredHazardDescription?.let { statusMessage = it }
         }
     }
 
@@ -210,28 +229,28 @@ fun RemixGameScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(LudoraTheme.colors.background)
-            .padding(16.dp),
+            .padding(14.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Top Bar
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .padding(bottom = 6.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             LudoraSecondaryButton(
                 text = "← Exit",
                 onClick = onBackToMenu,
-                modifier = Modifier.height(36.dp)
+                modifier = Modifier.height(34.dp)
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 PlayerAvatarBadge(
                     color = activePlayer.color,
                     isCurrentTurn = true,
-                    size = 32.dp
+                    size = 30.dp
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
@@ -241,7 +260,7 @@ fun RemixGameScreen(
                         color = TextPrimary
                     )
                     Text(
-                        text = "Remix Quick Match",
+                        text = "Round ${gameState.baseState.roundCount}",
                         style = LudoraTheme.typography.bodyMedium,
                         color = WarmAmberGold,
                         fontSize = 11.sp
@@ -255,24 +274,51 @@ fun RemixGameScreen(
             )
         }
 
-        // Power-Up Inventory Bar
+        // Active Chaos Modifier Pill
+        if (gameState.activeChaosModifier != ChaosModifier.NONE) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(Color(0xFF7C3AED).copy(alpha = 0.25f))
+                    .border(1.dp, Color(0xFF8B5CF6), RoundedCornerShape(6.dp))
+                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "🌀 ${gameState.activeChaosModifier.displayName}: ${gameState.activeChaosModifier.description}",
+                    color = Color(0xFFDDD6FE),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+
+        // Power Cards Bar (Shield, Speed Boost, Reroll, Swap, Bomb)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 6.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             listOf(
                 PowerUpType.SHIELD to "🛡️ Shield",
                 PowerUpType.SPEED_BOOST to "⚡ +2 Roll",
+                PowerUpType.REROLL to "🎲 Reroll",
                 PowerUpType.SWAP to "🔄 Swap",
                 PowerUpType.BOMB to "💣 Bomb"
             ).forEach { (pType, label) ->
                 val hasItem = humanInventory.contains(pType)
+                val isUsable = hasItem && !activePlayer.player.isAi && (
+                    if (pType == PowerUpType.REROLL) gameState.baseState.phase == LudoTurnPhase.WAITING_FOR_MOVE
+                    else gameState.baseState.phase == LudoTurnPhase.WAITING_FOR_ROLL
+                )
+
                 LudoraSecondaryButton(
                     text = label,
                     onClick = { onUsePowerUp(pType) },
-                    enabled = hasItem && !activePlayer.player.isAi && gameState.baseState.phase == LudoTurnPhase.WAITING_FOR_ROLL,
+                    enabled = isUsable,
                     modifier = Modifier
                         .weight(1f)
                         .height(34.dp)
@@ -280,7 +326,7 @@ fun RemixGameScreen(
             }
         }
 
-        // 15x15 Canvas Board
+        // 15x15 Canvas Board with Track Ladders and Snakes
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -325,22 +371,48 @@ fun RemixGameScreen(
 
                 drawRect(color = SlateSurface)
 
-                // Track tiles
+                // 1. Track tiles
                 for (step in 0..51) {
                     val (col, row) = LudoGridCoordinateMapper.getTrackGridCell(step)
                     val cellLeft = col * cellSize
                     val cellTop = row * cellSize
                     val isSafe = LudoBoard.isSafeSquare(step)
+                    val hazard = RemixHazard.getHazardAt(step)
+
+                    val tileBg = when {
+                        hazard?.type == HazardType.LADDER -> Color(0xFF14532D) // Dark Emerald Ladder Tile
+                        hazard?.type == HazardType.SNAKE -> Color(0xFF7F1D1D)  // Dark Crimson Snake Tile
+                        isSafe -> SlateCard
+                        else -> Color(0xFF1E293B)
+                    }
 
                     drawRoundRect(
-                        color = if (isSafe) SlateCard else Color(0xFF1E293B),
+                        color = tileBg,
                         topLeft = Offset(cellLeft + 1f, cellTop + 1f),
                         size = Size(cellSize - 2f, cellSize - 2f),
                         cornerRadius = CornerRadius(3f, 3f)
                     )
+
+                    // Draw Hazard Markers
+                    if (hazard?.type == HazardType.LADDER) {
+                        // Golden ladder rungs indicator
+                        drawCircle(
+                            color = WarmAmberGold,
+                            radius = cellSize * 0.22f,
+                            center = Offset(cellLeft + cellSize / 2f, cellTop + cellSize / 2f),
+                            style = Stroke(width = 2f)
+                        )
+                    } else if (hazard?.type == HazardType.SNAKE) {
+                        // Red serpent dot indicator
+                        drawCircle(
+                            color = Color(0xFFEF4444),
+                            radius = cellSize * 0.22f,
+                            center = Offset(cellLeft + cellSize / 2f, cellTop + cellSize / 2f)
+                        )
+                    }
                 }
 
-                // Colored home columns
+                // 2. Colored home columns
                 listOf(PlayerColor.RED, PlayerColor.GREEN, PlayerColor.YELLOW, PlayerColor.BLUE).forEach { color ->
                     for (step in 1..5) {
                         val (col, row) = LudoGridCoordinateMapper.getHomePathGridCell(color, step)
@@ -353,7 +425,7 @@ fun RemixGameScreen(
                     }
                 }
 
-                // Render active tokens
+                // 3. Render active tokens
                 gameState.baseState.players.forEach { pState ->
                     pState.tokens.forEach { token ->
                         val centerOffset = when (val pos = token.position) {
@@ -378,6 +450,8 @@ fun RemixGameScreen(
                         val isSelectable = pState.seatIndex == gameState.baseState.activeSeatIndex &&
                                 selectableTokenIds.contains(token.id)
 
+                        val isShielded = gameState.shieldedTokens.contains(pState.color to token.id)
+
                         TokenRenderer.drawToken(
                             drawScope = this,
                             center = centerOffset,
@@ -386,21 +460,31 @@ fun RemixGameScreen(
                             isSelectable = isSelectable,
                             isLifted = isSelectable
                         )
+
+                        // Render subtle shield aura if active
+                        if (isShielded) {
+                            drawCircle(
+                                color = Color(0xFF38BDF8),
+                                radius = cellSize * 0.50f,
+                                center = centerOffset,
+                                style = Stroke(width = 3f)
+                            )
+                        }
                     }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Text(
             text = statusMessage,
             style = LudoraTheme.typography.bodyMedium,
             color = WarmAmberGold,
-            modifier = Modifier.padding(vertical = 4.dp)
+            modifier = Modifier.padding(vertical = 2.dp)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         // Tactile 3D Die & Roll Button
         Row(
@@ -424,7 +508,7 @@ fun RemixGameScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.width(20.dp))
+            Spacer(modifier = Modifier.width(18.dp))
 
             LudoraPrimaryButton(
                 text = if (isRollingAnimation) "Rolling..." else "Roll Dice (${displayedDiceValue})",
@@ -449,7 +533,7 @@ fun RemixGameScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "⚡ Remix Finished!",
+                        text = "⚡ Remix Champion!",
                         style = LudoraTheme.typography.headlineMedium,
                         color = WarmAmberGold
                     )
